@@ -10,11 +10,15 @@ import 'package:aquanoph/core/theme/app_fonts.dart';
 /// [U] button label: CSS text box is 40px @ Inter16 — too wide for "OK" (≈22px);
 /// using "OK" until the design label is confirmed.
 /// [V] user's Figma screenshot 2026-11-13: button label is "close" (lowercase),
-/// status line = "• " bullet + bold "Analysis Pond" + regular " completed."
+/// status line = "• " bullet + bold name + regular suffix.
+/// [V] skill rule §7 (2026-11-13): status line must fit the calling context —
+/// defaults are the wizard copy; other flows pass their own label/suffix.
 Future<void> showSuccessDialog(
   BuildContext context, {
   String title = 'Create success!',
   String subtitle = 'Analysis and Schedule complete.',
+  String statusLabel = 'Analysis Pond',
+  String statusSuffix = ' completed.',
 }) {
   return showDialog<void>(
     context: context,
@@ -68,18 +72,18 @@ Future<void> showSuccessDialog(
                 style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.w400, fontSize: 16, height: 22 / 16, color: AppColors.textSecondary),
               ),
             ),
-            // Status line (30,244) w213: "• " + Bold "Analysis Pond" + regular " completed."
+            // Status line (30,244) w213: "• " + Bold label + regular suffix (params, §7 rule)
             Positioned(
               left: 30,
               top: 244,
               width: 213,
-              child: const Text.rich(
+              child: Text.rich(
                 TextSpan(
-                  style: TextStyle(fontFamily: AppFonts.heading, fontSize: 16, height: 22 / 16, color: AppColors.textPrimary),
+                  style: const TextStyle(fontFamily: AppFonts.heading, fontSize: 16, height: 22 / 16, color: AppColors.textPrimary),
                   children: [
-                    TextSpan(text: '•  '),
-                    TextSpan(text: 'Analysis Pond', style: TextStyle(fontWeight: FontWeight.w700)),
-                    TextSpan(text: ' completed.', style: TextStyle(fontWeight: FontWeight.w400)),
+                    const TextSpan(text: '•  '),
+                    TextSpan(text: statusLabel, style: const TextStyle(fontWeight: FontWeight.w700)),
+                    TextSpan(text: statusSuffix, style: const TextStyle(fontWeight: FontWeight.w400)),
                   ],
                 ),
                 maxLines: 1,

@@ -339,24 +339,27 @@ class _RecommendationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.fromLTRB(urgent ? 18 : 16, urgent ? 15 : 14, urgent ? 18 : 16, urgent ? 19 : 14),
-      decoration: BoxDecoration(
-        color: urgent ? AppColors.urgentBg : AppColors.warningBg,
-        border: Border.all(color: urgent ? AppColors.urgentBorder : AppColors.warningBorder, width: 1.5),
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: const [_cardShadow],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(title, style: TextStyle(fontFamily: urgent ? AppFonts.heading : AppFonts.body, fontWeight: FontWeight.bold, fontSize: 14, height: 19 / 14, color: urgent ? AppColors.textPrimary : Colors.black)),
-          const SizedBox(height: 5),
-          Padding(
-            padding: EdgeInsets.only(left: urgent ? 10 : 12, right: urgent ? 16 : 4),
-            child: Text(body, style: const TextStyle(fontFamily: AppFonts.body, fontSize: 12, height: 14 / 12, color: AppColors.textSecondary)),
-          ),
-        ],
+    return SizedBox(
+      width: double.infinity, // design: 358 full content column
+      child: Container(
+        padding: EdgeInsets.fromLTRB(urgent ? 18 : 16, urgent ? 15 : 14, urgent ? 18 : 16, urgent ? 19 : 14),
+        decoration: BoxDecoration(
+          color: urgent ? AppColors.urgentBg : AppColors.warningBg,
+          border: Border.all(color: urgent ? AppColors.urgentBorder : AppColors.warningBorder, width: 1.5),
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: const [_cardShadow],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title, style: TextStyle(fontFamily: urgent ? AppFonts.heading : AppFonts.body, fontWeight: FontWeight.bold, fontSize: 14, height: 19 / 14, color: urgent ? AppColors.textPrimary : Colors.black)),
+            const SizedBox(height: 5),
+            Padding(
+              padding: EdgeInsets.only(left: urgent ? 10 : 12, right: urgent ? 16 : 4),
+              child: Text(body, style: const TextStyle(fontFamily: AppFonts.body, fontSize: 12, height: 14 / 12, color: AppColors.textSecondary)),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -369,21 +372,25 @@ class _TaskCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(20, 9, 20, 19), // design: chips end 18-19 above card bottom
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: AppColors.neutralBorder, width: 1.5),
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: const [_cardShadow],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(label, style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 14, color: AppColors.textPrimary)),
-          const SizedBox(height: 14),
-          Wrap(spacing: 7, runSpacing: 10, children: children),
-        ],
+    return SizedBox(
+      // design cards span the full 358 content column — don't hug the chips
+      width: double.infinity,
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(20, 9, 20, 19), // design: chips end 18-19 above card bottom
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: AppColors.neutralBorder, width: 1.5),
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: const [_cardShadow],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(label, style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 14, color: AppColors.textPrimary)),
+            const SizedBox(height: 14),
+            Wrap(spacing: 7, runSpacing: 10, children: children),
+          ],
+        ),
       ),
     );
   }

@@ -1,12 +1,6 @@
 import 'package:aquanoph/core/utils/db_num.dart';
+import 'package:aquanoph/features/severity/data/models/severity_label.dart';
 import 'package:aquanoph/features/severity/domain/entities/pond_status_entity.dart';
-
-const _severityLabels = {
-  'optimal': PondSeverity.optimal,
-  'stress': PondSeverity.stress,
-  'elevated_risk': PondSeverity.elevatedRisk,
-  'critical': PondSeverity.critical,
-};
 
 class PondStatusModel {
   final String pondId;
@@ -39,7 +33,7 @@ class PondStatusModel {
         value: asDouble(reportRow?['value']),
       );
 
-  PondSeverity get severity => _severityLabels[severityLabel] ?? PondSeverity.unknown;
+  PondSeverity get severity => severityFromLabel(severityLabel);
 
   PondStatusEntity toEntity() => PondStatusEntity(
         pondId: pondId,

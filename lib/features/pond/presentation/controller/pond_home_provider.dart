@@ -13,18 +13,22 @@ import 'package:aquanoph/features/recommendation/domain/usecases/get_recommendat
 import 'package:aquanoph/features/severity/data/datasources/severity_remote_datasource.dart';
 import 'package:aquanoph/features/severity/data/repositories/severity_repository_impl.dart';
 import 'package:aquanoph/features/severity/domain/entities/pond_status_entity.dart';
+import 'package:aquanoph/features/severity/domain/entities/severity_report_entity.dart';
+import 'package:aquanoph/features/severity/domain/usecases/get_parameter_reports_usecase.dart';
 import 'package:aquanoph/features/severity/domain/usecases/get_pond_status_usecase.dart';
 
 /// Pond home screen state: severity status + open recommendations + today's activities.
 /// Loads once on push; pull-to-refresh re-calls load(). Realtime = step 4.
 class PondHomeProvider extends ChangeNotifier {
   final _getStatus = GetPondStatusUsecase(SeverityRepositoryImpl(SeverityRemoteDatasource()));
+  final _getParams = GetParameterReportsUsecase(SeverityRepositoryImpl(SeverityRemoteDatasource()));
   final _getRecs = GetRecommendationsUsecase(RecommendationRepositoryImpl(RecommendationRemoteDatasource()));
   final _getActs = GetActivitiesUsecase(ActivityRepositoryImpl(ActivityRemoteDatasource()));
 
   bool isLoading = false;
   String? error;
   PondStatusEntity? status;
+  List<SeverityReportEntity> parameters = [];
   List<RecommendationEntity> recommendations = [];
   List<ActivityEntity> activities = [];
 
@@ -35,9 +39,11 @@ class PondHomeProvider extends ChangeNotifier {
     try {
       final day = pondDayUtc(DateTime.now().toUtc(), pond.timezone);
       final s = _getStatus(pond.id);
+      final pr = _getParams(pond.id);
       final r = _getRecs(pond.id);
       final a = _getActs(pond.id, day.from, day.to);
       status = await s;
+      parameters = await pr;
       recommendations = await r;
       activities = await a;
     } catch (e) {

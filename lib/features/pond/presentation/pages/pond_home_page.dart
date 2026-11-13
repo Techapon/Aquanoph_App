@@ -102,7 +102,7 @@ class _PondHomeView extends StatelessWidget {
                 const SizedBox(height: 28),
                 // ── Water Quality Now (y277, h91) — tap opens all-parameters dialog (mock tiles for now)
                 GestureDetector(
-                  onTap: () => showParametersDialog(context),
+                  onTap: () => showParametersDialog(context, reports: p.parameters, timezone: pond.timezone),
                   child: _WaterQualityCard(status: p.status, timezone: pond.timezone),
                 ),
                 const SizedBox(height: 24), // was 65 (that gap led straight to All Recommendations before Today's Task moved here)
@@ -271,7 +271,7 @@ class _WaterQualityCard extends StatelessWidget {
                     style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 14, color: AppColors.textPrimary),
                   ),
                 ),
-                if (s != null && s.severity != PondSeverity.unknown) _Badge(label: _sevBadgeLabel(s.severity), color: _sevBadgeColor(s.severity)),
+                if (s != null && s.severity != PondSeverity.unknown) _Badge(label: sevBadgeWord(s.severity), color: sevBadgeColor(s.severity)),
                 if (s != null && s.showRecoveryBadge) ...[
                   const SizedBox(width: 4),
                   const _Badge(label: 'Recovery', gradient: true),
@@ -300,23 +300,7 @@ class _WaterQualityCard extends StatelessWidget {
   }
 }
 
-/// Severity badge words/colors: Optimal/Stress are design-verified (css_detail.txt);
-/// Elevated risk/Critical have no Figma variant yet [A] — same tokens as the list page.
-String _sevBadgeLabel(PondSeverity s) => switch (s) {
-      PondSeverity.optimal => 'Optimal',
-      PondSeverity.stress => 'Stress',
-      PondSeverity.elevatedRisk => 'Elevated risk',
-      PondSeverity.critical => 'Critical',
-      PondSeverity.unknown => '',
-    };
-
-Color _sevBadgeColor(PondSeverity s) => switch (s) {
-      PondSeverity.optimal => AppColors.optimal, // 0BE220
-      PondSeverity.stress => AppColors.stress, // FFCC00
-      PondSeverity.elevatedRisk => AppColors.watch, // FF9232
-      _ => AppColors.critical, // FF3232
-    };
-
+/// Badge words/colors live in parameters_dialog.dart (shared with the dialog).
 class _Badge extends StatelessWidget {
   final String label;
   final Color? color;

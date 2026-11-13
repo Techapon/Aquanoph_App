@@ -2,6 +2,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:aquanoph/core/exception/core_error_failure.dart';
 import 'package:aquanoph/features/severity/data/models/pond_status_model.dart';
+import 'package:aquanoph/features/severity/data/models/severity_report_model.dart';
 
 class SeverityRemoteDatasource {
   SupabaseClient get _client => Supabase.instance.client;
@@ -25,6 +26,22 @@ class SeverityRemoteDatasource {
           .limit(1)
           .maybeSingle();
       return PondStatusModel.fromMaps(status, report);
+    } on PostgrestException catch (e) {
+      throw CoreFailure.databaseError(e.message);
+    }
+  }
+
+  /// Latest report per parameter: read DESC, dedupe client-side (see SeverityReportModel.latestPerParameter).
+  /// limit 120 ≈ 6 params × 20 readings — comfortably covers "latest" even with backfills [A].
+  Future<List<SeverityReportModel>> getLatestParameterReports(String pondId) async {
+    try {
+      final rows = await _client
+          .from('severity_reports')
+          .select(SeverityReportModel.columns)
+          .eq('pond_id', pondId)
+          .order('measured_at', ascending: false)
+          .limit(120);
+      return SeverityReportModel.latestPerParameter(rows);
     } on PostgrestException catch (e) {
       throw CoreFailure.databaseError(e.message);
     }

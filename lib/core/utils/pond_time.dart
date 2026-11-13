@@ -42,3 +42,8 @@ String formatClock(DateTime local) {
   final m = local.minute.toString().padLeft(2, '0');
   return '$h:$m ${local.hour < 12 ? 'AM' : 'PM'}';
 }
+
+const _shortMonths = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'];
+
+/// "20 Aug. 2026" — design's date style on the parameters dialog.
+String formatDayDate(DateTime local) => '${local.day} ${_shortMonths[local.month - 1]} ${local.year}';

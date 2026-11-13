@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:aquanoph/core/theme/app_colors.dart';
 import 'package:aquanoph/core/theme/app_fonts.dart';
 import 'package:aquanoph/core/utils/country_timezones.dart';
+import 'package:aquanoph/core/utils/param_display.dart';
 import 'package:aquanoph/core/utils/pond_time.dart';
 import 'package:aquanoph/features/auth/presentation/controller/auth_provider.dart';
 import 'package:aquanoph/features/pond/domain/entities/pond_entity.dart';
@@ -265,12 +266,12 @@ class _DoCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text(_paramLabel(s.parameter), style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 16, height: 22 / 16, color: AppColors.textPrimary)),
+              Text(paramLabel(s.parameter), style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 16, height: 22 / 16, color: AppColors.textPrimary)),
               const SizedBox(width: 3),
               Flexible(child: Text(time, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontFamily: AppFonts.heading, fontSize: 12, height: 16 / 12, color: AppColors.textMuted))),
             ],
           ),
-          Padding(padding: const EdgeInsets.only(top: 2), child: Text(_paramSub(s.parameter), maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontFamily: AppFonts.body, fontSize: 12, height: 14 / 12, color: AppColors.textMuted))),
+          Padding(padding: const EdgeInsets.only(top: 2), child: Text(paramSub(s.parameter), maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontFamily: AppFonts.body, fontSize: 12, height: 14 / 12, color: AppColors.textMuted))),
           const SizedBox(height: 8),
           _SevBadge(label: style.badge, color: style.badgeColor), // badge under the subtitle (user layout: never shares a row with the name)
           const SizedBox(height: 4),
@@ -278,8 +279,8 @@ class _DoCard extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(s.value == null ? '—' : _valueText(s.value!), style: const TextStyle(fontFamily: AppFonts.heading, fontSize: 32, height: 44 / 32, color: AppColors.textPrimary)), // design weight 400
-                if (_paramUnit(s.parameter).isNotEmpty) Padding(padding: const EdgeInsets.only(left: 4, bottom: 2), child: Text(_paramUnit(s.parameter), style: const TextStyle(fontFamily: AppFonts.heading, fontSize: 12, height: 16 / 12, color: AppColors.textPrimary))), // sits on the card floor (was bottom:7 — floated)
+                Text(s.value == null ? '—' : paramValueText(s.value!), style: const TextStyle(fontFamily: AppFonts.heading, fontSize: 32, height: 44 / 32, color: AppColors.textPrimary)), // design weight 400
+                if (paramUnit(s.parameter).isNotEmpty) Padding(padding: const EdgeInsets.only(left: 4, bottom: 2), child: Text(paramUnit(s.parameter), style: const TextStyle(fontFamily: AppFonts.heading, fontSize: 12, height: 16 / 12, color: AppColors.textPrimary))), // sits on the card floor (was bottom:7 — floated)
               ],
             ),
           ),
@@ -315,12 +316,6 @@ _CardStyle _sevStyle(PondSeverity s) => switch (s) {
       PondSeverity.critical => (bg: AppColors.urgentBg, border: AppColors.critical, badge: 'critical', badgeColor: AppColors.critical),
       PondSeverity.unknown => (bg: Colors.white, border: AppColors.neutralBorder, badge: '', badgeColor: Colors.transparent),
     };
-
-/// Parameter display sugar [A] — only the DO strings come from the design.
-String _paramLabel(String p) => const {'DO': 'DO', 'Temperature': 'Temp', 'pH': 'pH', 'NH3': 'NH3', 'NO2_N': 'NO2', 'Salinity': 'Salinity'}[p] ?? p;
-String _paramSub(String p) => const {'DO': 'Oxygen in pond', 'Temperature': 'Water temperature', 'pH': 'pH balance', 'NH3': 'Ammonia level', 'NO2_N': 'Nitrite level', 'Salinity': 'Salt level'}[p] ?? 'In pond';
-String _paramUnit(String p) => const {'DO': 'mg/L', 'Temperature': '°C', 'NH3': 'mg/L', 'NO2_N': 'mg/L', 'Salinity': 'ppt', 'pH': ''}[p] ?? '';
-String _valueText(double v) => v == v.roundToDouble() ? v.toStringAsFixed(0) : v.toStringAsFixed(1);
 
 /// ⚠ Warning card (Rectangle 5) = top open recommendation for the pond.
 /// urgent -> design's red "Warning"; non-urgent -> softer "Notice" [A]

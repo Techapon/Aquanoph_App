@@ -263,24 +263,23 @@ class _WaterQualityCard extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(19, 15, 11, 0),
             child: Row(
               children: [
-                Flexible(
+                Expanded(
                   child: Text(
-                    s != null ? 'Water Quality Now : ${s.parameter}' : 'Water Quality Now', // worst-triggering parameter from v_pond_status
+                    s != null ? 'Water Quality : ${s.parameter}' : 'Water Quality', // worst-triggering parameter from v_pond_status
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 14, color: AppColors.textPrimary),
                   ),
                 ),
-                if (s != null && s.severity != PondSeverity.unknown) ...[
-                  const SizedBox(width: 10),
-                  _Badge(label: _sevBadgeLabel(s.severity), color: _sevBadgeColor(s.severity)),
-                ],
+                if (s != null && s.severity != PondSeverity.unknown) _Badge(label: _sevBadgeLabel(s.severity), color: _sevBadgeColor(s.severity)),
                 if (s != null && s.showRecoveryBadge) ...[
                   const SizedBox(width: 4),
                   const _Badge(label: 'Recovery', gradient: true),
                 ],
-                const Spacer(),
-                if (s != null) Text('${formatClock(pondLocal(s.updatedAt, timezone))}.', style: const TextStyle(fontFamily: AppFonts.heading, fontSize: 12, height: 16 / 12, color: AppColors.textMuted)),
+                if (s != null) ...[
+                  const SizedBox(width: 10),
+                  Text('${formatClock(pondLocal(s.updatedAt, timezone))}.', style: const TextStyle(fontFamily: AppFonts.heading, fontSize: 12, height: 16 / 12, color: AppColors.textMuted)),
+                ],
               ],
             ),
           ),

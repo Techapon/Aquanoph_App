@@ -131,7 +131,7 @@ class _PondSettingPageState extends State<PondSettingPage> {
                 ),
               ),
               const SizedBox(height: 29),
-              const SizedBox(height: 3, child: DecoratedBox(decoration: BoxDecoration(color: AppColors.dividerLight))), // Line 4
+              const SizedBox(width: double.infinity, height: 3, child: DecoratedBox(decoration: BoxDecoration(color: AppColors.dividerLight))), // Line 4
               const SizedBox(height: 25),
               const _Heading('Read-only'),
               const SizedBox(height: 14),
@@ -192,27 +192,14 @@ class _LogoHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
+      width: double.infinity, // without this the Stack hugs the 61px fish and everything piles left
       height: 137,
       child: Stack(
         clipBehavior: Clip.none,
         alignment: Alignment.topCenter,
         children: [
-          // badge: ellipses 210×44 / ~166×35 / ~107×20 at y39 of the stack
-          Positioned(
-            top: 93,
-            child: SizedBox(
-              width: 210,
-              height: 44,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  const Positioned.fill(child: DecoratedBox(decoration: BoxDecoration(color: Color(0xFF38D4FF), shape: BoxShape.circle, borderRadius: BorderRadius.all(Radius.circular(22))))),
-                  const SizedBox(width: 166, height: 35, child: DecoratedBox(decoration: BoxDecoration(color: Color(0xFF32BDE3), shape: BoxShape.circle, borderRadius: BorderRadius.all(Radius.circular(18))))),
-                  const SizedBox(width: 107, height: 20, child: DecoratedBox(decoration: BoxDecoration(color: Color(0xFF2FAFD3), shape: BoxShape.circle, borderRadius: BorderRadius.all(Radius.circular(10))))),
-                ],
-              ),
-            ),
-          ),
+          // badge: exact ellipses from figma/decorate/pond.svg (210×44, cx105)
+          const Positioned(top: 93, child: CustomPaint(size: Size(210, 44), painter: _BadgePainter())),
           // fish photo sits on the badge (design y0..61, badge 93..137)
           Image.asset('assets/images/fish.png', width: 61, height: 61),
           const Positioned(
@@ -220,11 +207,28 @@ class _LogoHeader extends StatelessWidget {
             child: Text('Settings', style: TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.w700, fontSize: 24, height: 33 / 24, color: AppColors.textPrimary)),
           ),
           const Positioned(top: 36, left: -2, child: _CircleButton(icon: Icons.chevron_left)),
-          Positioned(top: 36, right: -2, child: _CircleButton(icon: Icons.check, iconColor: const Color(0xFF0BE220), onTap: save)),
+          Positioned(top: 36, right: -4, child: _CircleButton(icon: Icons.check, iconColor: const Color(0xFF0BE220), onTap: save)),
         ],
       ),
     );
   }
+}
+
+/// Three nested ellipses, exact geometry from figma/decorate/pond.svg.
+class _BadgePainter extends CustomPainter {
+  const _BadgePainter();
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    // rx/ry pairs from the svg: (105,22,105,22) (105.7,20.5,82.86,17.5) (105,19.5,53.57,11.5)
+    void e(double cx, double cy, double rx, double ry, Color c) => canvas.drawOval(Rect.fromLTWH(cx - rx, cy - ry, rx * 2, ry * 2), Paint()..color = c..isAntiAlias = true);
+    e(105, 22, 105, 22, const Color(0xFF38D4FF));
+    e(105.7, 20.5, 82.86, 17.5, const Color(0xFF32BDE3));
+    e(105, 19.5, 53.57, 11.5, const Color(0xFF2FAFD3));
+  }
+
+  @override
+  bool shouldRepaint(_BadgePainter oldDelegate) => false;
 }
 
 class _CircleButton extends StatelessWidget {

@@ -1,0 +1,107 @@
+/* Frame 194 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: flex-start;
+padding: 21px 0px;
+gap: 16px;
+
+position: relative;
+width: 349px;
+height: 190px;
+
+background: #FFFFFF;
+border-radius: 24px;
+
+
+/* Apply for Tomorrow */
+
+width: 213px;
+height: 25px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 25px;
+/* identical to box height */
+
+color: #232323;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Line 26 */
+
+width: 349px;
+height: 0px;
+
+border: 2px solid #D9D9D9;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Apply for 7 days */
+
+width: 181px;
+height: 25px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 25px;
+/* identical to box height */
+
+color: #232323;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Line 27 */
+
+width: 349px;
+height: 0px;
+
+border: 2px solid #D9D9D9;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Apply for 30 days */
+
+width: 192px;
+height: 25px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 25px;
+/* identical to box height */
+
+color: #232323;
+
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;

@@ -67,7 +67,7 @@ class _PondSettingPageState extends State<PondSettingPage> {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(24, 96, 24, 40),
+          padding: const EdgeInsets.fromLTRB(24, 16, 24, 40), // design 96 assumes a 54px iOS status bar — Android SafeArea + 16 looks right
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -108,7 +108,6 @@ class _PondSettingPageState extends State<PondSettingPage> {
                           Text('kg', style: _roValue),
                           Spacer(),
                           Icon(Icons.keyboard_arrow_down, size: 18, color: Color(0xFF1E1E1E)),
-                          SizedBox(width: 12),
                         ],
                       ),
                     ),
@@ -193,14 +192,14 @@ class _LogoHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity, // without this the Stack hugs the 61px fish and everything piles left
-      height: 137,
+      height: 83, // design band 150..233: fish 0..61, badge 39..83, circles 36..79
       child: Stack(
         clipBehavior: Clip.none,
         alignment: Alignment.topCenter,
         children: [
           // badge: exact ellipses from figma/decorate/pond.svg (210×44, cx105)
-          const Positioned(top: 93, child: CustomPaint(size: Size(210, 44), painter: _BadgePainter())),
-          // fish photo sits on the badge (design y0..61, badge 93..137)
+          const Positioned(top: 39, child: CustomPaint(size: Size(210, 44), painter: _BadgePainter())),
+          // fish photo sits above/on the badge (design 150..211 vs badge 189..233)
           Image.asset('assets/images/fish.png', width: 61, height: 61),
           const Positioned(
             top: 41,

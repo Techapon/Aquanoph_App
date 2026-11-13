@@ -5,14 +5,15 @@ import 'package:aquanoph/core/theme/app_fonts.dart';
 import 'package:aquanoph/core/utils/country_timezones.dart';
 import 'package:aquanoph/core/utils/param_display.dart';
 import 'package:aquanoph/core/utils/pond_time.dart';
-import 'package:aquanoph/features/severity/domain/entities/pond_status_entity.dart' show PondSeverity;
+import 'package:aquanoph/features/diagnostic/domain/entities/diagnostic_entity.dart';
+import 'package:aquanoph/features/severity/domain/entities/pond_status_entity.dart'
+    show PondSeverity;
 import 'package:aquanoph/features/severity/domain/entities/severity_report_entity.dart';
 
 /// All-parameters dialog + per-parameter detail, per figma/ponds_parameter/.
 /// Data = latest severity_reports row per parameter (v1 six; the design mock
-/// showed 9 params — Turbidity/EC/TAN/NO3/Alkalinity are not in v1).
-/// The Diagnostic section is intentionally absent until diagnostic_reports
-/// wiring (later phase).
+/// showed 9 params — Turbidity/EC/TAN/NO3/Alkalinity are not in v1) + latest
+/// diagnostic_reports episode per parameter (Diagnostic section).
 
 /// Severity badge words/colors — Optimal/Stress design-verified (css_detail.txt);
 /// Elevated risk/Critical have no Figma variant yet [A]. Shared with pond home.
@@ -31,9 +32,22 @@ Color sevBadgeColor(PondSeverity s) => switch (s) {
   _ => AppColors.critical, // FF3232
 };
 
-SeverityReportEntity? _reportFor(List<SeverityReportEntity> reports, String parameter) {
+SeverityReportEntity? _reportFor(
+  List<SeverityReportEntity> reports,
+  String parameter,
+) {
   for (final r in reports) {
     if (r.parameter == parameter) return r;
+  }
+  return null;
+}
+
+DiagnosticEntity? _diagFor(
+  List<DiagnosticEntity> diagnostics,
+  String parameter,
+) {
+  for (final d in diagnostics) {
+    if (d.parameter == parameter) return d;
   }
   return null;
 }
@@ -48,13 +62,20 @@ String _zoneLabel(String iana) {
 
 /// Opened by tapping the Water Quality Now card: floating 2-col grid on a dim
 /// barrier (the design has no dialog panel behind the cards).
-Future<void> showParametersDialog(BuildContext context, {required List<SeverityReportEntity> reports, required String timezone}) => showDialog<void>(
+Future<void> showParametersDialog(
+  BuildContext context, {
+  required List<SeverityReportEntity> reports,
+  required List<DiagnosticEntity> diagnostics,
+  required String timezone,
+}) => showDialog<void>(
   context: context,
   barrierColor: const Color(0x99000000),
   builder: (_) => Dialog(
     insetPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
     backgroundColor: Colors.transparent,
-    constraints: const BoxConstraints(maxWidth: 347), // keep transparent Material from stretching to full width
+    constraints: const BoxConstraints(
+      maxWidth: 347,
+    ), // keep transparent Material from stretching to full width
     elevation: 0,
     // no Center here: Dialog centers itself, and a stretched transparent
     // Material swallows barrier taps (outside-tap could not dismiss)
@@ -67,7 +88,17 @@ Future<void> showParametersDialog(BuildContext context, {required List<SeverityR
           children: [
             _ClockCard(reports: reports, timezone: timezone),
             for (final p in paramOrder)
-              _ParameterCard(parameter: p, report: _reportFor(reports, p), onTap: () => showParameterDetailDialog(context, parameter: p, report: _reportFor(reports, p), timezone: timezone)),
+              _ParameterCard(
+                parameter: p,
+                report: _reportFor(reports, p),
+                onTap: () => showParameterDetailDialog(
+                  context,
+                  parameter: p,
+                  report: _reportFor(reports, p),
+                  diagnostic: _diagFor(diagnostics, p),
+                  timezone: timezone,
+                ),
+              ),
           ],
         ),
       ),
@@ -76,23 +107,35 @@ Future<void> showParametersDialog(BuildContext context, {required List<SeverityR
 );
 
 /// Detail card for one parameter (card_detail frame, real severity text).
-Future<void> showParameterDetailDialog(BuildContext context, {required String parameter, required SeverityReportEntity? report, required String timezone}) => showDialog<void>(
+Future<void> showParameterDetailDialog(
+  BuildContext context, {
+  required String parameter,
+  required SeverityReportEntity? report,
+  required DiagnosticEntity? diagnostic,
+  required String timezone,
+}) => showDialog<void>(
   context: context,
   barrierColor: const Color(0x99000000),
   builder: (_) => Dialog(
     insetPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
     backgroundColor: Colors.transparent,
-    constraints: const BoxConstraints(maxWidth: 334), // design card width; keeps transparent Material tight
+    constraints: const BoxConstraints(
+      maxWidth: 334,
+    ), // design card width; keeps transparent Material tight
     elevation: 0,
     child: ConstrainedBox(
       constraints: const BoxConstraints(maxHeight: 560),
       child: ListView(
-        shrinkWrap: true, // height hugs content (scrolls when taller) — no transparent dead zone that would eat barrier taps
+        shrinkWrap:
+            true, // height hugs content (scrolls when taller) — no transparent dead zone that would eat barrier taps
         children: [
           Stack(
             children: [
               Container(
-                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(16)),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                ),
                 padding: const EdgeInsets.fromLTRB(27, 21, 27, 24),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,42 +144,146 @@ Future<void> showParameterDetailDialog(BuildContext context, {required String pa
                       crossAxisAlignment: CrossAxisAlignment.baseline,
                       textBaseline: TextBaseline.alphabetic,
                       children: [
-                        Text(paramLabel(parameter), style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 24, height: 33 / 24, color: AppColors.textPrimary)),
+                        Text(
+                          paramLabel(parameter),
+                          style: const TextStyle(
+                            fontFamily: AppFonts.heading,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24,
+                            height: 33 / 24,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
                         const SizedBox(width: 9),
                         Expanded(
-                          child: Text(paramSub(parameter), maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontFamily: AppFonts.body, fontSize: 16, height: 19 / 16, color: AppColors.textPrimary)),
+                          child: Text(
+                            paramSub(parameter),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontFamily: AppFonts.body,
+                              fontSize: 16,
+                              height: 19 / 16,
+                              color: AppColors.textPrimary,
+                            ),
+                          ),
                         ),
                       ],
                     ),
                     if (report == null) ...[
                       const SizedBox(height: 24),
-                      const Text('No analysis yet.', style: TextStyle(fontFamily: AppFonts.body, fontSize: 12, height: 14 / 12, color: AppColors.textMuted)),
+                      const Text(
+                        'No analysis yet.',
+                        style: TextStyle(
+                          fontFamily: AppFonts.body,
+                          fontSize: 12,
+                          height: 14 / 12,
+                          color: AppColors.textMuted,
+                        ),
+                      ),
                     ] else ...[
                       const SizedBox(height: 11),
-                      Text('${formatClock(pondLocal(report.measuredAt, timezone))} ${formatDayDate(pondLocal(report.measuredAt, timezone))} ${_zoneLabel(timezone)}', style: const TextStyle(fontFamily: AppFonts.body, fontSize: 12, height: 14 / 12, color: AppColors.textMuted)),
+                      Text(
+                        '${formatClock(pondLocal(report.measuredAt, timezone))} ${formatDayDate(pondLocal(report.measuredAt, timezone))} ${_zoneLabel(timezone)}',
+                        style: const TextStyle(
+                          fontFamily: AppFonts.body,
+                          fontSize: 12,
+                          height: 14 / 12,
+                          color: AppColors.textMuted,
+                        ),
+                      ),
                       const SizedBox(height: 24),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.baseline,
                         textBaseline: TextBaseline.alphabetic,
                         children: [
-                          Text(report.value == null ? '—' : paramValueText(report.value!), style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 36, height: 49 / 36, color: AppColors.textPrimary)),
-                          if (paramUnit(parameter).isNotEmpty) ...[const SizedBox(width: 3), Text(paramUnit(parameter), style: const TextStyle(fontFamily: AppFonts.heading, fontSize: 12, height: 16 / 12, color: AppColors.textPrimary))],
+                          Text(
+                            report.value == null
+                                ? '—'
+                                : paramValueText(report.value!),
+                            style: const TextStyle(
+                              fontFamily: AppFonts.heading,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 36,
+                              height: 49 / 36,
+                              color: AppColors.textPrimary,
+                            ),
+                          ),
+                          if (paramUnit(parameter).isNotEmpty) ...[
+                            const SizedBox(width: 3),
+                            Text(
+                              paramUnit(parameter),
+                              style: const TextStyle(
+                                fontFamily: AppFonts.heading,
+                                fontSize: 12,
+                                height: 16 / 12,
+                                color: AppColors.textPrimary,
+                              ),
+                            ),
+                          ],
                         ],
                       ),
                       const SizedBox(height: 5),
-                      Center(child: _DetailBadge(label: sevBadgeWord(report.severity), color: sevBadgeColor(report.severity))),
+                      Center(
+                        child: _DetailBadge(
+                          label: sevBadgeWord(report.severity),
+                          color: sevBadgeColor(report.severity),
+                        ),
+                      ),
                       const SizedBox(height: 24),
-                      const SizedBox(width: 280, height: 3, child: DecoratedBox(decoration: BoxDecoration(color: AppColors.dividerLight))),
+                      const SizedBox(
+                        width: 280,
+                        height: 3,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: AppColors.dividerLight,
+                          ),
+                        ),
+                      ),
                       const _DetailLabel('Description'),
                       const SizedBox(height: 6),
-                      for (final para in [report.description, report.detail, report.appendDes])
-                        if (para != null && para.isNotEmpty)
-                          Padding(padding: const EdgeInsets.only(left: 15), child: Text(para, style: const TextStyle(fontFamily: AppFonts.body, fontSize: 12, height: 14 / 12, color: AppColors.textSecondary))),
-                      if (report.guidance != null && report.guidance!.isNotEmpty) ...[
+                      if (report.description != null &&
+                          report.description!.isNotEmpty)
+                        _BodyPara(report.description!),
+                      // non-Optimal splits the text into labeled sub-paragraphs (per user spec):
+                      // Reason (Temporal cause) = append_des, Symptoms in aquatic animals = detail
+                      if (report.severity != PondSeverity.optimal) ...[
+                        if (report.appendDes != null &&
+                            report.appendDes!.isNotEmpty)
+                          _BodyPara(
+                            'Reason (Temporal cause): ${report.appendDes}',
+                            bold: true,
+                          ),
+                        if (report.detail != null && report.detail!.isNotEmpty)
+                          _BodyPara(
+                            'Symptoms in aquatic animals: ${report.detail}',
+                            bold: true,
+                          ),
+                      ],
+                      if (diagnostic != null) ...[
+                        const _DetailLabel('Diagnostic'),
+                        const SizedBox(height: 6),
+                        if (diagnostic.title != null &&
+                            diagnostic.title!.isNotEmpty)
+                          _BodyPara(diagnostic.title!),
+                        for (final c in diagnostic.causes) _BodyPara(c),
+                        if (diagnostic.noClearCause &&
+                            (diagnostic.title == null ||
+                                diagnostic.title!.isEmpty) &&
+                            diagnostic.causes.isEmpty)
+                          _BodyPara(
+                            'No clear cause identified.',
+                          ), // fallback copy [A]
+                        if (diagnostic.footer != null &&
+                            diagnostic.footer!.isNotEmpty)
+                          _BodyPara(diagnostic.footer!, muted: true),
+                      ],
+                      if (report.guidance != null &&
+                          report.guidance!.isNotEmpty) ...[
                         const _DetailLabel('Guidance'),
                         const SizedBox(height: 6),
-                        Padding(padding: const EdgeInsets.only(left: 15), child: Text(report.guidance!, style: const TextStyle(fontFamily: AppFonts.body, fontSize: 12, height: 14 / 12, color: AppColors.textSecondary))),
+                        _BodyPara(report.guidance!),
                       ],
                     ],
                   ],
@@ -147,7 +294,11 @@ Future<void> showParameterDetailDialog(BuildContext context, {required String pa
                 right: 14,
                 child: GestureDetector(
                   onTap: () => Navigator.of(context).pop(),
-                  child: const Icon(Icons.close, size: 22, color: AppColors.textSecondary),
+                  child: const Icon(
+                    Icons.close,
+                    size: 22,
+                    color: AppColors.textSecondary,
+                  ),
                 ),
               ),
             ],
@@ -158,6 +309,29 @@ Future<void> showParameterDetailDialog(BuildContext context, {required String pa
   ),
 );
 
+/// One body paragraph under a section label (x15 indent, 12px).
+class _BodyPara extends StatelessWidget {
+  final String text;
+  final bool bold;
+  final bool muted;
+  const _BodyPara(this.text, {this.bold = false, this.muted = false});
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.only(left: 15),
+    child: Text(
+      text,
+      style: TextStyle(
+        fontFamily: AppFonts.body,
+        fontWeight: bold ? FontWeight.bold : FontWeight.normal,
+        fontSize: 12,
+        height: 14 / 12,
+        color: muted ? AppColors.textMuted : AppColors.textSecondary,
+      ),
+    ),
+  );
+}
+
 /// "Description / Guidance" section label (Inria bold 14, x23).
 class _DetailLabel extends StatelessWidget {
   final String text;
@@ -166,7 +340,16 @@ class _DetailLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Padding(
     padding: const EdgeInsets.only(left: 23, top: 18),
-    child: Text(text, style: const TextStyle(fontFamily: AppFonts.body, fontWeight: FontWeight.bold, fontSize: 14, height: 17 / 14, color: AppColors.textPrimary)),
+    child: Text(
+      text,
+      style: const TextStyle(
+        fontFamily: AppFonts.body,
+        fontWeight: FontWeight.bold,
+        fontSize: 14,
+        height: 17 / 14,
+        color: AppColors.textPrimary,
+      ),
+    ),
   );
 }
 
@@ -180,8 +363,20 @@ class _DetailBadge extends StatelessWidget {
   Widget build(BuildContext context) => Container(
     height: 19,
     padding: const EdgeInsets.symmetric(horizontal: 8),
-    decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(4)),
-    child: Text(label, style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 14, height: 19 / 14, color: Colors.white)),
+    decoration: BoxDecoration(
+      color: color,
+      borderRadius: BorderRadius.circular(4),
+    ),
+    child: Text(
+      label,
+      style: const TextStyle(
+        fontFamily: AppFonts.heading,
+        fontWeight: FontWeight.bold,
+        fontSize: 14,
+        height: 19 / 14,
+        color: Colors.white,
+      ),
+    ),
   );
 }
 
@@ -200,11 +395,22 @@ class _ClockCard extends StatelessWidget {
     }
     if (latest == null) {
       return const _CardShell(
-        child: Center(child: Text('No data yet', style: TextStyle(fontFamily: AppFonts.body, fontSize: 12, color: AppColors.textMuted))),
+        child: Center(
+          child: Text(
+            'No data yet',
+            style: TextStyle(
+              fontFamily: AppFonts.body,
+              fontSize: 12,
+              color: AppColors.textMuted,
+            ),
+          ),
+        ),
       );
     }
     final t = pondLocal(latest, timezone);
-    final parts = formatClock(t).split(' '); // design splits "9:30" big + "AM." small
+    final parts = formatClock(
+      t,
+    ).split(' '); // design splits "9:30" big + "AM." small
     return _CardShell(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(12, 9, 12, 10),
@@ -214,14 +420,52 @@ class _ClockCard extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(parts.first, style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 32, height: 44 / 32, color: AppColors.textPrimary)),
-                Padding(padding: const EdgeInsets.only(bottom: 4), child: Text('${parts.last}.', style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 12, height: 16 / 12, color: AppColors.textPrimary))),
+                Text(
+                  parts.first,
+                  style: const TextStyle(
+                    fontFamily: AppFonts.heading,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 32,
+                    height: 44 / 32,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 4),
+                  child: Text(
+                    '${parts.last}.',
+                    style: const TextStyle(
+                      fontFamily: AppFonts.heading,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                      height: 16 / 12,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                ),
               ],
             ),
             const Spacer(),
-            Text(formatDayDate(t), style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 16, height: 22 / 16, color: AppColors.textPrimary)),
+            Text(
+              formatDayDate(t),
+              style: const TextStyle(
+                fontFamily: AppFonts.heading,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                height: 22 / 16,
+                color: AppColors.textPrimary,
+              ),
+            ),
             const SizedBox(height: 2),
-            Text(_zoneLabel(timezone), style: const TextStyle(fontFamily: AppFonts.body, fontSize: 12, height: 14 / 12, color: AppColors.textMuted)),
+            Text(
+              _zoneLabel(timezone),
+              style: const TextStyle(
+                fontFamily: AppFonts.body,
+                fontSize: 12,
+                height: 14 / 12,
+                color: AppColors.textMuted,
+              ),
+            ),
           ],
         ),
       ),
@@ -235,9 +479,14 @@ class _ParameterCard extends StatelessWidget {
   final String parameter;
   final SeverityReportEntity? report;
   final VoidCallback onTap;
-  const _ParameterCard({required this.parameter, required this.report, required this.onTap});
+  const _ParameterCard({
+    required this.parameter,
+    required this.report,
+    required this.onTap,
+  });
 
-  bool get _hasBadge => report != null && report!.severity != PondSeverity.unknown;
+  bool get _hasBadge =>
+      report != null && report!.severity != PondSeverity.unknown;
 
   @override
   Widget build(BuildContext context) => _CardShell(
@@ -247,22 +496,61 @@ class _ParameterCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(paramLabel(parameter), style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 16, height: 22 / 16, color: AppColors.textPrimary)),
+          Text(
+            paramLabel(parameter),
+            style: const TextStyle(
+              fontFamily: AppFonts.heading,
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              height: 22 / 16,
+              color: AppColors.textPrimary,
+            ),
+          ),
           const SizedBox(height: 1),
-          Text(paramSub(parameter), maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontFamily: AppFonts.body, fontSize: 12, height: 14 / 12, color: AppColors.textMuted)),
+          Text(
+            paramSub(parameter),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontFamily: AppFonts.body,
+              fontSize: 12,
+              height: 14 / 12,
+              color: AppColors.textMuted,
+            ),
+          ),
           if (_hasBadge) ...[
             const SizedBox(height: 4),
-            _DetailBadge(label: sevBadgeWord(report!.severity), color: sevBadgeColor(report!.severity)),
+            _DetailBadge(
+              label: sevBadgeWord(report!.severity),
+              color: sevBadgeColor(report!.severity),
+            ),
           ],
           const Spacer(),
           Row(
             crossAxisAlignment: CrossAxisAlignment.baseline,
             textBaseline: TextBaseline.alphabetic,
             children: [
-              Text(report?.value == null ? '—' : paramValueText(report!.value!), style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 24, height: 33 / 24, color: AppColors.textPrimary)),
+              Text(
+                report?.value == null ? '—' : paramValueText(report!.value!),
+                style: const TextStyle(
+                  fontFamily: AppFonts.heading,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
+                  height: 33 / 24,
+                  color: AppColors.textPrimary,
+                ),
+              ),
               if (paramUnit(parameter).isNotEmpty) ...[
                 const SizedBox(width: 3),
-                Text(paramUnit(parameter), style: const TextStyle(fontFamily: AppFonts.heading, fontSize: 12, height: 16 / 12, color: AppColors.textPrimary)),
+                Text(
+                  paramUnit(parameter),
+                  style: const TextStyle(
+                    fontFamily: AppFonts.heading,
+                    fontSize: 12,
+                    height: 16 / 12,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
               ],
             ],
           ),

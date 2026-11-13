@@ -242,23 +242,75 @@ Future<void> showParameterDetailDialog(
                         ),
                       ),
                       const _DetailLabel('Description'),
-                      const SizedBox(height: 6),
+                      const SizedBox(height: 12),
                       if (report.description != null &&
                           report.description!.isNotEmpty)
                         _BodyPara(report.description!),
                       // non-Optimal splits the text into labeled sub-paragraphs (per user spec):
                       // Reason (Temporal cause) = append_des, Symptoms in aquatic animals = detail
+                      const SizedBox(height: 6),
                       if (report.severity != PondSeverity.optimal) ...[
                         if (report.appendDes != null &&
                             report.appendDes!.isNotEmpty)
-                          _BodyPara(
-                            'Reason (Temporal cause): ${report.appendDes}',
-                            bold: true,
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15),
+                            child: Text.rich(
+                              TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'Reason (Temporal cause): ',
+                                    style: const TextStyle(
+                                      fontFamily: AppFonts.body,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12,
+                                      height: 14 / 12,
+                                      color: AppColors.textSecondary,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: '${report.appendDes}',
+                                    style: const TextStyle(
+                                      fontFamily: AppFonts.body,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 12,
+                                      height: 14 / 12,
+                                      color: AppColors.textSecondary,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
+                      const SizedBox(height: 6),
                         if (report.detail != null && report.detail!.isNotEmpty)
-                          _BodyPara(
-                            'Symptoms in aquatic animals: ${report.detail}',
-                            bold: true,
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15),
+                            child: Text.rich(
+                              TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'Symptoms in aquatic animals: ',
+                                    style: const TextStyle(
+                                      fontFamily: AppFonts.body,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12,
+                                      height: 14 / 12,
+                                      color: AppColors.textSecondary,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: '${report.detail}',
+                                    style: const TextStyle(
+                                      fontFamily: AppFonts.body,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 12,
+                                      height: 14 / 12,
+                                      color: AppColors.textSecondary,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                       ],
                       if (diagnostic != null) ...[
@@ -312,9 +364,8 @@ Future<void> showParameterDetailDialog(
 /// One body paragraph under a section label (x15 indent, 12px).
 class _BodyPara extends StatelessWidget {
   final String text;
-  final bool bold;
   final bool muted;
-  const _BodyPara(this.text, {this.bold = false, this.muted = false});
+  const _BodyPara(this.text, {this.muted = false});
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -323,7 +374,7 @@ class _BodyPara extends StatelessWidget {
       text,
       style: TextStyle(
         fontFamily: AppFonts.body,
-        fontWeight: bold ? FontWeight.bold : FontWeight.normal,
+        fontWeight: FontWeight.normal,
         fontSize: 12,
         height: 14 / 12,
         color: muted ? AppColors.textMuted : AppColors.textSecondary,
@@ -339,7 +390,7 @@ class _DetailLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.only(left: 23, top: 18),
+    padding: const EdgeInsets.only(left:5 ,top: 18),
     child: Text(
       text,
       style: const TextStyle(

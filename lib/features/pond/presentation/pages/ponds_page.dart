@@ -7,7 +7,7 @@ import 'package:aquanoph/features/auth/presentation/controller/auth_provider.dar
 import 'package:aquanoph/features/pond/domain/entities/pond_entity.dart';
 import 'package:aquanoph/features/pond/presentation/controller/pond_provider.dart';
 import 'package:aquanoph/features/pond/presentation/pages/add_pond_page.dart';
-import 'package:aquanoph/features/pond/presentation/pages/pond_setting_page.dart';
+import 'package:aquanoph/features/pond/presentation/pages/pond_home_page.dart';
 
 /// Figma 30:496 (empty) + 77:605 header chrome. Design has no "pond card" mock ->
 /// simple card with name + summary line [A decided 2026-11-13].
@@ -156,7 +156,7 @@ class _PondCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       borderRadius: BorderRadius.circular(12),
-      onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => PondSettingPage(userId: userId, pond: pond))),
+      onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => PondHomePage(userId: userId, pond: pond))),
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(

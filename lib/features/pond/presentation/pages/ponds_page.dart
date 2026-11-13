@@ -279,7 +279,7 @@ class _DoCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(s.value == null ? '—' : _valueText(s.value!), style: const TextStyle(fontFamily: AppFonts.heading, fontSize: 32, height: 44 / 32, color: AppColors.textPrimary)), // design weight 400
-                if (_paramUnit(s.parameter).isNotEmpty) Padding(padding: const EdgeInsets.only(left: 4, bottom: 7), child: Text(_paramUnit(s.parameter), style: const TextStyle(fontFamily: AppFonts.heading, fontSize: 12, color: AppColors.textPrimary))),
+                if (_paramUnit(s.parameter).isNotEmpty) Padding(padding: const EdgeInsets.only(left: 4, bottom: 2), child: Text(_paramUnit(s.parameter), style: const TextStyle(fontFamily: AppFonts.heading, fontSize: 12, height: 16 / 12, color: AppColors.textPrimary))), // sits on the card floor (was bottom:7 — floated)
               ],
             ),
           ),

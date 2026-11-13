@@ -263,7 +263,14 @@ class _WaterQualityCard extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(19, 15, 11, 0),
             child: Row(
               children: [
-                const Text('Water Quality Now', style: TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 14, color: AppColors.textPrimary)),
+                Flexible(
+                  child: Text(
+                    s != null ? 'Water Quality Now : ${s.parameter}' : 'Water Quality Now', // worst-triggering parameter from v_pond_status
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 14, color: AppColors.textPrimary),
+                  ),
+                ),
                 if (s != null && s.severity != PondSeverity.unknown) ...[
                   const SizedBox(width: 10),
                   _Badge(label: _sevBadgeLabel(s.severity), color: _sevBadgeColor(s.severity)),

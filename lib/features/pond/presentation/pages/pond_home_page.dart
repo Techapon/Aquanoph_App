@@ -110,7 +110,10 @@ class _PondHomeView extends StatelessWidget {
                 const _SectionTitle('All Recommendations'),
                 const SizedBox(height: 11),
                 if (p.recommendations.isEmpty)
-                  const Text('No open recommendations.', style: TextStyle(fontFamily: AppFonts.body, fontSize: 12, color: AppColors.textMuted))
+                  const SizedBox(
+                    width: double.infinity,
+                    child: Text('No open recommendations.', textAlign: TextAlign.center, style: TextStyle(fontFamily: AppFonts.body, fontSize: 12, color: AppColors.textMuted)),
+                  )
                 else
                   ..._recCards(p.recommendations),
                 const SizedBox(height: 11),
@@ -396,12 +399,15 @@ class _TaskCard extends StatelessWidget {
   }
 }
 
-/// Empty-day placeholder inside a task card (no design variant [A]).
+/// Empty-day placeholder inside a task card (no design variant [A]); centers across the card.
 class _NoTaskChip extends StatelessWidget {
   const _NoTaskChip();
 
   @override
-  Widget build(BuildContext context) => const Text('Nothing logged today', style: TextStyle(fontFamily: AppFonts.body, fontSize: 12, color: AppColors.textMuted));
+  Widget build(BuildContext context) => const SizedBox(
+        width: double.infinity,
+        child: Text('Nothing logged today', textAlign: TextAlign.center, style: TextStyle(fontFamily: AppFonts.body, fontSize: 12, color: AppColors.textMuted)),
+      );
 }
 
 class _TimeChip extends StatelessWidget {

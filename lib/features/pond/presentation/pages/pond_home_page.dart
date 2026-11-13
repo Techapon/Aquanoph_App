@@ -4,6 +4,7 @@ import 'package:aquanoph/core/theme/app_colors.dart';
 import 'package:aquanoph/core/theme/app_fonts.dart';
 import 'package:aquanoph/features/pond/domain/entities/pond_entity.dart';
 import 'package:aquanoph/features/pond/presentation/pages/pond_setting_page.dart';
+import 'package:aquanoph/shared/widgets/buoy_art.dart';
 
 /// Pond home per figma/pond_page/Ponds.css ("Ponds 1", 402×874 absolute design ->
 /// native flex with the exact measured offsets; content column 358 wide, gutter 21-22).
@@ -62,8 +63,7 @@ class PondHomePage extends StatelessWidget {
                 child: Stack(
                   clipBehavior: Clip.none,
                   children: [
-                    Positioned(left: 0, top: 19, child: _Water()),
-                    Positioned(left: 32, top: 0, child: _Device()),
+                    Align(child: BuoyWithWater()), // design centers the 117-wide group at x142/402
                     Positioned(left: 0, top: 14, child: Text("Today’s Task", style: TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 18, height: 25 / 18, color: AppColors.textPrimary))),
                   ],
                 ),
@@ -173,41 +173,6 @@ class _SectionTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Text(text, style: const TextStyle(fontFamily: AppFonts.body, fontWeight: FontWeight.bold, fontSize: 14, height: 17 / 14, color: AppColors.textSecondary));
-}
-
-/// 3 concentric ellipses #38D4FF/#32BDE3/#2FAFD3 (Group 5, 117×46 at local y19).
-/// ponytail: hand-drawn from CSS % because the design vector was never exported;
-/// swap for a PNG asset when one lands in figma/pond_page/.
-class _Water extends StatelessWidget {
-  const _Water();
-
-  static Widget _e(double w, double h, Color c) => Container(width: w, height: h, decoration: BoxDecoration(color: c, borderRadius: BorderRadius.circular(999)));
-
-  @override
-  Widget build(BuildContext context) => Stack(alignment: Alignment.center, children: [_e(117, 46, const Color(0xFF38D4FF)), _e(92, 37, const Color(0xFF32BDE3)), _e(60, 24, const Color(0xFF2FAFD3))]);
-}
-
-/// 56×45 device at local x32: mast/rects from "Water Quality Monitoring Device" %.
-class _Device extends StatelessWidget {
-  const _Device();
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 56,
-      height: 45,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: const [
-          Positioned(left: 0, top: 31.7, width: 56, height: 13.3, child: ColoredBox(color: Color(0xFFD9D9D9))), // deck
-          Positioned(left: 3.3, top: 36.7, width: 13.2, height: 6.9, child: ColoredBox(color: Color(0xFF6E6E6E))), // leg L
-          Positioned(left: 39.5, top: 36.7, width: 13.2, height: 6.9, child: ColoredBox(color: Color(0xFF6E6E6E))), // leg R
-          Positioned(left: 6.6, top: 11.7, width: 42.9, height: 20.0, child: ColoredBox(color: Color(0xFF414141))), // body
-          Positioned(left: 46.1, top: 0, width: 1.6, height: 11.7, child: ColoredBox(color: Color(0xFFA4A4A4))), // mast (26% of 45 — nub above body)
-        ],
-      ),
-    );
-  }
 }
 
 class _WaterQualityCard extends StatelessWidget {

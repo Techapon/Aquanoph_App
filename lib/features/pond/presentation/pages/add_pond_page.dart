@@ -8,6 +8,7 @@ import 'package:aquanoph/features/pond/domain/entities/pond_draft.dart';
 import 'package:aquanoph/features/pond/presentation/controller/pond_provider.dart';
 import 'package:aquanoph/shared/widgets/app_select_field.dart';
 import 'package:aquanoph/shared/widgets/app_text_field.dart';
+import 'package:aquanoph/shared/widgets/buoy_art.dart';
 import 'package:aquanoph/shared/widgets/success_dialog.dart';
 
 /// Figma 61:536 (step 1) + 154:139 (step 2) + 158:196 (step 3 "Add - Pond - Device",
@@ -201,7 +202,7 @@ class _AddPondPageState extends State<AddPondPage> {
         return [
           const Padding(
             padding: EdgeInsets.only(top: 24, bottom: 34),
-            child: Center(child: _BuoyArt()),
+            child: Center(child: BuoyDeviceArt(width: 71, height: 58)), // 158:196 art slot
           ),
           AppTextField(label: 'Device ID', hint: 'ID', controller: _device),
           const SizedBox(height: 16),
@@ -234,28 +235,4 @@ class _AddPondPageState extends State<AddPondPage> {
           ],
         ),
       );
-}
-
-/// "Water Quality Monitoring Device" 71x58 = 2x of the 34x27 component; % insets from
-/// figma/add_pond_device/css.txt (158:196). No water ellipses here (home has them).
-class _BuoyArt extends StatelessWidget {
-  const _BuoyArt();
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: 71,
-      height: 58,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: const [
-          Positioned(left: 0, top: 40.8, width: 71, height: 17.2, child: ColoredBox(color: Color(0xFFD9D9D9))), // deck
-          Positioned(left: 4.2, top: 47.3, width: 16.7, height: 8.6, child: ColoredBox(color: Color(0xFF6E6E6E))), // leg L
-          Positioned(left: 50.1, top: 47.3, width: 16.7, height: 8.6, child: ColoredBox(color: Color(0xFF6E6E6E))), // leg R
-          Positioned(left: 8.4, top: 15.0, width: 54.3, height: 25.8, child: ColoredBox(color: Color(0xFF414141))), // body
-          Positioned(left: 58.5, top: 0, width: 2.1, height: 15.0, child: ColoredBox(color: Color(0xFFA4A4A4))), // mast
-        ],
-      ),
-    );
-  }
 }

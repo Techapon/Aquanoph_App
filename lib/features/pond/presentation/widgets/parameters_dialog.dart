@@ -503,71 +503,66 @@ class _ParameterCard extends StatelessWidget {
     onTap: onTap,
     child: Padding(
       padding: const EdgeInsets.fromLTRB(12, 9, 10, 8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Stack(
         children: [
-          // badge top-right (user call over design's bottom-right — no overflow risk)
-          Row(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Flexible(
-                child: Text(
-                  tile.name,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontFamily: AppFonts.heading,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    height: 22 / 16,
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-              ),
-              const Spacer(),
-              _DetailBadge(label: tile.badge, color: tile.badgeColor),
-            ],
-          ),
-          const SizedBox(height: 1),
-          Text(
-            tile.description,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              fontFamily: AppFonts.body,
-              fontSize: 12,
-              height: 14 / 12,
-              color: AppColors.textMuted,
-            ),
-          ),
-          const Spacer(),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            textBaseline: TextBaseline.alphabetic,
-            children: [
+              // badge lives on the Stack layer (top-right), so the name keeps full width
               Text(
-                tile.value,
+                tile.name,
                 style: const TextStyle(
                   fontFamily: AppFonts.heading,
                   fontWeight: FontWeight.bold,
-                  fontSize: 24,
-                  height: 33 / 24,
+                  fontSize: 16,
+                  height: 22 / 16,
                   color: AppColors.textPrimary,
                 ),
               ),
-              if (tile.unit.isNotEmpty) ...[
-                const SizedBox(width: 3),
-                Text(
-                  tile.unit,
-                  style: const TextStyle(
-                    fontFamily: AppFonts.heading,
-                    fontSize: 12,
-                    height: 16 / 12,
-                    color: AppColors.textPrimary,
-                  ),
+              const SizedBox(height: 1),
+              Text(
+                tile.description,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontFamily: AppFonts.body,
+                  fontSize: 12,
+                  height: 14 / 12,
+                  color: AppColors.textMuted,
                 ),
-              ],
+              ),
+              const Spacer(),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.baseline,
+                textBaseline: TextBaseline.alphabetic,
+                children: [
+                  Text(
+                    tile.value,
+                    style: const TextStyle(
+                      fontFamily: AppFonts.heading,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24,
+                      height: 33 / 24,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                  if (tile.unit.isNotEmpty) ...[
+                    const SizedBox(width: 3),
+                    Text(
+                      tile.unit,
+                      style: const TextStyle(
+                        fontFamily: AppFonts.heading,
+                        fontSize: 12,
+                        height: 16 / 12,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
             ],
           ),
+          Positioned(top: 0, right: 0, child: _DetailBadge(label: tile.badge, color: tile.badgeColor)),
         ],
       ),
     ),

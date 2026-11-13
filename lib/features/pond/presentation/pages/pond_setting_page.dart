@@ -7,6 +7,7 @@ import 'package:aquanoph/core/theme/app_fonts.dart';
 import 'package:aquanoph/core/utils/country_timezones.dart';
 import 'package:aquanoph/features/pond/domain/entities/pond_entity.dart';
 import 'package:aquanoph/features/pond/presentation/controller/pond_provider.dart';
+import 'package:aquanoph/shared/widgets/success_dialog.dart';
 
 /// Pond settings — figma node 304:195 (figma/setting_page/; CSS+SVG+PNG all agree).
 /// Layout truth (verified by pixel-sampling the PNG, 2026-11-13):
@@ -52,12 +53,16 @@ class _PondSettingPageState extends State<PondSettingPage> {
     final kg = double.tryParse(_weight.text.replaceAll(',', '.'));
     final count = int.tryParse(_amount.text.trim());
     if (name.isEmpty || kg == null || kg <= 0 || count == null || count <= 0) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Name, weight and amount must be filled in')));
+      await showSuccessDialog(context, title: 'Save failed', subtitle: 'Name, weight and amount must be filled in.');
       return;
     }
     final ok = await context.read<PondProvider>().update(widget.userId, widget.pond.id, name: name, stockingCount: count, avgWeightG: kg * 1000);
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(ok ? 'Saved' : 'Save failed')));
+    await showSuccessDialog(
+      context,
+      title: ok ? 'Save success!' : 'Save failed',
+      subtitle: ok ? 'Pond settings updated.' : 'Could not update the pond — check your connection.',
+    );
   }
 
   @override
@@ -200,11 +205,11 @@ class _LogoHeader extends StatelessWidget {
             Padding(padding: const EdgeInsets.only(right: 4), child: _CircleButton(icon: Icons.check, iconColor: const Color(0xFF0BE220), onTap: save)),
           ],
         ),
-        const SizedBox(height: 14),
+        const SizedBox(height: 28),
         // pond ellipse (210×44 from figma/decorate/pond.svg) with the fish sitting on it
         const SizedBox(
           width: double.infinity,
-          height: 78,
+          height: 80,
           child: Stack(
             alignment: Alignment.topCenter,
             children: [

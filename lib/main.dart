@@ -101,7 +101,7 @@ class _SetupHintPage extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(32),
           child: Text(
-            'Copy .env.example to .env and set SUPABASE_URL + SUPABASE_ANON_KEY, then restart the app.',
+            'Copy .env.example to  .env and set SUPABASE_URL + SUPABASE_ANON_KEY, then restart the app.',
             textAlign: TextAlign.center,
             style: const TextStyle(fontSize: 14, fontFamily: AppFonts.body, color: AppColors.textPrimary),
           ),

@@ -319,10 +319,11 @@ class _Badge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const style = TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 14, color: Colors.white);
-    // hugs content (design's fixed 51/68 widths come out of the text + padding)
+    const style = TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 14, height: 19 / 14, color: Colors.white);
+    // hugs content (design's fixed 51/68 widths come out of the text + padding);
+    // height 19 = design badge box (card_detail Rectangle 4) — 17 clipped the glyphs
     return Container(
-      height: 17,
+      height: 19,
       padding: const EdgeInsets.symmetric(horizontal: 8),
       decoration: gradient
           ? const BoxDecoration(gradient: LinearGradient(colors: [AppColors.gradientStart, AppColors.gradientEnd]), borderRadius: BorderRadius.all(Radius.circular(4)))

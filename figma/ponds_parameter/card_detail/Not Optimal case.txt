@@ -1,0 +1,285 @@
+/* Temperature */
+
+position: relative;
+width: 334px;
+height: 494px;
+
+background: #FFFFFF;
+border-radius: 16px;
+
+
+/* Temperature */
+
+position: absolute;
+width: 162px;
+height: 24px;
+left: 27px;
+top: 21px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 33px;
+
+color: #232323;
+
+
+
+/* 9:30 AM. 20 Aug. 2026 Thailand (UTC+7) */
+
+position: absolute;
+width: 274px;
+height: 16px;
+left: 27px;
+top: 55px;
+
+font-family: 'Inria Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 14px;
+
+color: #6A6A6A;
+
+
+
+/* Group 190 */
+
+position: absolute;
+width: 80.92px;
+height: 47px;
+left: 137px;
+top: 94px;
+
+
+
+/* 36 */
+
+position: absolute;
+width: 53px;
+height: 47px;
+left: 137px;
+top: 94px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 36px;
+line-height: 49px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #232323;
+
+
+
+/* °C */
+
+position: absolute;
+width: 27.92px;
+height: 15.03px;
+left: 190px;
+top: 117px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 16px;
+
+color: #232323;
+
+
+
+/* Line 4 */
+
+position: absolute;
+width: 280px;
+height: 0px;
+left: calc(50% - 280px/2);
+top: 185px;
+
+border: 3px solid #F4F4F4;
+
+
+/* Symptoms in aquatic animals. : Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy */
+
+position: absolute;
+width: 269px;
+height: 56px;
+left: 40px;
+top: 275px;
+
+font-family: 'Inria Sans';
+font-style: normal;
+font-weight: 700;
+font-size: 12px;
+line-height: 14px;
+
+color: #707070;
+
+
+
+/* Reason (Temporal cause): Lorem Ipsum is simply dummy text of the */
+
+position: absolute;
+width: 269px;
+height: 28px;
+left: 40px;
+top: 235px;
+
+font-family: 'Inria Sans';
+font-style: normal;
+font-weight: 700;
+font-size: 12px;
+line-height: 14px;
+
+color: #707070;
+
+
+
+/* Description */
+
+position: absolute;
+width: 81px;
+height: 17px;
+left: 23px;
+top: 212px;
+
+font-family: 'Inria Sans';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #232323;
+
+
+
+/* Water temperature usually peaks in the afternoon (11:00–16:00). */
+
+position: absolute;
+width: 269px;
+height: 28px;
+left: 42px;
+top: 377px;
+
+font-family: 'Inria Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 14px;
+
+color: #707070;
+
+
+
+/* Diagnostic */
+
+position: absolute;
+width: 81px;
+height: 17px;
+left: 23px;
+top: 354px;
+
+font-family: 'Inria Sans';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #232323;
+
+
+
+/* Take immediate actionmonitor DO and NH₃ levels. */
+
+position: absolute;
+width: 269px;
+height: 14px;
+left: 42px;
+top: 452px;
+
+font-family: 'Inria Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 14px;
+
+color: #707070;
+
+
+
+/* Guidance */
+
+position: absolute;
+width: 81px;
+height: 17px;
+left: 23px;
+top: 429px;
+
+font-family: 'Inria Sans';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #232323;
+
+
+
+/* Group 163 */
+
+position: absolute;
+width: 71px;
+height: 20px;
+left: 137px;
+top: 141px;
+
+
+
+/* Group 192 */
+
+position: absolute;
+width: 71px;
+height: 20px;
+left: 137px;
+top: 141px;
+
+
+
+/* Rectangle 4 */
+
+position: absolute;
+width: 71px;
+height: 20px;
+left: 137px;
+top: 141px;
+
+background: #FF3232;
+border-radius: 4px;
+
+
+/* Critical */
+
+position: absolute;
+width: 56px;
+height: 19px;
+left: calc(50% - 56px/2 + 6px);
+top: 141px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 19px;
+/* identical to box height */
+text-align: center;
+
+color: #FFFFFF;
+

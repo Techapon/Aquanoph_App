@@ -8,6 +8,7 @@ import 'package:aquanoph/features/activity/domain/entities/activity_entity.dart'
 import 'package:aquanoph/features/pond/domain/entities/pond_entity.dart';
 import 'package:aquanoph/features/pond/presentation/controller/pond_home_provider.dart';
 import 'package:aquanoph/features/pond/presentation/pages/pond_setting_page.dart';
+import 'package:aquanoph/features/pond/presentation/widgets/parameters_dialog.dart';
 import 'package:aquanoph/features/recommendation/domain/entities/recommendation_entity.dart';
 import 'package:aquanoph/features/severity/domain/entities/pond_status_entity.dart';
 import 'package:aquanoph/shared/widgets/buoy_art.dart';
@@ -60,7 +61,7 @@ class _PondHomeView extends StatelessWidget {
                     Expanded(
                       child: Center(
                         child: Text(
-                          pond.name,
+                          "Pond",
                           style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 24, height: 33 / 24, color: AppColors.textPrimary),
                         ),
                       ),
@@ -99,8 +100,11 @@ class _PondHomeView extends StatelessWidget {
                   child: Align(child: BuoyWithWater()), // design centers the 117-wide group at x142/402
                 ),
                 const SizedBox(height: 28),
-                // ── Water Quality Now (y277, h91)
-                _WaterQualityCard(status: p.status, timezone: pond.timezone),
+                // ── Water Quality Now (y277, h91) — tap opens all-parameters dialog (mock tiles for now)
+                GestureDetector(
+                  onTap: () => showParametersDialog(context),
+                  child: _WaterQualityCard(status: p.status, timezone: pond.timezone),
+                ),
                 const SizedBox(height: 24), // was 65 (that gap led straight to All Recommendations before Today's Task moved here)
                 const Text(
                   "Today’s Task", // curly apostrophe exactly as in the design

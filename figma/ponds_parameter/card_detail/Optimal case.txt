@@ -1,0 +1,210 @@
+/* DO */
+
+position: relative;
+width: 334px;
+height: 314px;
+
+background: #FFFFFF;
+border-radius: 16px;
+
+
+/* DO */
+
+position: absolute;
+width: 39px;
+height: 24px;
+left: 27px;
+top: 21px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 33px;
+
+color: #232323;
+
+
+
+/* (Oxygen in pond) */
+
+position: absolute;
+width: 252px;
+height: 16px;
+left: 71px;
+top: 27px;
+
+font-family: 'Inria Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 19px;
+
+color: #232323;
+
+
+
+/* 9:30 AM. 20 Aug. 2026 Thailand (UTC+7) */
+
+position: absolute;
+width: 274px;
+height: 16px;
+left: 27px;
+top: 55px;
+
+font-family: 'Inria Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 14px;
+
+color: #6A6A6A;
+
+
+
+/* Group 190 */
+
+position: absolute;
+width: 87.92px;
+height: 47px;
+left: calc(50% - 87.92px/2 - 0.04px);
+top: 89px;
+
+
+
+/* 4.2 */
+
+position: absolute;
+width: 53px;
+height: 47px;
+left: 123px;
+top: 89px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 36px;
+line-height: 49px;
+display: flex;
+align-items: center;
+text-align: center;
+
+color: #232323;
+
+
+
+/* mg/L */
+
+position: absolute;
+width: 27.92px;
+height: 15.03px;
+left: 183px;
+top: 112px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 16px;
+
+color: #232323;
+
+
+
+/* Group 191 */
+
+position: absolute;
+width: 71px;
+height: 19px;
+left: calc(50% - 71px/2 + 0.5px);
+top: 142px;
+
+
+
+/* Rectangle 4 */
+
+position: absolute;
+width: 71px;
+height: 19px;
+left: 132px;
+top: 142px;
+
+background: #0BE220;
+border-radius: 4px;
+
+
+/* Optimal */
+
+position: absolute;
+width: 56px;
+height: 18px;
+left: 141px;
+top: 142px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 19px;
+
+color: #FFFFFF;
+
+
+
+/* Line 4 */
+
+position: absolute;
+width: 280px;
+height: 0px;
+left: calc(50% - 280px/2);
+top: 191px;
+
+border: 3px solid #F4F4F4;
+
+
+/* Water quality at 11:00 AM is within the optimal range. DO, pH, and temperature levels are suitable for aquaculture. */
+
+position: absolute;
+width: 269px;
+height: 42px;
+left: 42px;
+top: 235px;
+
+font-family: 'Inria Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 14px;
+
+color: #707070;
+
+
+
+/* Description */
+
+position: absolute;
+width: 81px;
+height: 17px;
+left: 23px;
+top: 208px;
+
+font-family: 'Inria Sans';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #232323;
+
+
+
+/* Vector */
+
+position: absolute;
+left: 87.13%;
+right: 8.08%;
+top: 8.45%;
+bottom: 86.88%;
+
+border: 2px solid #707070;

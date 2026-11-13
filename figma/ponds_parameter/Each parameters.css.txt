@@ -1,0 +1,1343 @@
+/* Frame 141 */
+
+position: relative;
+width: 347px;
+height: 645.74px;
+
+
+
+/* Group 180 */
+
+position: absolute;
+width: 168.5px;
+height: 121.15px;
+left: 0px;
+top: 0px;
+
+
+
+/* Rectangle 78 */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 168.5px;
+height: 121.15px;
+left: 0px;
+top: 0px;
+
+background: #FFFFFF;
+border: 1.5px solid #D9D9D9;
+border-radius: 8px;
+
+
+/* Group 178 */
+
+position: absolute;
+width: 103.92px;
+height: 35.03px;
+left: 11px;
+top: 9.03px;
+
+
+
+/* 9:30 */
+
+position: absolute;
+width: 76px;
+height: 31px;
+left: 11px;
+top: 9.03px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 32px;
+line-height: 44px;
+
+color: #232323;
+
+
+
+/* AM. */
+
+position: absolute;
+width: 27.92px;
+height: 15.03px;
+left: 87px;
+top: 29.03px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 16px;
+
+color: #232323;
+
+
+
+/* Group 179 */
+
+position: absolute;
+width: 128px;
+height: 36.37px;
+left: 12px;
+top: 74.06px;
+
+
+
+/* 20 Aug. 2026 */
+
+position: absolute;
+width: 111.67px;
+height: 14.05px;
+left: 12.96px;
+top: 74.06px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 16px;
+line-height: 22px;
+
+color: #232323;
+
+
+
+/* Thailand (UTC+7) */
+
+position: absolute;
+width: 128px;
+height: 13px;
+left: 12px;
+top: 97.43px;
+
+font-family: 'Inria Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 14px;
+
+color: #6A6A6A;
+
+
+
+/* Group 177 */
+
+position: absolute;
+width: 168.5px;
+height: 121.15px;
+left: 178.5px;
+top: 0px;
+
+
+
+/* Rectangle 68 */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 168.5px;
+height: 121.15px;
+left: 178.5px;
+top: 0px;
+
+background: #FFFFFF;
+border: 1.5px solid #D9D9D9;
+border-radius: 8px;
+
+
+/* DO */
+
+position: absolute;
+width: 29.91px;
+height: 14.09px;
+left: 191.46px;
+top: 9.39px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 16px;
+line-height: 22px;
+
+color: #232323;
+
+
+
+/* 5.0 */
+
+position: absolute;
+width: 34.9px;
+height: 30.99px;
+left: 190.46px;
+top: 82.27px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 33px;
+
+color: #232323;
+
+
+
+/* mg/L */
+
+position: absolute;
+width: 27.92px;
+height: 15.03px;
+left: 230.35px;
+top: 94.01px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 16px;
+
+color: #232323;
+
+
+
+/* Oxygen in pond */
+
+position: absolute;
+width: 99.7px;
+height: 13.15px;
+left: 190.46px;
+top: 31.93px;
+
+font-family: 'Inria Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 14px;
+
+color: #6A6A6A;
+
+
+
+/* Group 139 */
+
+position: absolute;
+width: 51px;
+height: 18px;
+left: 282px;
+top: 91px;
+
+
+
+/* Rectangle 4 */
+
+position: absolute;
+width: 51px;
+height: 17px;
+left: 282px;
+top: 92px;
+
+background: #FFCC00;
+border-radius: 4px;
+
+
+/* Stress */
+
+position: absolute;
+width: 42px;
+height: 15px;
+left: 287px;
+top: 91px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 19px;
+
+color: #FFFFFF;
+
+
+
+/* Group 176 */
+
+position: absolute;
+width: 168.5px;
+height: 121.15px;
+left: 0px;
+top: 131.15px;
+
+
+
+/* Rectangle 71 */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 168.5px;
+height: 121.15px;
+left: 0px;
+top: 131.15px;
+
+background: #FFFFFF;
+border: 1.5px solid #D9D9D9;
+border-radius: 8px;
+
+
+/* pH */
+
+position: absolute;
+width: 29.91px;
+height: 14.09px;
+left: 12.96px;
+top: 140.54px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 16px;
+line-height: 22px;
+
+color: #232323;
+
+
+
+/* 7.5 */
+
+position: absolute;
+width: 34.9px;
+height: 30.99px;
+left: 11.96px;
+top: 213.42px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 33px;
+
+color: #232323;
+
+
+
+/* The acidity or alkalinity of water. */
+
+position: absolute;
+width: 99.7px;
+height: 13.15px;
+left: 11.96px;
+top: 163.08px;
+
+font-family: 'Inria Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 14px;
+
+color: #6A6A6A;
+
+
+
+/* Group 160 */
+
+position: absolute;
+width: 50.85px;
+height: 19.24px;
+left: 106.18px;
+top: 222px;
+
+
+
+/* Rectangle 4 */
+
+position: absolute;
+width: 50.85px;
+height: 18.78px;
+left: 106.18px;
+top: 222.45px;
+
+background: #0BE220;
+border-radius: 4px;
+
+
+/* good */
+
+position: absolute;
+width: 35px;
+height: 18px;
+left: 115px;
+top: 222px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 19px;
+
+color: #FFFFFF;
+
+
+
+/* Group 174 */
+
+position: absolute;
+width: 168.5px;
+height: 121.15px;
+left: 178.5px;
+top: 131.15px;
+
+
+
+/* Rectangle 72 */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 168.5px;
+height: 121.15px;
+left: 178.5px;
+top: 131.15px;
+
+background: #FFFFFF;
+border: 1.5px solid #D9D9D9;
+border-radius: 8px;
+
+
+/* Temperature */
+
+position: absolute;
+width: 111.67px;
+height: 14.05px;
+left: 191.46px;
+top: 140.18px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 16px;
+line-height: 22px;
+
+color: #232323;
+
+
+
+/* 36 */
+
+position: absolute;
+width: 32px;
+height: 32px;
+left: 190px;
+top: 213px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 33px;
+
+color: #232323;
+
+
+
+/* °C */
+
+position: absolute;
+width: 27.92px;
+height: 15.03px;
+left: 222px;
+top: 225.16px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 16px;
+
+color: #232323;
+
+
+
+/* Water temperature */
+
+position: absolute;
+width: 99.7px;
+height: 13.15px;
+left: 190.46px;
+top: 163.08px;
+
+font-family: 'Inria Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 14px;
+
+color: #6A6A6A;
+
+
+
+/* Group 163 */
+
+position: absolute;
+width: 50.85px;
+height: 20.07px;
+left: 285.68px;
+top: 220.74px;
+
+
+
+/* Rectangle 4 */
+
+position: absolute;
+width: 50.85px;
+height: 20.07px;
+left: 285.68px;
+top: 220.74px;
+
+background: #FF3232;
+border-radius: 4px;
+
+
+/* high */
+
+position: absolute;
+width: 28.91px;
+height: 19.06px;
+left: calc(50% - 28.91px/2 + 137.61px);
+top: 220.74px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 19px;
+text-align: center;
+
+color: #FFFFFF;
+
+
+
+/* Group 175 */
+
+position: absolute;
+width: 168.5px;
+height: 121.15px;
+left: 0px;
+top: 262.3px;
+
+
+
+/* Rectangle 73 */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 168.5px;
+height: 121.15px;
+left: 0px;
+top: 262.3px;
+
+background: #FFFFFF;
+border: 1.5px solid #D9D9D9;
+border-radius: 8px;
+
+
+/* Turbidity */
+
+position: absolute;
+width: 98.71px;
+height: 14.05px;
+left: 12.96px;
+top: 271.33px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 16px;
+line-height: 22px;
+
+color: #232323;
+
+
+
+/* 25 */
+
+position: absolute;
+width: 34.9px;
+height: 30.99px;
+left: 11.96px;
+top: 344.57px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 33px;
+
+color: #232323;
+
+
+
+/* NTU */
+
+position: absolute;
+width: 27.92px;
+height: 15.03px;
+left: 46.86px;
+top: 356.31px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 16px;
+
+color: #232323;
+
+
+
+/* Water turbidity */
+
+position: absolute;
+width: 99.7px;
+height: 13.15px;
+left: 11.96px;
+top: 294.23px;
+
+font-family: 'Inria Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 14px;
+
+color: #6A6A6A;
+
+
+
+/* Group 161 */
+
+position: absolute;
+width: 50.85px;
+height: 20.07px;
+left: 106.68px;
+top: 351.6px;
+
+
+
+/* Rectangle 4 */
+
+position: absolute;
+width: 50.85px;
+height: 20.07px;
+left: 106.68px;
+top: 351.6px;
+
+background: #FF9232;
+border-radius: 4px;
+
+
+/* watch */
+
+position: absolute;
+width: 39.88px;
+height: 19.06px;
+left: calc(50% - 39.88px/2 - 41.89px);
+top: 351.6px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 19px;
+text-align: center;
+
+color: #FFFFFF;
+
+
+
+/* Group 173 */
+
+position: absolute;
+width: 168.5px;
+height: 121.15px;
+left: 178.5px;
+top: 262.3px;
+
+
+
+/* Rectangle 74 */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 168.5px;
+height: 121.15px;
+left: 178.5px;
+top: 262.3px;
+
+background: #FFFFFF;
+border: 1.5px solid #D9D9D9;
+border-radius: 8px;
+
+
+/* EC */
+
+position: absolute;
+width: 111.67px;
+height: 14.05px;
+left: 191.46px;
+top: 271.33px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 16px;
+line-height: 22px;
+
+color: #232323;
+
+
+
+/* 22.5 */
+
+position: absolute;
+width: 53.84px;
+height: 31.1px;
+left: 190.46px;
+top: 344.57px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 33px;
+
+color: #232323;
+
+
+
+/* mS/cm */
+
+position: absolute;
+width: 37.89px;
+height: 15.05px;
+left: 244.3px;
+top: 356.61px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 16px;
+
+color: #232323;
+
+
+
+/* Electrical conductivity/Salinity */
+
+position: absolute;
+width: 145.57px;
+height: 13.04px;
+left: 190.46px;
+top: 294.4px;
+
+font-family: 'Inria Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 14px;
+
+color: #6A6A6A;
+
+
+
+/* Group 162 */
+
+position: absolute;
+width: 50.85px;
+height: 18.78px;
+left: 285.18px;
+top: 353.6px;
+
+
+
+/* Rectangle 4 */
+
+position: absolute;
+width: 50.85px;
+height: 18.78px;
+left: 285.18px;
+top: 353.6px;
+
+background: #0BE220;
+border-radius: 4px;
+
+
+/* good */
+
+position: absolute;
+width: 35px;
+height: 17px;
+left: 294px;
+top: 354px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 19px;
+
+color: #FFFFFF;
+
+
+
+/* Group 172 */
+
+position: absolute;
+width: 168.5px;
+height: 121.15px;
+left: 0px;
+top: 393.45px;
+
+
+
+/* Rectangle 75 */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 168.5px;
+height: 121.15px;
+left: 0px;
+top: 393.45px;
+
+background: #FFFFFF;
+border: 1.5px solid #D9D9D9;
+border-radius: 8px;
+
+
+/* TAN */
+
+position: absolute;
+width: 32.9px;
+height: 22.07px;
+left: 12.96px;
+top: 402.48px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 16px;
+line-height: 22px;
+
+color: #232323;
+
+
+
+/* 0.9 */
+
+position: absolute;
+width: 34.9px;
+height: 30.99px;
+left: 11.96px;
+top: 475.72px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 33px;
+
+color: #232323;
+
+
+
+/* mg/L */
+
+position: absolute;
+width: 27.92px;
+height: 15.03px;
+left: 49.85px;
+top: 487.46px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 16px;
+
+color: #232323;
+
+
+
+/* Total ammonia in water. */
+
+position: absolute;
+width: 130.61px;
+height: 13.04px;
+left: 11.96px;
+top: 425.55px;
+
+font-family: 'Inria Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 14px;
+
+color: #6A6A6A;
+
+
+
+/* Group 163 */
+
+position: absolute;
+width: 50.85px;
+height: 20.07px;
+left: 106.68px;
+top: 482.74px;
+
+
+
+/* Rectangle 4 */
+
+position: absolute;
+width: 50.85px;
+height: 20.07px;
+left: 106.68px;
+top: 482.74px;
+
+background: #FF3232;
+border-radius: 4px;
+
+
+/* high */
+
+position: absolute;
+width: 28.91px;
+height: 19.06px;
+left: calc(50% - 28.91px/2 - 41.39px);
+top: 482.74px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 19px;
+text-align: center;
+
+color: #FFFFFF;
+
+
+
+/* Group 170 */
+
+position: absolute;
+width: 168.5px;
+height: 121.15px;
+left: 178.5px;
+top: 393.45px;
+
+
+
+/* Rectangle 76 */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 168.5px;
+height: 121.15px;
+left: 178.5px;
+top: 393.45px;
+
+background: #FFFFFF;
+border: 1.5px solid #D9D9D9;
+border-radius: 8px;
+
+
+/* NO2 */
+
+position: absolute;
+width: 111.67px;
+height: 14.05px;
+left: 191.46px;
+top: 402.48px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 16px;
+line-height: 22px;
+
+color: #232323;
+
+
+
+/* 0.18 */
+
+position: absolute;
+width: 53.84px;
+height: 31.1px;
+left: 190.46px;
+top: 475.72px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 33px;
+
+color: #232323;
+
+
+
+/* mg/L */
+
+position: absolute;
+width: 27.92px;
+height: 15.03px;
+left: 244.3px;
+top: 487.46px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 16px;
+
+color: #232323;
+
+
+
+/* Nitrite in water */
+
+position: absolute;
+width: 99.7px;
+height: 13.15px;
+left: 190.46px;
+top: 425.38px;
+
+font-family: 'Inria Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 14px;
+
+color: #6A6A6A;
+
+
+
+/* Group 166 */
+
+position: absolute;
+width: 50.85px;
+height: 20.07px;
+left: 285.18px;
+top: 482.74px;
+
+
+
+/* Rectangle 4 */
+
+position: absolute;
+width: 50.85px;
+height: 20.07px;
+left: 285.18px;
+top: 482.74px;
+
+background: #FF9232;
+border-radius: 4px;
+
+
+/* watch */
+
+position: absolute;
+width: 39.88px;
+height: 19.06px;
+left: calc(50% - 39.88px/2 + 136.61px);
+top: 482.74px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 19px;
+text-align: center;
+
+color: #FFFFFF;
+
+
+
+/* Group 171 */
+
+position: absolute;
+width: 168.5px;
+height: 121.15px;
+left: 0px;
+top: 524.6px;
+
+
+
+/* Rectangle 77 */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 168.5px;
+height: 121.15px;
+left: 0px;
+top: 524.6px;
+
+background: #FFFFFF;
+border: 1.5px solid #D9D9D9;
+border-radius: 8px;
+
+
+/* NO3 */
+
+position: absolute;
+width: 98.71px;
+height: 14.05px;
+left: 12.96px;
+top: 533.63px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 16px;
+line-height: 22px;
+
+color: #232323;
+
+
+
+/* 22 */
+
+position: absolute;
+width: 53.84px;
+height: 31.1px;
+left: 11.96px;
+top: 606.87px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 33px;
+
+color: #232323;
+
+
+
+/* mg/L */
+
+position: absolute;
+width: 27.92px;
+height: 15.03px;
+left: 46.86px;
+top: 618.61px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 16px;
+
+color: #232323;
+
+
+
+/* Nitrates in water */
+
+position: absolute;
+width: 99.7px;
+height: 13.15px;
+left: 11.96px;
+top: 556.53px;
+
+font-family: 'Inria Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 14px;
+
+color: #6A6A6A;
+
+
+
+/* Group 167 */
+
+position: absolute;
+width: 50.85px;
+height: 18.78px;
+left: 106.68px;
+top: 613.89px;
+
+
+
+/* Rectangle 4 */
+
+position: absolute;
+width: 50.85px;
+height: 18.78px;
+left: 106.68px;
+top: 613.89px;
+
+background: #0BE220;
+border-radius: 4px;
+
+
+/* good */
+
+position: absolute;
+width: 34px;
+height: 17px;
+left: 116px;
+top: 614px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 19px;
+
+color: #FFFFFF;
+
+
+
+/* Group 169 */
+
+position: absolute;
+width: 168.5px;
+height: 121.15px;
+left: 178.5px;
+top: 524.6px;
+
+
+
+/* Rectangle 78 */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 168.5px;
+height: 121.15px;
+left: 178.5px;
+top: 524.6px;
+
+background: #FFFFFF;
+border: 1.5px solid #D9D9D9;
+border-radius: 8px;
+
+
+/* Alkalinity */
+
+position: absolute;
+width: 111.67px;
+height: 14.05px;
+left: 191.46px;
+top: 533.63px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 16px;
+line-height: 22px;
+
+color: #232323;
+
+
+
+/* 55 */
+
+position: absolute;
+width: 33.9px;
+height: 31.1px;
+left: 190.46px;
+top: 606.87px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 33px;
+
+color: #232323;
+
+
+
+/* mg/L */
+
+position: absolute;
+width: 27.92px;
+height: 15.03px;
+left: 224.36px;
+top: 618.61px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 16px;
+
+color: #232323;
+
+
+
+/* Alkalinity of water */
+
+position: absolute;
+width: 99.7px;
+height: 13.15px;
+left: 190.46px;
+top: 556.53px;
+
+font-family: 'Inria Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 14px;
+
+color: #6A6A6A;
+
+
+
+/* Group 168 */
+
+position: absolute;
+width: 50.85px;
+height: 20.07px;
+left: 285.18px;
+top: 613.89px;
+
+
+
+/* Rectangle 4 */
+
+position: absolute;
+width: 50.85px;
+height: 20.07px;
+left: 285.18px;
+top: 613.89px;
+
+background: #FF9232;
+border-radius: 4px;
+
+
+/* watch */
+
+position: absolute;
+width: 39.88px;
+height: 19.06px;
+left: calc(50% - 39.88px/2 + 136.61px);
+top: 613.89px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 19px;
+text-align: center;
+
+color: #FFFFFF;
+

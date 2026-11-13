@@ -11,7 +11,8 @@ File convention per folder (paste whichever you can export; CSS > PNG > SVG — 
 | Folder | Node | Screen | Needed for | State |
 |---|---|---|---|---|
 | `add_pond_success/` | 109:1176 | pond wizard success popup | Phase 2 | ✅ done (css.txt + check.svg) |
-| `pond_page/` | (Ponds 1 screen) | pond home — severity card, badges, recs, daily tasks | **Phase 3** | ✅ refs in (Ponds.css/png/svg by user), layout done step 2 — detail-frame CSS now kept in `css_detail.txt` |
+| `pond_page/` | (Ponds 1 screen) | pond home — severity card, badges, recs, daily tasks | **Phase 3** | superseded by `pond1/` (detail-frame CSS kept in `css_detail.txt`) |
+| `pond1/` | (Ponds 1 screen) | pond home — authoritative export (PNG + CSS + SVG, 2026-11-13) | **Phase 3** | ✅ implemented — PNG is visual truth (CSS stale in places: Today's Task y, section bullets, header icons) |
 | `pond_page/Ponds.css` (swapped 2026-11-13) | (Ponds screen) | ponds LIST — per-pond block, DO/Warning cards, View details, FAB 75 | **Phase 3** | ✅ implemented pixel-exact from this CSS |
 | `pond_page/` variants | — | **ElevatedRisk** + **Critical** badge colors (never seen [U]) | **Phase 3** | ⏳ css_elevated.txt / css_critical.txt + pngs, or any frame showing those states |
 | `add_pond_device/` | 158:196 | wizard step 3 (device id + timezone + Create) | fidelity re-check | ✅ done (css.txt + 1x.png via MCP 2026-11-13, implemented) |

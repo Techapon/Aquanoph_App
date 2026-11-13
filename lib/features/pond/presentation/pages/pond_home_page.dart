@@ -12,11 +12,12 @@ import 'package:aquanoph/features/recommendation/domain/entities/recommendation_
 import 'package:aquanoph/features/severity/domain/entities/pond_status_entity.dart';
 import 'package:aquanoph/shared/widgets/buoy_art.dart';
 
-/// Pond home per the detail frame (CSS ground truth: figma/pond_page/css_detail.txt;
-/// 402×874 absolute design -> native flex, content column 358 wide, gutter 21-22).
+/// Pond home per figma/pond1/ ("Ponds 1" PNG is the visual truth; CSS export
+/// has some stale coordinates, e.g. Today's Task). 402×874 absolute design ->
+/// native flex, content column 358 wide, gutter 21-22.
 /// Step 3: severity status + open recs + today's activities come from Supabase
 /// (PondHomeProvider); realtime refresh = step 4.
-/// Menu/bell/plus have no defined destinations yet [U] -> inert for now.
+/// Menu/calendar have no defined destinations yet [U] -> inert; gear -> settings.
 class PondHomePage extends StatelessWidget {
   final PondEntity pond;
   final String userId;
@@ -52,7 +53,7 @@ class _PondHomeView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // ── Header: menu | "<pond name>" | bell(red dot) + plus  (design y65–109)
+                // ── Header: menu | "<pond name>" | calendar(red dot) + gear  (figma/pond1, design y65–109)
                 Row(
                   children: [
                     const _HeaderButton(Icons.menu),
@@ -64,9 +65,9 @@ class _PondHomeView extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const _HeaderButton(Icons.notifications_none, dot: true),
+                    const _HeaderButton(Icons.calendar_month_outlined, dot: true), // destination undefined [U] -> inert
                     const SizedBox(width: 8),
-                    const _HeaderButton(Icons.add),
+                    _HeaderButton(Icons.settings_outlined, onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => PondSettingPage(userId: userId, pond: pond)))),
                   ],
                 ),
                 if (p.error != null)
@@ -164,25 +165,44 @@ const _cardShadow = BoxShadow(color: Color(0x1A000000), blurRadius: 29.5, spread
 class _HeaderButton extends StatelessWidget {
   final IconData icon;
   final bool dot;
-  const _HeaderButton(this.icon, {this.dot = false});
+  final VoidCallback? onTap;
+  const _HeaderButton(this.icon, {this.dot = false, this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 44,
-      height: 44,
-      child: DecoratedBox(
-        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8), boxShadow: const [_cardShadow]),
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            Center(child: Icon(icon, size: 24, color: const Color(0xFF1E1E1E))),
-            if (dot) const Positioned(left: 29, top: 8, child: SizedBox(width: 7, height: 7, child: DecoratedBox(decoration: BoxDecoration(color: Color(0xFFFF0000), shape: BoxShape.circle)))),
-          ],
+    return GestureDetector(
+      onTap: onTap,
+      child: SizedBox(
+        width: 44,
+        height: 44,
+        child: DecoratedBox(
+          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8), boxShadow: const [_cardShadow]),
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Center(child: Icon(icon, size: 24, color: const Color(0xFF1E1E1E))),
+              if (dot) const Positioned(left: 29, top: 8, child: SizedBox(width: 7, height: 7, child: DecoratedBox(decoration: BoxDecoration(color: Color(0xFFFF0000), shape: BoxShape.circle)))),
+            ],
+          ),
         ),
       ),
     );
   }
+}
+
+/// Section subtitle with the leading dot the design shows (· All Recommendations).
+class _SectionTitle extends StatelessWidget {
+  final String text;
+  const _SectionTitle(this.text);
+
+  @override
+  Widget build(BuildContext context) => Row(
+        children: [
+          const SizedBox(width: 4, height: 4, child: DecoratedBox(decoration: BoxDecoration(color: AppColors.textSecondary, shape: BoxShape.circle))),
+          const SizedBox(width: 10),
+          Text(text, style: const TextStyle(fontFamily: AppFonts.body, fontWeight: FontWeight.bold, fontSize: 14, height: 17 / 14, color: AppColors.textSecondary)),
+        ],
+      );
 }
 
 class _MoreDetailPill extends StatelessWidget {
@@ -211,14 +231,6 @@ class _MoreDetailPill extends StatelessWidget {
       ),
     );
   }
-}
-
-class _SectionTitle extends StatelessWidget {
-  final String text;
-  const _SectionTitle(this.text);
-
-  @override
-  Widget build(BuildContext context) => Text(text, style: const TextStyle(fontFamily: AppFonts.body, fontWeight: FontWeight.bold, fontSize: 14, height: 17 / 14, color: AppColors.textSecondary));
 }
 
 class _WaterQualityCard extends StatelessWidget {
@@ -328,28 +340,22 @@ class _RecommendationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(urgent ? 18 : 16, urgent ? 15 : 14, urgent ? 18 : 16, 0),
+      padding: EdgeInsets.fromLTRB(urgent ? 18 : 16, urgent ? 15 : 14, urgent ? 18 : 16, urgent ? 19 : 14),
       decoration: BoxDecoration(
         color: urgent ? AppColors.urgentBg : AppColors.warningBg,
         border: Border.all(color: urgent ? AppColors.urgentBorder : AppColors.warningBorder, width: 1.5),
         borderRadius: BorderRadius.circular(12),
         boxShadow: const [_cardShadow],
       ),
-      child: Stack(
-        clipBehavior: Clip.none,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(title, style: TextStyle(fontFamily: urgent ? AppFonts.heading : AppFonts.body, fontWeight: FontWeight.bold, fontSize: 14, height: 19 / 14, color: urgent ? AppColors.textPrimary : Colors.black)),
-              const SizedBox(height: 5),
-              Padding(
-                padding: EdgeInsets.only(left: urgent ? 10 : 12, right: urgent ? 16 : 4),
-                child: Text(body, style: const TextStyle(fontFamily: AppFonts.body, fontSize: 12, height: 14 / 12, color: AppColors.textSecondary)),
-              ),
-            ],
+          Text(title, style: TextStyle(fontFamily: urgent ? AppFonts.heading : AppFonts.body, fontWeight: FontWeight.bold, fontSize: 14, height: 19 / 14, color: urgent ? AppColors.textPrimary : Colors.black)),
+          const SizedBox(height: 5),
+          Padding(
+            padding: EdgeInsets.only(left: urgent ? 10 : 12, right: urgent ? 16 : 4),
+            child: Text(body, style: const TextStyle(fontFamily: AppFonts.body, fontSize: 12, height: 14 / 12, color: AppColors.textSecondary)),
           ),
-          if (!urgent) const Positioned(right: 10, top: 2, child: Icon(Icons.info_outline, size: 18, color: Color(0xFF1E1E1E))),
         ],
       ),
     );
@@ -364,7 +370,7 @@ class _TaskCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(20, 9, 20, 10),
+      padding: const EdgeInsets.fromLTRB(20, 9, 20, 19), // design: chips end 18-19 above card bottom
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(color: AppColors.neutralBorder, width: 1.5),

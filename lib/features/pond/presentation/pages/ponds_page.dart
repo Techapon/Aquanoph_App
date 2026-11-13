@@ -11,12 +11,11 @@ import 'package:aquanoph/features/pond/presentation/pages/add_pond_page.dart';
 import 'package:aquanoph/features/pond/presentation/pages/pond_home_page.dart';
 import 'package:aquanoph/shared/widgets/buoy_art.dart';
 
-/// Ponds LIST screen per figma/pond_page/Ponds.png (frame "Ponds", 402×874 — the second
-/// frame on that Figma page; Ponds.css/SVG is the "Pond 1" detail page).
-/// No Dev Mode CSS exists for this frame yet, so geometry is measured off the PNG (±2px).
+/// Ponds LIST screen per figma/pond_page/Ponds.css (frame "Ponds" — Dev Mode CSS,
+/// pixel-exact offsets; detail frame CSS moved to css_detail.txt).
 /// DO value/time + Warning text are the design's static strings [A] — data wiring = step 3.
-/// Province (PNG mock "Sakon Nakhon") has no DB field -> country from timezone only.
-/// Menu = sign out (moved from the old AppBar action). Calendar button destination [U] -> inert.
+/// Province (mock "Sakon Nakhon") has no DB field -> country from timezone only.
+/// Menu = sign out. carbon:fish glyph has no Material match [A] -> placeholder icon.
 class PondsPage extends StatefulWidget {
   final String userId;
   const PondsPage({super.key, required this.userId});
@@ -37,23 +36,32 @@ class _PondsPageState extends State<PondsPage> {
     final ponds = context.watch<PondProvider>();
     return Scaffold(
       backgroundColor: Colors.white,
-      floatingActionButton: FloatingActionButton(
-        // design: white circle bottom-right, gradient "+"
-        onPressed: () => _add(context),
-        backgroundColor: Colors.white,
-        elevation: 2,
-        child: ShaderMask(
-          shaderCallback: (b) => const LinearGradient(colors: [AppColors.gradientStart, AppColors.gradientEnd]).createShader(b),
-          blendMode: BlendMode.srcIn,
-          child: const Icon(Icons.add, size: 24, color: Colors.white),
+      floatingActionButton: Padding(
+        // design FAB: 75x75 circle at right30/bottom36; Scaffold margin is 16 -> add 14/20
+        padding: const EdgeInsets.only(right: 14, bottom: 20),
+        child: GestureDetector(
+          onTap: () => _add(context),
+          child: SizedBox(
+            width: 75,
+            height: 75,
+            child: DecoratedBox(
+              decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle, boxShadow: [_pillShadow]),
+              child: ShaderMask(
+                // plus glyph: linear-gradient(180deg, #0496FF, #7ED348)
+                shaderCallback: (b) => const LinearGradient(colors: [AppColors.gradientStart, AppColors.gradientEnd], begin: Alignment.topCenter, end: Alignment.bottomCenter).createShader(b),
+                blendMode: BlendMode.srcIn,
+                child: const Icon(Icons.add, size: 28, color: Colors.white),
+              ),
+            ),
+          ),
         ),
       ),
       body: SafeArea(
         child: Column(
           children: [
-            // ── Header: menu | "Ponds" | calendar(red dot)  (design y65–109)
+            // ── Header: menu | "Ponds" (list frame has no right-side button)
             Padding(
-              padding: const EdgeInsets.fromLTRB(22, 16, 22, 8),
+              padding: const EdgeInsets.fromLTRB(22, 11, 22, 0),
               child: Row(
                 children: [
                   PopupMenuButton<String>(
@@ -65,7 +73,7 @@ class _PondsPageState extends State<PondsPage> {
                     child: const _HeaderChrome(Icons.menu),
                   ),
                   const Expanded(child: Center(child: Text('Ponds', style: TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 24, height: 33 / 24, color: AppColors.textPrimary)))),
-                  const _HeaderChrome(Icons.calendar_today_outlined, dot: true),
+                  const SizedBox(width: 44),
                 ],
               ),
             ),
@@ -94,9 +102,10 @@ class _PondsPageState extends State<PondsPage> {
                   return RefreshIndicator(
                     onRefresh: () => ponds.load(widget.userId),
                     child: ListView.separated(
-                      padding: const EdgeInsets.fromLTRB(22, 8, 22, 88),
+                      padding: const EdgeInsets.fromLTRB(22, 28, 22, 100),
                       itemCount: ponds.ponds.length,
-                      separatorBuilder: (_, _) => const Padding(padding: EdgeInsets.symmetric(vertical: 14), child: Divider(height: 1, thickness: 1, color: Color(0xFFEFEFEF))),
+                      // Line 4: 322 wide, 3px #F4F4F4, centered
+                      separatorBuilder: (_, _) => const Padding(padding: EdgeInsets.fromLTRB(18, 24, 18, 24), child: DecoratedBox(decoration: BoxDecoration(color: AppColors.dividerLight), child: SizedBox(height: 3))),
                       itemBuilder: (_, i) => _PondBlock(index: i, pond: ponds.ponds[i], userId: widget.userId),
                     ),
                   );
@@ -112,13 +121,13 @@ class _PondsPageState extends State<PondsPage> {
   void _add(BuildContext context) => Navigator.of(context).push(MaterialPageRoute(builder: (_) => AddPondPage(userId: widget.userId)));
 }
 
-const _shadow = BoxShadow(color: Color(0x1A000000), blurRadius: 29.5, spreadRadius: -2, offset: Offset(0, 2));
+const _headerShadow = BoxShadow(color: Color(0x1A000000), blurRadius: 29.5, spreadRadius: -2, offset: Offset(0, 2));
+const _pillShadow = BoxShadow(color: Color(0x1F000000), blurRadius: 7.6, spreadRadius: 1, offset: Offset(0, 1));
 
-/// 44×44 white button with shadow (menu / calendar), same chrome as PondHomePage header.
+/// 44x44 white rounded-8 button with shadow ("Rectangle 30" chrome).
 class _HeaderChrome extends StatelessWidget {
   final IconData icon;
-  final bool dot;
-  const _HeaderChrome(this.icon, {this.dot = false});
+  const _HeaderChrome(this.icon);
 
   @override
   Widget build(BuildContext context) {
@@ -126,14 +135,8 @@ class _HeaderChrome extends StatelessWidget {
       width: 44,
       height: 44,
       child: DecoratedBox(
-        decoration: const BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(8)), boxShadow: [_shadow]),
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            Center(child: Icon(icon, size: 22, color: const Color(0xFF1E1E1E))),
-            if (dot) const Positioned(left: 30, top: 7, child: SizedBox(width: 7, height: 7, child: DecoratedBox(decoration: BoxDecoration(color: Color(0xFFFF0000), shape: BoxShape.circle)))),
-          ],
-        ),
+        decoration: const BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(8)), boxShadow: [_headerShadow]),
+        child: Center(child: Icon(icon, size: 22, color: const Color(0xFF1E1E1E))),
       ),
     );
   }
@@ -147,87 +150,94 @@ class _PondBlock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // design pitch: title@137, buoy@189, meta 174/206/235, cards@277 (99h), pill@399
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // "Ponds 1 : <name>" — prefix regular 400, name bold 700 (design 18 Nunito)
-        Text.rich(
-          TextSpan(
-            style: const TextStyle(fontFamily: AppFonts.heading, fontSize: 18, height: 25 / 18, color: AppColors.textPrimary),
-            children: [
-              TextSpan(text: 'Ponds ${index + 1} : '),
-              TextSpan(text: pond.name, style: const TextStyle(fontWeight: FontWeight.bold)),
-            ],
-          ),
+        Text(
+          'Ponds ${index + 1} : ${pond.name}',
+          style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.w400, fontSize: 18, height: 25 / 18, color: AppColors.textPrimary),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 12),
         Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const BuoyWithWater(),
-            const SizedBox(width: 14),
+            const Padding(padding: EdgeInsets.only(left: 11), child: BuoyWithWater()), // buoy group at x33 vs gutter 22
+            const SizedBox(width: 19),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _metaRow(Icons.location_on_outlined, countryFor(pond.timezone), AppColors.textSecondary),
-                  const SizedBox(height: 6),
-                  _metaRow(Icons.surfing, speciesLabel(pond.species), AppColors.gradientStart), // [U] no fish glyph in Material; swap when icon asset lands
-                  const SizedBox(height: 6),
-                  _metaRow(Icons.square_foot, '${pond.volumeM3.toStringAsFixed(1)} cubic meter', AppColors.success),
+                  _metaRow(Icons.location_on_outlined, 15, countryFor(pond.timezone), AppColors.textPrimary),
+                  const SizedBox(height: 10),
+                  _metaRow(Icons.surfing, 17, speciesLabel(pond.species), AppColors.gradientStart), // carbon:fish placeholder [A]
+                  const SizedBox(height: 7),
+                  _metaRow(Icons.view_in_ar_outlined, 15, '${_volumeText()} cubic meter', AppColors.gradientEnd),
                 ],
               ),
             ),
           ],
         ),
-        const SizedBox(height: 10),
-        const SizedBox(height: 98, child: Row(children: [Expanded(child: _DoCard()), SizedBox(width: 10), Expanded(child: _WarningCard())])),
-        const SizedBox(height: 10),
+        const SizedBox(height: 23),
+        // cards 177/178 x 99 with 12 gap (18+177+12+178=385 within 22..380 content -> 4px bleed each side)
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: -4),
+          child: SizedBox(
+            height: 99,
+            child: Row(children: [Expanded(child: _DoCard()), SizedBox(width: 12), Expanded(child: _WarningCard())]),
+          ),
+        ),
+        const SizedBox(height: 23),
         Center(child: _ViewDetailsPill(onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => PondHomePage(userId: userId, pond: pond))))),
       ],
     );
   }
 
-  static Widget _metaRow(IconData icon, String text, Color color) => Row(
+  String _volumeText() {
+    final v = pond.volumeM3;
+    return v % 1 == 0 ? v.toStringAsFixed(0) : v.toStringAsFixed(1);
+  }
+
+  static Widget _metaRow(IconData icon, double iconSize, String text, Color textColor) => Row(
         children: [
-          Icon(icon, size: 15, color: color),
+          Icon(icon, size: iconSize, color: const Color(0xFF232323)),
           const SizedBox(width: 6),
-          Flexible(child: Text(text, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontFamily: AppFonts.body, fontSize: 12, height: 16 / 12, color: color))),
+          Flexible(child: Text(text, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 16, height: 22 / 16, color: textColor))),
         ],
       );
 }
 
-/// "DO  9:30 AM. / Oxygen in pond / 4.2 mg/L [good]" — green Optimal-zone styling from
-/// the PNG. All values static for now [A]; step 3 pulls severity_reports + latest reading.
+/// "DO 9:30 AM. / Oxygen in pond / 4.2 mg/L [good]" — Optimal-zone card (Rectangle 3).
+/// All values static for now [A]; step 3 pulls severity_reports + latest reading.
 class _DoCard extends StatelessWidget {
   const _DoCard();
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
-      decoration: BoxDecoration(color: AppColors.zoneOptimal, border: Border.all(color: AppColors.optimal, width: 1.5), borderRadius: BorderRadius.circular(8)),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      padding: const EdgeInsets.fromLTRB(12, 7, 12, 8),
+      decoration: BoxDecoration(color: AppColors.listOptimalBg, border: Border.all(color: AppColors.listOptimalBorder, width: 1.5), borderRadius: BorderRadius.circular(8)),
+      child: const Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
-            children: [
-              Text('DO', style: TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 16, color: AppColors.textPrimary)),
-              Spacer(),
-              Text('9:30 AM.', style: TextStyle(fontFamily: AppFonts.heading, fontSize: 12, color: AppColors.textMuted)),
-            ],
-          ),
-          const Text('Oxygen in pond', style: TextStyle(fontFamily: AppFonts.body, fontSize: 12, color: AppColors.textSecondary)),
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
-            children: const [
-              Text('4.2', style: TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 30, height: 1, color: AppColors.textPrimary)),
-              Padding(padding: EdgeInsets.only(bottom: 3, left: 4), child: Text('mg/L', style: TextStyle(fontFamily: AppFonts.body, fontSize: 12, color: AppColors.textSecondary))),
-              Spacer(),
-              _GoodBadge(),
+            children: [
+              Text('DO', style: TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 16, height: 22 / 16, color: AppColors.textPrimary)),
+              SizedBox(width: 3),
+              Text('9:30 AM.', style: TextStyle(fontFamily: AppFonts.heading, fontSize: 12, height: 16 / 12, color: AppColors.textMuted)),
             ],
+          ),
+          Padding(padding: EdgeInsets.only(top: 2), child: Text('Oxygen in pond', style: TextStyle(fontFamily: AppFonts.body, fontSize: 12, height: 14 / 12, color: AppColors.textMuted))),
+          Expanded(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text('4.2', style: TextStyle(fontFamily: AppFonts.heading, fontSize: 32, height: 44 / 32, color: AppColors.textPrimary)), // design weight 400
+                Padding(padding: EdgeInsets.only(left: 4, bottom: 7), child: Text('mg/L', style: TextStyle(fontFamily: AppFonts.heading, fontSize: 12, color: AppColors.textPrimary))),
+                Spacer(),
+                _GoodBadge(),
+              ],
+            ),
           ),
         ],
       ),
@@ -235,43 +245,50 @@ class _DoCard extends StatelessWidget {
   }
 }
 
+/// "good" badge: 51x20 #0BE220 r4, Nunito 14 bold white.
 class _GoodBadge extends StatelessWidget {
   const _GoodBadge();
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-      decoration: BoxDecoration(color: AppColors.optimal, borderRadius: BorderRadius.circular(6)),
-      child: const Text('good', style: TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 10, color: Colors.white)),
+      width: 51,
+      height: 20,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(color: AppColors.optimal, borderRadius: BorderRadius.circular(4)),
+      child: const Text('good', style: TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 14, color: Colors.white)),
     );
   }
 }
 
-/// ⚠ Warning card — static prediction string from the PNG (step 3: top pending rec).
+/// ⚠ Warning card (Rectangle 5) — static prediction string; step 3: top pending rec.
 class _WarningCard extends StatelessWidget {
   const _WarningCard();
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+      padding: const EdgeInsets.fromLTRB(13, 9, 13, 0),
       decoration: BoxDecoration(color: AppColors.urgentBg, border: Border.all(color: AppColors.urgentBorder, width: 1.5), borderRadius: BorderRadius.circular(8)),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
+          const Row(
             children: [
-              Icon(Icons.error_outline, size: 18, color: const Color(0xFFFF3232)),
-              const SizedBox(width: 4),
-              const Text('Warning', style: TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 16, color: Color(0xFFFF3232))),
+              Icon(Icons.warning_amber_rounded, size: 20, color: AppColors.warnIcon),
+              SizedBox(width: 6),
+              Text('Warning', style: TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 16, height: 22 / 16, color: AppColors.warnTitle)),
             ],
           ),
-          const Text(
-            'DO is expected to drop to 2.6 mg/L at 04:00 AM.',
-            style: TextStyle(fontFamily: AppFonts.body, fontSize: 12, height: 14 / 12, color: AppColors.textSecondary),
+          const Padding(
+            padding: EdgeInsets.only(top: 12),
+            child: Center(
+              child: Text(
+                'DO is expected to drop to 2.6 mg/L at 04:00 AM.',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontFamily: AppFonts.body, fontSize: 12, height: 14 / 12, color: AppColors.textPrimary),
+              ),
+            ),
           ),
         ],
       ),
@@ -279,6 +296,7 @@ class _WarningCard extends StatelessWidget {
   }
 }
 
+/// "View full details": 142.61x31 white r8 shadow 0/1/7.6/1@0.12, gradient text 14.
 class _ViewDetailsPill extends StatelessWidget {
   final VoidCallback onTap;
   const _ViewDetailsPill({required this.onTap});
@@ -288,10 +306,10 @@ class _ViewDetailsPill extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 28,
+        height: 31,
         alignment: Alignment.center,
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        decoration: const BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(8)), boxShadow: [_shadow]),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        decoration: const BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(8)), boxShadow: [_pillShadow]),
         child: ShaderMask(
           shaderCallback: (b) => const LinearGradient(colors: [AppColors.gradientStart, AppColors.gradientEnd]).createShader(b),
           blendMode: BlendMode.srcIn,

@@ -26,4 +26,11 @@ abstract final class AppColors {
 
   static const zoneOptimal = Color(0x1A0BE220); // 10% optimal green
   static const zoneCritical = Color(0x1AFF3232); // 10% critical red
+
+  // ponds LIST frame (figma/pond_page/Ponds.css, "Ponds") — DO/Warning cards & divider
+  static const listOptimalBg = Color(0xFFECFFEE); // DO card fill
+  static const listOptimalBorder = Color(0xFF38E849); // DO card border
+  static const warnTitle = Color(0xFFFF7373); // "Warning" text
+  static const warnIcon = Color(0xFFFF8D8D); // triangle-alert stroke
+  static const dividerLight = Color(0xFFF4F4F4); // Line 4 block divider
 }

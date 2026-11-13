@@ -91,21 +91,21 @@ class _PondHomeView extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 28),
-                // ── "Today's Task" + buoy illustration (centered, y184–249)
+                // ── buoy illustration (centered; design also had "Today's Task" at y198 —
+                // moved to the recommendations section per user's Figma selection)
                 const SizedBox(
                   height: 65,
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      Align(child: BuoyWithWater()), // design centers the 117-wide group at x142/402
-                      Positioned(left: 0, top: 14, child: Text("Today’s Task", style: TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 18, height: 25 / 18, color: AppColors.textPrimary))),
-                    ],
-                  ),
+                  child: Align(child: BuoyWithWater()), // design centers the 117-wide group at x142/402
                 ),
                 const SizedBox(height: 28),
                 // ── Water Quality Now (y277, h91)
                 _WaterQualityCard(status: p.status, timezone: pond.timezone),
                 const SizedBox(height: 65),
+                const Text(
+                  "Today’s Task", // curly apostrophe exactly as in the design
+                  style: TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 18, height: 25 / 18, color: AppColors.textPrimary),
+                ),
+                const SizedBox(height: 11),
                 const _SectionTitle('All Recommendations'),
                 const SizedBox(height: 11),
                 if (p.recommendations.isEmpty)

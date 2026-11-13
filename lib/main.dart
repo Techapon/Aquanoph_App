@@ -6,9 +6,10 @@ import 'package:aquanoph/core/theme/app_colors.dart';
 import 'package:aquanoph/core/theme/app_fonts.dart';
 import 'package:aquanoph/features/auth/presentation/controller/auth_provider.dart';
 import 'package:aquanoph/features/auth/presentation/pages/sign_in_page.dart';
+import 'package:aquanoph/features/pond/presentation/controller/pond_provider.dart';
+import 'package:aquanoph/features/pond/presentation/pages/ponds_page.dart';
 
-// ponytail: AuthGate + placeholder live in main as the app shell.
-// Phase 2 replaces the placeholder with features/pond pages (then move gate if needed).
+// ponytail: AuthGate lives in main as the app shell; feature pages live in their feature folder.
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await loadEnv();
@@ -26,11 +27,14 @@ class AquanophApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!supabaseReady) return MaterialApp(title: 'NamDee', home: const _SetupHintPage());
+    if (!supabaseReady) return MaterialApp(title: 'Aquanoph', home: const _SetupHintPage());
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => AuthProvider())],
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => PondProvider()),
+      ],
       child: MaterialApp(
-        title: 'NamDee',
+        title: 'Aquanoph',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(fontFamily: AppFonts.body, scaffoldBackgroundColor: Colors.white),
         home: const _AuthGate(),
@@ -58,35 +62,7 @@ class _AuthGateState extends State<_AuthGate> {
     final auth = context.watch<AuthProvider>();
     if (!auth.bootstrapped) return const Scaffold(backgroundColor: Colors.white, body: Center(child: CircularProgressIndicator()));
     if (auth.user == null) return const SignInPage();
-    return const _PondPlaceholderPage();
-  }
-}
-
-class _PondPlaceholderPage extends StatelessWidget {
-  const _PondPlaceholderPage();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: const Text('NamDee', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, fontFamily: AppFonts.heading, color: AppColors.textPrimary)),
-        actions: [
-          TextButton(
-            onPressed: () => context.read<AuthProvider>().doSignOut(),
-            child: const Text('Sign out', style: TextStyle(color: AppColors.textSecondary)),
-          ),
-        ],
-      ),
-      backgroundColor: Colors.white,
-      body: const Center(
-        child: Text(
-          'Pond list — Phase 2',
-          style: TextStyle(fontSize: 18, fontFamily: AppFonts.heading, color: AppColors.textSecondary),
-        ),
-      ),
-    );
+    return PondsPage(userId: auth.user!.id);
   }
 }
 
@@ -101,7 +77,7 @@ class _SetupHintPage extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(32),
           child: Text(
-            'Copy .env.example to  .env and set SUPABASE_URL + SUPABASE_ANON_KEY, then restart the app.',
+            'Copy .env.example to .env and set SUPABASE_URL + SUPABASE_ANON_KEY, then restart the app.',
             textAlign: TextAlign.center,
             style: const TextStyle(fontSize: 14, fontFamily: AppFonts.body, color: AppColors.textPrimary),
           ),

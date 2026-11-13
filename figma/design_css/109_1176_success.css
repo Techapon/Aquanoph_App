@@ -1,0 +1,95 @@
+/* Figma "Add - Pond -succcess" (109:1176) — Dev Mode "Copy as code" CSS, pasted by user 2026-11-13.
+   Ground truth for the success popup. Note: mock copy below is design placeholder text;
+   button label width 40px Inter16 does not fit "OK" — label unconfirmed [U]. */
+
+/* Add - Pond -succcess */
+position: relative;
+width: 358px;
+height: 383px;
+background: #FFFFFF;
+border-radius: 16px;
+
+/* Create success!  (TITLE) */
+position: absolute;
+width: 171px;
+height: 33px;
+left: calc(50% - 171px/2 + 0.5px);
+top: 145px;
+font-family: 'Nunito';
+font-weight: 700;
+font-size: 24px;
+line-height: 33px;
+text-align: center;
+color: #232323;
+
+/* Analysis and Schedule complete.  (SUBTITLE) */
+position: absolute;
+width: 243px;
+height: 22px;
+left: calc(50% - 243px/2 + 0.5px);
+top: 178px;
+font-family: 'Nunito';
+font-weight: 400;
+font-size: 16px;
+line-height: 22px;
+text-align: center;
+color: #707070;
+
+/* Button Group */
+display: flex;
+flex-direction: row;
+align-items: center;
+gap: 16px;
+position: absolute;
+width: 100px;
+height: 40px;
+left: 238px;
+top: 324px;
+
+/* Button (visible one; sibling 112px Button + Star/X are display:none variants) */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 12px;
+gap: 8px;
+width: 100px;
+height: 40px;
+background: #2C2C2C;
+border: 1px solid #2C2C2C;
+border-radius: 8px;
+
+/* Button label */
+width: 40px;
+height: 16px;
+font-family: 'Inter';
+font-weight: 400;
+font-size: 16px;
+line-height: 100%;
+color: #F5F5F5;
+
+/* Group 98 / Ellipse 5 (tick circle) */
+position: absolute;
+width: 75px;
+height: 75px;
+left: calc(50% - 75px/2 + 0.5px); /* = 142px */
+top: 52px;
+background: #EEFFF6;
+
+/* Vector (tick) — % of card 358x383 => abs x163-196, y80-100.5 */
+border: 6px solid #11CD24;
+
+/* Analysis Pond completed.  (STATUS LINE — was missing in first implementation!) */
+position: absolute;
+width: 213px;
+height: 22px;
+left: 30px;
+top: 244px;
+font-family: 'Nunito';
+font-weight: 700;
+font-size: 16px;
+line-height: 22px;
+color: #232323;
+
+/* small green check next to status line — abs x312-328, y249-261 */
+border: 2px solid #0BE220;

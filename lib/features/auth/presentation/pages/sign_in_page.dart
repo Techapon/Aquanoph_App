@@ -47,7 +47,7 @@ class _SignInPageState extends State<SignInPage> {
               children: [
                 const SizedBox(height: 48),
                 const Text(
-                  'NamDee',
+                  'Aquanoph',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, fontFamily: AppFonts.heading, color: AppColors.textPrimary),
                 ),

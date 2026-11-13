@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Tokens from docs/DESIGN_TOKENS.md (Figma "NamDee").
+/// Tokens from docs/DESIGN_TOKENS.md (Figma "NamDee" file).
 abstract final class AppColors {
   static const textPrimary = Color(0xFF232323);
   static const textSecondary = Color(0xFF707070);
@@ -12,6 +12,8 @@ abstract final class AppColors {
 
   static const optimal = Color(0xFF0BE220);
   static const stress = Color(0xFFFFCC00);
+  static const success = Color(0xFF11CD24); // 109:1176 tick stroke
+  static const successBg = Color(0xFFEEFFF6); // 109:1176 tick circle fill
   static const gradientStart = Color(0xFF0496FF);
   static const gradientEnd = Color(0xFF7ED348);
 

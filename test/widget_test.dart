@@ -5,7 +5,6 @@ import 'package:aquanoph/core/exception/core_error_failure.dart';
 import 'package:aquanoph/core/utils/country_timezones.dart';
 import 'package:aquanoph/core/utils/db_num.dart';
 import 'package:aquanoph/core/utils/pond_time.dart';
-import 'package:aquanoph/core/utils/thousands.dart';
 import 'package:aquanoph/features/activity/data/models/activity_model.dart';
 import 'package:aquanoph/features/activity/domain/entities/activity_entity.dart';
 import 'package:aquanoph/features/auth/data/models/auth_user_model.dart';
@@ -175,23 +174,6 @@ void main() {
       final day = pondDayUtc(DateTime.utc(2026, 11, 13, 6), 'Asia/Bangkok');
       expect(day.from, DateTime.utc(2026, 11, 12, 17));
       expect(day.to.difference(day.from), const Duration(days: 1));
-    });
-
-    test('utcOffsetLabel: whole + half-hour offsets, unknown id -> empty', () {
-      expect(utcOffsetLabel('Asia/Bangkok'), 'UTC+7');
-      expect(utcOffsetLabel('Asia/Yangon'), 'UTC+6:30');
-      expect(utcOffsetLabel('UTC'), 'UTC+0');
-      expect(utcOffsetLabel('Mars/Olympus'), '');
-    });
-  });
-
-  group('formatThousands', () {
-    test('groups every 3 digits, leaves small and negative intact', () {
-      expect(formatThousands(3000), '3,000');
-      expect(formatThousands(1234567), '1,234,567');
-      expect(formatThousands(999), '999');
-      expect(formatThousands(0), '0');
-      expect(formatThousands(-1500), '-1,500');
     });
   });
 

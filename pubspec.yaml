@@ -62,6 +62,7 @@ flutter:
 
   assets:
     - .env
+    - assets/images/fish.png
 
   fonts:
     - family: Nunito

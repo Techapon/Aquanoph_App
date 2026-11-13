@@ -10,8 +10,8 @@ import 'package:aquanoph/shared/widgets/app_select_field.dart';
 import 'package:aquanoph/shared/widgets/app_text_field.dart';
 import 'package:aquanoph/shared/widgets/success_dialog.dart';
 
-/// Figma 61:536 (step 1) + 154:139 (step 2). Step 3 + success screen could not be read
-/// (Figma MCP rate limit) -> derived: [A] step 3 = device id + timezone, no success page (pop back to list).
+/// Figma 61:536 (step 1) + 154:139 (step 2) + 158:196 (step 3 "Add - Pond - Device",
+/// read 2026-11-13 — see figma/add_pond_device/css.txt).
 /// Species is a Select with the single v1 option "Nile tilapia" [V: CLAUDE.md §1];
 /// not sent to the RPC (DB default nile_tilapia). Stocking date IS required by create_pond [V signature].
 class AddPondPage extends StatefulWidget {
@@ -109,9 +109,9 @@ class _AddPondPageState extends State<AddPondPage> {
           icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
           onPressed: () => _step == 0 ? Navigator.of(context).pop() : setState(() => _step--),
         ),
-        title: Text(
-          _step == 0 ? 'Create new pond' : 'Create new pond · ${_step + 1}/3',
-          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, fontFamily: AppFonts.heading, color: AppColors.textPrimary),
+        title: const Text(
+          'Create new ponds',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, fontFamily: AppFonts.heading, color: AppColors.textPrimary),
         ),
       ),
       body: SafeArea(
@@ -134,21 +134,29 @@ class _AddPondPageState extends State<AddPondPage> {
                   child: Text(ponds.error!, style: const TextStyle(fontSize: 14, fontFamily: AppFonts.body, color: AppColors.danger)),
                 ),
               const SizedBox(height: 24),
-              Align(
-                alignment: Alignment.centerRight,
-                child: _darkButton(
-                  isLast ? 'Create' : 'Next',
-                  ponds.isLoading
-                      ? null
-                      : () {
-                          if (isLast) {
-                            _create();
-                          } else if (_validateStep()) {
-                            setState(() => _step++);
-                          }
+              isLast
+                  ? ElevatedButton(
+                      // design 158:206: full-width (316/358) h40 #2A2A2A r8, label 16 #F5F5F5 left, no arrow
+                      onPressed: ponds.isLoading ? null : _create,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.darkButton,
+                        foregroundColor: const Color(0xFFF5F5F5),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                        minimumSize: const Size.fromHeight(40),
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        alignment: Alignment.centerLeft,
+                      ),
+                      child: const Text('Create new pond', style: TextStyle(fontSize: 16, fontFamily: AppFonts.heading)),
+                    )
+                  : Align(
+                      alignment: Alignment.centerRight,
+                      child: _darkButton(
+                        'Next',
+                        () {
+                          if (_validateStep()) setState(() => _step++);
                         },
-                ),
-              ),
+                      ),
+                    ),
               const SizedBox(height: 24),
             ],
           ),
@@ -160,7 +168,8 @@ class _AddPondPageState extends State<AddPondPage> {
   String _subtitle() => switch (_step) {
         0 => 'Enter details for your new pond.',
         1 => 'Tell us about your stock.',
-        _ => 'Connect your buoy device.',
+        // literal design copy (158:199) — mock text says "well !!" [V from design, easy to change]
+        _ => 'Enter details for your new well !!',
       };
 
   List<Widget> _fields() {
@@ -190,7 +199,11 @@ class _AddPondPageState extends State<AddPondPage> {
         ];
       default:
         return [
-          AppTextField(label: 'Device', hint: 'Buoy device ID (must exist in devices)', controller: _device),
+          const Padding(
+            padding: EdgeInsets.only(top: 24, bottom: 34),
+            child: Center(child: _BuoyArt()),
+          ),
+          AppTextField(label: 'Device ID', hint: 'ID', controller: _device),
           const SizedBox(height: 16),
           AppSelectField(
             label: 'Time zone',
@@ -221,4 +234,28 @@ class _AddPondPageState extends State<AddPondPage> {
           ],
         ),
       );
+}
+
+/// "Water Quality Monitoring Device" 71x58 = 2x of the 34x27 component; % insets from
+/// figma/add_pond_device/css.txt (158:196). No water ellipses here (home has them).
+class _BuoyArt extends StatelessWidget {
+  const _BuoyArt();
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 71,
+      height: 58,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: const [
+          Positioned(left: 0, top: 40.8, width: 71, height: 17.2, child: ColoredBox(color: Color(0xFFD9D9D9))), // deck
+          Positioned(left: 4.2, top: 47.3, width: 16.7, height: 8.6, child: ColoredBox(color: Color(0xFF6E6E6E))), // leg L
+          Positioned(left: 50.1, top: 47.3, width: 16.7, height: 8.6, child: ColoredBox(color: Color(0xFF6E6E6E))), // leg R
+          Positioned(left: 8.4, top: 15.0, width: 54.3, height: 25.8, child: ColoredBox(color: Color(0xFF414141))), // body
+          Positioned(left: 58.5, top: 0, width: 2.1, height: 15.0, child: ColoredBox(color: Color(0xFFA4A4A4))), // mast
+        ],
+      ),
+    );
+  }
 }

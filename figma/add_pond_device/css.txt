@@ -1,0 +1,54 @@
+# Reference — Figma "NamDee" node 158:196 "Add - Pond - Device" (wizard step 3)
+# Ground truth pulled via Figma MCP get_design_context, 2026-11-13 (before MCP quota died again).
+# Frame 358x439 (content-only, no status bar). Dev-mode React output, kept raw.
+# Screenshot: 1x.png
+
+KEY FACTS (vs previous [A] guess):
+- Title "Create new ponds" (plural) 24 Nunito bold #232323 at (19,20) — NO "· 3/3" step counter in design
+- Subtitle "Enter details for your new well !!" Nunito 16 #707070 at (19,53)  (mock copy, "well" + "!!")
+- Buoy device art 71x58 at (144,99) — same 5-rect WaterQualityMonitoringDevice as home, NO water ellipses
+- "Device ID" label 16 at top 191; input 319x43 hint "ID" #B3B3B3 (border 1 #D9D9D9 r8)
+- "Time zone" label 16 at top 281; Select 319x40 value "Hong kong" + chevron down
+- Button "Create new pond" 316x40 #2A2A2A r8 CENTERED at top 395, text 16 #F5F5F5 left-aligned, NO arrow
+  (steps 1-2 keep the 88x40 right-aligned "Next" + arrow — design 154:159, read earlier)
+
+RAW REFERENCE CODE:
+
+const assetPathPrefix = "https://www.figma.com/api/mcp/asset/82915a09-25de-4cae-96e8-b8b054fcbebb"; // expired URLs, not used
+function WaterQualityMonitoringDevice({ className }: { className?: string }) {
+  return (
+    <div className={className || "h-[27px] relative w-[34px]"} data-node-id="14:5558" data-name="Water Quality Monitoring Device">
+      <div className="absolute bg-[#d9d9d9] inset-[70.37%_0_0_0]" data-node-id="14:5551" />
+      <div className="absolute bg-[#6e6e6e] inset-[81.48%_70.59%_3.7%_5.88%]" data-node-id="14:5552" />
+      <div className="absolute bg-[#6e6e6e] inset-[81.48%_5.88%_3.7%_70.59%]" data-node-id="14:5553" />
+      <div className="absolute bg-[#414141] inset-[25.93%_11.76%_29.63%_11.76%]" data-node-id="14:5554" />
+      <div className="absolute bg-[#a4a4a4] inset-[0_14.71%_74.07%_82.35%]" data-node-id="14:5555" />
+    </div>
+  );
+}
+
+export default function AddPondDevice() {
+  return (
+    <div className="bg-white overflow-clip relative rounded-[16px] size-full" data-node-id="158:196" data-name="Add - Pond - Device">
+      <p className="absolute font-['Nunito:Bold'] font-bold left-[19px] text-[#232323] text-[24px] top-[20px]" data-node-id="158:198">Create new ponds</p>
+      <p className="absolute font-['Nunito:Regular'] font-normal left-[19px] text-[#707070] text-[16px] top-[53px]" data-node-id="158:199">Enter details for your new well !!</p>
+      <WaterQualityMonitoringDevice className="absolute h-[58px] left-[144px] top-[99px] w-[71px]" />
+      <div className="absolute flex flex-col gap-[8px] items-start left-[19px] top-[191px] w-[319px]" data-node-id="158:237" data-name="Input Field">
+        <p className="text-[16px] text-[#1e1e1e]">Device ID</p>
+        <div className="flex h-[43px] items-center px-[16px] py-[12px] rounded-[8px] border border-[#d9d9d9] bg-white w-full" data-node-id="158:240" data-name="Input">
+          <p className="text-[16px] text-[#b3b3b3]">ID</p>
+        </div>
+      </div>
+      <div className="absolute flex flex-col gap-[8px] items-start left-[19px] top-[281px] w-[319px]" data-node-id="301:164" data-name="Input Field">
+        <p className="text-[16px] text-[#1e1e1e]">Time zone</p>
+      </div>
+      <div className="absolute flex h-[40px] gap-[8px] items-center left-[19px] pl-[16px] pr-[12px] py-[12px] rounded-[8px] border border-[#d9d9d9] bg-white top-[311px] w-[319px]" data-node-id="301:171" data-name="Select">
+        <p className="text-[16px] text-[#1e1e1e]">Hong kong</p>
+        <ChevronDown />
+      </div>
+      <button className="absolute bg-[#2a2a2a] flex h-[40px] items-center justify-center left-1/2 -translate-x-1/2 rounded-[8px] top-[395px] w-[316px]" data-node-id="158:206">
+        <p className="text-[16px] text-[#f5f5f5]">Create new pond</p>
+      </button>
+    </div>
+  );
+}

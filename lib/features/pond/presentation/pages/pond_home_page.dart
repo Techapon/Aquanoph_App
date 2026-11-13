@@ -203,7 +203,7 @@ class _Device extends StatelessWidget {
           Positioned(left: 3.3, top: 36.7, width: 13.2, height: 6.9, child: ColoredBox(color: Color(0xFF6E6E6E))), // leg L
           Positioned(left: 39.5, top: 36.7, width: 13.2, height: 6.9, child: ColoredBox(color: Color(0xFF6E6E6E))), // leg R
           Positioned(left: 6.6, top: 11.7, width: 42.9, height: 20.0, child: ColoredBox(color: Color(0xFF414141))), // body
-          Positioned(left: 46.1, top: 0, width: 1.6, height: 33.3, child: ColoredBox(color: Color(0xFFA4A4A4))), // mast
+          Positioned(left: 46.1, top: 0, width: 1.6, height: 11.7, child: ColoredBox(color: Color(0xFFA4A4A4))), // mast (26% of 45 — nub above body)
         ],
       ),
     );

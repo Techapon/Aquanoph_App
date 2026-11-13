@@ -11,9 +11,9 @@ File convention per folder (paste whichever you can export; CSS > PNG > SVG — 
 | Folder | Node | Screen | Needed for | State |
 |---|---|---|---|---|
 | `add_pond_success/` | 109:1176 | pond wizard success popup | Phase 2 | ✅ done (css.txt + check.svg) |
-| `home/` | 77:605 | Ponds 1 home (severity card, representative param, badges) | **Phase 3** | ⏳ awaiting css.txt + 1x.png |
-| `home/` variants | 77:605* | **ElevatedRisk** + **Critical** badge colors (never seen [U]) | **Phase 3** | ⏳ `css_elevated.txt` / `css_critical.txt` + pngs, or any frame showing those states |
-| `add_pond_step3/` | 158:196 | wizard step 3 | fidelity re-check | ⬜ later (MCP rate limit) |
+| `pond_page/` | (Ponds 1 screen) | pond home — severity card, badges, recs, daily tasks | **Phase 3** | ✅ refs in (Ponds.css/png/svg by user), layout done step 2 |
+| `pond_page/` variants | — | **ElevatedRisk** + **Critical** badge colors (never seen [U]) | **Phase 3** | ⏳ css_elevated.txt / css_critical.txt + pngs, or any frame showing those states |
+| `add_pond_device/` | 158:196 | wizard step 3 (device id + timezone + Create) | fidelity re-check | ✅ done (css.txt + 1x.png via MCP 2026-11-13, implemented) |
 | `pond_setting/` | 304:195 | pond settings | Phase 2 done via earlier scan | ⬜ nice-to-have |
 | `action_sheet/` | 381:242 | activity action sheet | Phase 4 | ⬜ later |
 | `param_detail/` + `graph/` | 319:145 / 191:290 | analysis detail + chart | Phase 6 | ⬜ later |

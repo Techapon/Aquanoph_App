@@ -9,6 +9,7 @@ import 'package:aquanoph/features/pond/presentation/controller/pond_provider.dar
 import 'package:aquanoph/shared/widgets/app_select_field.dart';
 import 'package:aquanoph/shared/widgets/app_text_field.dart';
 import 'package:aquanoph/shared/widgets/buoy_art.dart';
+import 'package:aquanoph/shared/widgets/loading_dialog.dart';
 import 'package:aquanoph/shared/widgets/success_dialog.dart';
 
 /// Figma 61:536 (step 1) + 154:139 (step 2) + 158:196 (step 3 "Add - Pond - Device",
@@ -110,7 +111,7 @@ class _AddPondPageState extends State<AddPondPage> {
       deviceId: _device.text.trim(),
       timezone: timezoneFor(_timezone),
     );
-    final ok = await context.read<PondProvider>().create(widget.userId, draft);
+    final ok = await withLoading(context, () => context.read<PondProvider>().create(widget.userId, draft));
     if (!ok || !mounted) return;
     // Figma 109:1176 success popup (design copy is the default now), then back to the list.
     await showSuccessDialog(context);

@@ -7,6 +7,7 @@ import 'package:aquanoph/core/theme/app_fonts.dart';
 import 'package:aquanoph/core/utils/country_timezones.dart';
 import 'package:aquanoph/features/pond/domain/entities/pond_entity.dart';
 import 'package:aquanoph/features/pond/presentation/controller/pond_provider.dart';
+import 'package:aquanoph/shared/widgets/loading_dialog.dart';
 import 'package:aquanoph/shared/widgets/success_dialog.dart';
 
 /// Pond settings — figma node 304:195 (figma/setting_page/; CSS+SVG+PNG all agree).
@@ -48,7 +49,10 @@ class _PondSettingPageState extends State<PondSettingPage> {
   }
 
   /// Green-check header button: commit the 3 grant-allowed columns at once.
+  /// _saving blocks double-tap while loading dialog is up (CLAUDE.md §4.10).
+  bool _saving = false;
   Future<void> _save() async {
+    if (_saving) return;
     final name = _name.text.trim();
     final kg = double.tryParse(_weight.text.replaceAll(',', '.'));
     final count = int.tryParse(_amount.text.trim());
@@ -56,7 +60,13 @@ class _PondSettingPageState extends State<PondSettingPage> {
       await showSuccessDialog(context, title: 'Save failed', subtitle: 'Name, weight and amount must be filled in.');
       return;
     }
-    final ok = await context.read<PondProvider>().update(widget.userId, widget.pond.id, name: name, stockingCount: count, avgWeightG: kg * 1000);
+    setState(() => _saving = true);
+    late final bool ok;
+    try {
+      ok = await withLoading(context, () => context.read<PondProvider>().update(widget.userId, widget.pond.id, name: name, stockingCount: count, avgWeightG: kg * 1000));
+    } finally {
+      if (mounted) setState(() => _saving = false);
+    }
     if (!mounted) return;
     await showSuccessDialog(
       context,

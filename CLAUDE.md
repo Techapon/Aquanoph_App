@@ -54,6 +54,7 @@
 7. Recommendation 5 สถานะ: pending, snoozed, applied, dismissed, expired (+ reason `no_longer_applies` | `time_window_over`) ไม่มี `superseded`
 8. คำนวณแบบ eager ทีละบ่อ รันซ้ำได้ผลเดิม (idempotent)
 9. ตัวเลขทุกตัวใน rule/catalog (⚙) เป็นค่าชั่วคราว รอผู้เชี่ยวชาญประมงตรวจ
+10. **UX ทุก action ที่มีรอ** — กติกาถาวร (2026-11-13): ขณะรอนาน (DB/network) ต้องขึ้น loading dialog ปิดไม่ได้ (`lib/shared/widgets/loading_dialog.dart` → `withLoading(context, work)`) แล้วจึงต่อด้วย result dialog (success/fail) **และกันกดซ้ำ** ด้วย busy flag (`if (_busy) return;`) หรือ `onPressed: busy ? null : action` — barrier กันแค่หน้าจอ ไม่ได้กัน callback
 
 ## 5. สถาปัตยกรรม Analysis Backend
 

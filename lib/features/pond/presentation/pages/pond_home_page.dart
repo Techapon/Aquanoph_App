@@ -101,7 +101,7 @@ class _PondHomeView extends StatelessWidget {
                 const SizedBox(height: 28),
                 // ── Water Quality Now (y277, h91)
                 _WaterQualityCard(status: p.status, timezone: pond.timezone),
-                const SizedBox(height: 65),
+                const SizedBox(height: 24), // was 65 (that gap led straight to All Recommendations before Today's Task moved here)
                 const Text(
                   "Today’s Task", // curly apostrophe exactly as in the design
                   style: TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 18, height: 25 / 18, color: AppColors.textPrimary),

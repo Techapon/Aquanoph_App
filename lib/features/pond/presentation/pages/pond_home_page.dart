@@ -305,10 +305,10 @@ String _sevBadgeLabel(PondSeverity s) => switch (s) {
     };
 
 Color _sevBadgeColor(PondSeverity s) => switch (s) {
-      PondSeverity.optimal => AppColors.optimal,
-      PondSeverity.stress => AppColors.stress,
-      PondSeverity.elevatedRisk => AppColors.urgentBorder,
-      _ => AppColors.critical,
+      PondSeverity.optimal => AppColors.optimal, // 0BE220
+      PondSeverity.stress => AppColors.stress, // FFCC00
+      PondSeverity.elevatedRisk => AppColors.watch, // FF9232
+      _ => AppColors.critical, // FF3232
     };
 
 class _Badge extends StatelessWidget {

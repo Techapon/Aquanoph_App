@@ -198,11 +198,12 @@ class _PondBlock extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 23),
-        // cards 177/178 x 99, 12 gap, 18 gutter (18+177+12+178=385)
+        // cards 177/178 wide, 12 gap, 18 gutter (18+177+12+178=385);
+        // height 99 -> 121: badge moved onto its own row under the description
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18),
           child: SizedBox(
-            height: 99,
+            height: 121,
             child: Row(
               children: [
                 Expanded(child: _DoCard(status: status, timezone: pond.timezone)),
@@ -270,14 +271,14 @@ class _DoCard extends StatelessWidget {
             ],
           ),
           Padding(padding: const EdgeInsets.only(top: 2), child: Text(_paramSub(s.parameter), maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontFamily: AppFonts.body, fontSize: 12, height: 14 / 12, color: AppColors.textMuted))),
+          _SevBadge(label: style.badge, color: style.badgeColor),
+          const SizedBox(height: 4),
           Expanded(
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(s.value == null ? '—' : _valueText(s.value!), style: const TextStyle(fontFamily: AppFonts.heading, fontSize: 32, height: 44 / 32, color: AppColors.textPrimary)), // design weight 400
                 if (_paramUnit(s.parameter).isNotEmpty) Padding(padding: const EdgeInsets.only(left: 4, bottom: 7), child: Text(_paramUnit(s.parameter), style: const TextStyle(fontFamily: AppFonts.heading, fontSize: 12, color: AppColors.textPrimary))),
-                const Spacer(),
-                _SevBadge(label: style.badge, color: style.badgeColor),
               ],
             ),
           ),
@@ -309,7 +310,7 @@ typedef _CardStyle = ({Color bg, Color border, String badge, Color badgeColor});
 _CardStyle _sevStyle(PondSeverity s) => switch (s) {
       PondSeverity.optimal => (bg: AppColors.listOptimalBg, border: AppColors.listOptimalBorder, badge: 'good', badgeColor: AppColors.optimal),
       PondSeverity.stress => (bg: AppColors.listStressBg, border: AppColors.stress, badge: 'stress', badgeColor: AppColors.stress),
-      PondSeverity.elevatedRisk => (bg: AppColors.urgentBg, border: AppColors.urgentBorder, badge: 'risk', badgeColor: AppColors.urgentBorder),
+      PondSeverity.elevatedRisk => (bg: AppColors.urgentBg, border: AppColors.urgentBorder, badge: 'risk', badgeColor: AppColors.watch), // badge FF9232
       PondSeverity.critical => (bg: AppColors.urgentBg, border: AppColors.critical, badge: 'critical', badgeColor: AppColors.critical),
       PondSeverity.unknown => (bg: Colors.white, border: AppColors.neutralBorder, badge: '', badgeColor: Colors.transparent),
     };
@@ -358,17 +359,13 @@ class _WarningCard extends StatelessWidget {
               Text(urgent ? 'Warning' : 'Notice', style: TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 16, height: 22 / 16, color: urgent ? AppColors.warnTitle : AppColors.textSecondary)),
             ],
           ),
-          const SizedBox(height: 12),
-          Expanded(
-            child: Center(
-              child: Text(
-                r.body,
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontFamily: AppFonts.body, fontSize: 12, height: 14 / 12, color: AppColors.textPrimary),
-              ),
-            ),
+          const SizedBox(height: 4),
+          Text(
+            r.body,
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.start,
+            style: const TextStyle(fontFamily: AppFonts.body, fontSize: 12, height: 14 / 12, color: AppColors.textPrimary),
           ),
         ],
       ),

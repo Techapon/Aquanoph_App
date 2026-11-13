@@ -529,8 +529,9 @@ class _ParameterCard extends StatelessWidget {
               color: AppColors.textMuted,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 4),
           _DetailBadge(label: tile.badge, color: tile.badgeColor),
+          // const SizedBox(height: 12),
           const Spacer(),
           Row(
             crossAxisAlignment: CrossAxisAlignment.baseline,

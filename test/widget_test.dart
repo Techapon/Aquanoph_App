@@ -6,6 +6,8 @@ import 'package:aquanoph/core/utils/country_timezones.dart';
 import 'package:aquanoph/features/auth/data/models/auth_user_model.dart';
 import 'package:aquanoph/features/pond/data/models/pond_model.dart';
 import 'package:aquanoph/features/pond/domain/entities/pond_entity.dart';
+import 'package:aquanoph/features/severity/data/models/pond_status_model.dart';
+import 'package:aquanoph/features/severity/domain/entities/pond_status_entity.dart';
 
 void main() {
   group('AuthUserModel', () {
@@ -92,6 +94,45 @@ void main() {
       );
       expect(e.volumeM3, 100.0);
       expect(e.biomassKg, 250.0); // 1000 * 250g / 1000
+    });
+  });
+
+  group('PondStatusModel', () {
+    Map<String, dynamic> statusRow({String severity = 'stress'}) => {
+          'pond_id': 'p1',
+          'parameter': 'DO',
+          'severity': severity,
+          'updated_at': '2026-11-13T06:00:00Z',
+        };
+
+    test('status + report maps all fields', () {
+      final e = PondStatusModel.fromMaps(statusRow(), {
+        'description': 'DO is below optimal.',
+        'recovering': false,
+      }).toEntity();
+      expect(e.pondId, 'p1');
+      expect(e.parameter, 'DO');
+      expect(e.severity, PondSeverity.stress);
+      expect(e.description, 'DO is below optimal.');
+      expect(e.updatedAt, DateTime.parse('2026-11-13T06:00:00Z'));
+    });
+
+    test('enum labels incl. elevated_risk; unexpected label -> unknown', () {
+      expect(PondStatusModel.fromMaps(statusRow(severity: 'elevated_risk'), null).severity, PondSeverity.elevatedRisk);
+      expect(PondStatusModel.fromMaps(statusRow(severity: 'hight risk'), null).severity, PondSeverity.unknown);
+    });
+
+    test('missing report row degrades to no text, not recovering', () {
+      final e = PondStatusModel.fromMaps(statusRow(severity: 'optimal'), null).toEntity();
+      expect(e.description, isNull);
+      expect(e.recovering, isFalse);
+    });
+
+    test('showRecoveryBadge only for recovering stress', () {
+      final recovering = PondStatusModel.fromMaps(statusRow(), {'description': 'x', 'recovering': true}).toEntity();
+      expect(recovering.showRecoveryBadge, isTrue);
+      final optimal = PondStatusModel.fromMaps(statusRow(severity: 'optimal'), {'description': 'x', 'recovering': true}).toEntity();
+      expect(optimal.showRecoveryBadge, isFalse);
     });
   });
 }

@@ -1,0 +1,1137 @@
+/* Ponds 1 */
+
+position: relative;
+width: 402px;
+height: 874px;
+overflow-y: scroll;
+
+background: #FFFFFF;
+
+
+/* Pond 1 */
+
+position: absolute;
+width: 79px;
+height: 33px;
+left: calc(50% - 79px/2 + 0.5px);
+top: 70px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 33px;
+/* identical to box height */
+text-align: center;
+
+color: #232323;
+
+
+
+/* Name : Shrimp Pond */
+
+position: absolute;
+width: 172px;
+height: 25px;
+left: calc(50% - 172px/2 - 93px);
+top: 131px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 18px;
+line-height: 25px;
+/* identical to box height */
+
+color: #232323;
+
+
+
+/* Today’s Task */
+
+position: absolute;
+width: 107px;
+height: 25px;
+left: calc(50% - 107px/2 - 133.5px);
+top: 198px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 18px;
+line-height: 25px;
+/* identical to box height */
+
+color: #232323;
+
+
+
+/* Vector */
+
+position: absolute;
+width: 328.67px;
+height: 13px;
+right: 38px;
+top: 21.67px;
+
+background: #232323;
+
+
+/* Frame 40 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px 17px 10px 15px;
+gap: 10px;
+
+position: absolute;
+width: 102px;
+height: 28px;
+left: 278px;
+top: 131px;
+
+background: #FFFFFF;
+box-shadow: 0px 2px 29.5px -2px rgba(0, 0, 0, 0.1);
+border-radius: 8px;
+
+
+/* More detail */
+
+width: 75px;
+height: 19px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 19px;
+/* identical to box height */
+display: flex;
+align-items: center;
+text-align: center;
+
+background: linear-gradient(90deg, #0496FF 0%, #7ED348 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+text-fill-color: transparent;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Group 4 */
+
+position: absolute;
+width: 44px;
+height: 44px;
+left: 22px;
+top: 65px;
+
+
+
+/* Rectangle 30 */
+
+position: absolute;
+width: 44px;
+height: 44px;
+left: 22px;
+top: 65px;
+
+background: #FFFFFF;
+box-shadow: 0px 2px 29.3px 2px rgba(0, 0, 0, 0.08);
+border-radius: 8px;
+
+
+/* Menu */
+
+position: absolute;
+width: 28px;
+height: 35px;
+left: 30px;
+top: 69px;
+
+
+
+/* Icon */
+
+position: absolute;
+left: 12.5%;
+right: 12.5%;
+top: 25%;
+bottom: 25%;
+
+border: 2px solid #1E1E1E;
+
+
+/* Group 43 */
+
+position: absolute;
+width: 44px;
+height: 44px;
+left: 336px;
+top: 65px;
+
+
+
+/* Group 42 */
+
+position: absolute;
+width: 44px;
+height: 44px;
+left: 336px;
+top: 65px;
+
+
+
+/* Rectangle 30 */
+
+position: absolute;
+width: 44px;
+height: 44px;
+left: 336px;
+top: 65px;
+
+background: #FFFFFF;
+box-shadow: 0px 2px 29.5px -2px rgba(0, 0, 0, 0.1);
+border-radius: 8px;
+
+
+/* Group 138 */
+
+position: absolute;
+width: 44px;
+height: 44px;
+left: 284px;
+top: 65px;
+
+
+
+/* Group 42 */
+
+position: absolute;
+width: 44px;
+height: 44px;
+left: 284px;
+top: 65px;
+
+
+
+/* Rectangle 30 */
+
+position: absolute;
+width: 44px;
+height: 44px;
+left: 284px;
+top: 65px;
+
+background: #FFFFFF;
+box-shadow: 0px 2px 29.5px -2px rgba(0, 0, 0, 0.1);
+border-radius: 8px;
+
+
+/* Icon */
+
+position: absolute;
+left: 73.38%;
+right: 21.39%;
+top: 8.7%;
+bottom: 88.9%;
+
+border: 2px solid #1E1E1E;
+
+
+/* Ellipse 1 */
+
+position: absolute;
+width: 7px;
+height: 7px;
+left: 313px;
+top: 73px;
+
+background: #FF0000;
+
+
+/* Group 87 */
+
+position: absolute;
+width: 117px;
+height: 65px;
+left: 142px;
+top: 184px;
+
+
+
+/* Group 5 */
+
+position: absolute;
+width: 117px;
+height: 46px;
+left: 142px;
+top: 203px;
+
+
+
+/* Ellipse 1 */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+background: #38D4FF;
+
+
+/* Ellipse 2 */
+
+position: absolute;
+left: 10.88%;
+right: 10.2%;
+top: 6.82%;
+bottom: 13.64%;
+
+background: #32BDE3;
+
+
+/* Ellipse 3 */
+
+position: absolute;
+left: 24.49%;
+right: 24.49%;
+top: 18.18%;
+bottom: 29.55%;
+
+background: #2FAFD3;
+
+
+/* Water Quality Monitoring Device */
+
+position: absolute;
+width: 56px;
+height: 45px;
+left: 174px;
+top: 184px;
+
+
+
+/* Rectangle 4 */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 70.37%;
+bottom: 0%;
+
+background: #D9D9D9;
+
+
+/* Rectangle 7 */
+
+position: absolute;
+left: 5.88%;
+right: 70.59%;
+top: 81.48%;
+bottom: 3.7%;
+
+background: #6E6E6E;
+
+
+/* Rectangle 8 */
+
+position: absolute;
+left: 70.59%;
+right: 5.88%;
+top: 81.48%;
+bottom: 3.7%;
+
+background: #6E6E6E;
+
+
+/* Rectangle 5 */
+
+position: absolute;
+left: 11.76%;
+right: 11.76%;
+top: 25.93%;
+bottom: 29.63%;
+
+background: #414141;
+
+
+/* Rectangle 6 */
+
+position: absolute;
+left: 82.35%;
+right: 14.71%;
+top: 0%;
+bottom: 74.07%;
+
+background: #A4A4A4;
+
+
+/* Rectangle 42 */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 358px;
+height: 91px;
+left: calc(50% - 358px/2 - 3px);
+top: 277px;
+
+background: #FFFFFF;
+border: 1.5px solid #D9D9D9;
+box-shadow: 0px 2px 29.5px -2px rgba(0, 0, 0, 0.1);
+border-radius: 8px;
+
+
+/* Water Quality Now */
+
+position: absolute;
+width: 127px;
+height: 19px;
+left: 38px;
+top: 292px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 19px;
+/* identical to box height */
+
+color: #232323;
+
+
+
+/* Group 88 */
+
+position: absolute;
+width: 51px;
+height: 18px;
+left: 169px;
+top: 292px;
+
+
+
+/* Rectangle 4 */
+
+position: absolute;
+width: 51px;
+height: 17px;
+left: 169px;
+top: 293px;
+
+background: #FFCC00;
+border-radius: 4px;
+
+
+/* Stress */
+
+position: absolute;
+width: 42px;
+height: 15px;
+left: 174px;
+top: 292px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 19px;
+
+color: #FFFFFF;
+
+
+
+/* Group 139 */
+
+position: absolute;
+width: 51px;
+height: 18px;
+left: 169px;
+top: 292px;
+
+
+
+/* Rectangle 4 */
+
+position: absolute;
+width: 51px;
+height: 17px;
+left: 169px;
+top: 293px;
+
+background: #FFCC00;
+border-radius: 4px;
+
+
+/* Stress */
+
+position: absolute;
+width: 42px;
+height: 15px;
+left: 174px;
+top: 292px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 19px;
+
+color: #FFFFFF;
+
+
+
+/* Rectangle 4 */
+
+position: absolute;
+width: 68px;
+height: 17px;
+left: 224px;
+top: 293px;
+
+background: linear-gradient(90deg, #0496FF 0%, #7ED348 100%);
+border-radius: 4px;
+
+
+/* Recovery */
+
+position: absolute;
+width: 60px;
+height: 15px;
+left: 229px;
+top: 292px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 19px;
+
+color: #FFFFFF;
+
+
+
+/* 9:30 AM. */
+
+position: absolute;
+width: 60px;
+height: 13px;
+left: 306px;
+top: 288px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 16px;
+text-align: right;
+
+color: #6A6A6A;
+
+
+
+/* Water quality at 11:00 AM is within the optimal range. DO, pH, and temperature levels are suitable for aquaculture. */
+
+position: absolute;
+width: 316px;
+height: 28px;
+left: 50px;
+top: 323px;
+
+font-family: 'Inria Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 14px;
+
+color: #707070;
+
+
+
+/* All Recommendations */
+
+position: absolute;
+width: 165px;
+height: 17px;
+left: 22px;
+top: 433px;
+
+font-family: 'Inria Sans';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #707070;
+
+
+
+/* All daily tasks */
+
+position: absolute;
+width: 113px;
+height: 17px;
+left: 23px;
+top: 686px;
+
+font-family: 'Inria Sans';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #707070;
+
+
+
+/* Group 136 */
+
+position: absolute;
+width: 358px;
+height: 105px;
+left: 22px;
+top: 461px;
+
+
+
+/* Rectangle 44 */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 358px;
+height: 105px;
+left: calc(50% - 358px/2);
+top: 461px;
+
+background: #FFF0F0;
+border: 1.5px solid #F29E9F;
+box-shadow: 0px 2px 29.5px -2px rgba(0, 0, 0, 0.1);
+border-radius: 12px;
+
+
+/* Dissolved oxygen (DO) is expected to drop to 2.6 mg/L at 04:00 AM. */
+
+position: absolute;
+width: 296px;
+height: 28px;
+left: 50px;
+top: 519px;
+
+font-family: 'Inria Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 14px;
+
+color: #707070;
+
+
+
+/* Operate the aerator for 5 hours, starting at 11 PM. */
+
+position: absolute;
+width: 316px;
+height: 38px;
+left: 40px;
+top: 476px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 19px;
+
+color: #232323;
+
+
+
+/* Group 137 */
+
+position: absolute;
+width: 358px;
+height: 304px;
+left: 21px;
+top: 714px;
+
+
+
+/* Group 103 */
+
+position: absolute;
+width: 358px;
+height: 92px;
+left: 21px;
+top: 714px;
+
+
+
+/* Rectangle 44 */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 358px;
+height: 92px;
+left: calc(50% - 358px/2 - 1px);
+top: 714px;
+
+background: #FFFFFF;
+border: 1.5px solid #D9D9D9;
+box-shadow: 0px 2px 29.5px -2px rgba(0, 0, 0, 0.1);
+border-radius: 12px;
+
+
+/* Group 102 */
+
+position: absolute;
+width: 275px;
+height: 65px;
+left: 41px;
+top: 723px;
+
+
+
+/* Feeding */
+
+position: absolute;
+width: 52px;
+height: 19px;
+left: calc(50% - 52px/2 - 134px);
+top: 723px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 19px;
+/* identical to box height */
+
+color: #232323;
+
+
+
+/* Group 101 */
+
+position: absolute;
+width: 275px;
+height: 32px;
+left: 41px;
+top: 756px;
+
+
+
+/* Frame 42 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 8px 8px 5px;
+gap: 10px;
+
+position: absolute;
+width: 80px;
+height: 32px;
+left: 144px;
+top: 756px;
+
+background: #FFFFFF;
+border: 2px solid #D9D9D9;
+border-radius: 8px;
+
+
+/* 12:30 AM */
+
+width: 64px;
+height: 19px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 19px;
+/* identical to box height */
+
+color: #232323;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 43 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 8px 10px 5px;
+gap: 10px;
+
+position: absolute;
+width: 84px;
+height: 32px;
+left: 232px;
+top: 756px;
+
+background: #FFFFFF;
+border: 2px solid #D9D9D9;
+border-radius: 8px;
+
+
+/* 17:40 AM */
+
+width: 64px;
+height: 19px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 19px;
+/* identical to box height */
+
+color: #232323;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Group 100 */
+
+position: absolute;
+width: 96px;
+height: 32px;
+left: 41px;
+top: 756px;
+
+
+
+/* Rectangle 61 */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 96px;
+height: 32px;
+left: calc(50% - 96px/2 - 112px);
+top: 756px;
+
+background: #FFFFFF;
+border: 2px solid #D9D9D9;
+border-radius: 8px;
+
+
+/* 8:12 AM */
+
+position: absolute;
+width: 48px;
+height: 16px;
+left: calc(50% - 48px/2 - 128px);
+top: 764px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 12px;
+line-height: 16px;
+
+color: #232323;
+
+
+
+/* Vector */
+
+position: absolute;
+left: 27.86%;
+right: 68.41%;
+top: 87.64%;
+bottom: 11.1%;
+
+border: 2px solid #0BE220;
+
+
+/* Frame 44 */
+
+position: absolute;
+width: 358px;
+height: 201px;
+left: 21px;
+top: 817px;
+
+
+
+/* Group 106 */
+
+position: absolute;
+width: 358px;
+height: 135px;
+left: 0px;
+top: 0px;
+
+
+
+/* Rectangle 44 */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 358px;
+height: 135px;
+left: calc(50% - 358px/2);
+top: 0px;
+
+background: #FFFFFF;
+border: 1.5px solid #D9D9D9;
+box-shadow: 0px 2px 29.5px -2px rgba(0, 0, 0, 0.1);
+border-radius: 12px;
+
+
+/* Aeration */
+
+position: absolute;
+width: 57px;
+height: 19px;
+left: calc(50% - 57px/2 - 130.5px);
+top: 9px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 19px;
+/* identical to box height */
+
+color: #232323;
+
+
+
+/* Rectangle 61 */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 156px;
+height: 32px;
+left: calc(50% - 156px/2 - 81px);
+top: 42px;
+
+background: #FFFFFF;
+border: 2px solid #D9D9D9;
+border-radius: 8px;
+
+
+/* 10:00 AM - 4:00 PM. */
+
+position: absolute;
+width: 135px;
+height: 19px;
+left: calc(50% - 135px/2 - 83.5px);
+top: 50px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 19px;
+/* identical to box height */
+
+color: #232323;
+
+
+
+/* Group 104 */
+
+position: absolute;
+width: 153px;
+height: 32px;
+left: 185px;
+top: 42px;
+
+
+
+/* Rectangle 62 */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 153px;
+height: 32px;
+left: calc(50% - 153px/2 + 82.5px);
+top: 42px;
+
+background: #FFFFFF;
+border: 2px solid #D9D9D9;
+border-radius: 8px;
+
+
+/* 4:00 PM - 10:00 PM. */
+
+position: absolute;
+width: 134px;
+height: 19px;
+left: calc(50% - 134px/2 + 81px);
+top: 50px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 19px;
+/* identical to box height */
+
+color: #232323;
+
+
+
+/* Group 105 */
+
+position: absolute;
+width: 153px;
+height: 32px;
+left: 20px;
+top: 84px;
+
+
+
+/* Rectangle 62 */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 153px;
+height: 32px;
+left: calc(50% - 153px/2 - 82.5px);
+top: 84px;
+
+background: #FFFFFF;
+border: 2px solid #D9D9D9;
+border-radius: 8px;
+
+
+/* 10:00 PM - 6:00 AM */
+
+position: absolute;
+width: 131px;
+height: 19px;
+left: calc(50% - 131px/2 - 85.5px);
+top: 92px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 19px;
+/* identical to box height */
+
+color: #232323;
+
+
+
+/* Rectangle 45 */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 358px;
+height: 98px;
+left: calc(50% - 358px/2 + 1px);
+top: 577px;
+
+background: #FFF7F0;
+border: 1.5px solid #EEA882;
+box-shadow: 0px 2px 29.5px -2px rgba(0, 0, 0, 0.1);
+border-radius: 12px;
+
+
+/* At 3:40 AM, pH measured at 6.9, which is below the optimal range (7.5–8.5). The alkalinity may not be sufficient to buffer daily pH fluctuations. */
+
+position: absolute;
+width: 319px;
+height: 42px;
+left: 51px;
+top: 619px;
+
+font-family: 'Inria Sans';
+font-style: normal;
+font-weight: 400;
+font-size: 12px;
+line-height: 14px;
+
+color: #707070;
+
+
+
+/* Apply dolomite to boost alkalinity this afternoon. */
+
+position: absolute;
+width: 316px;
+height: 17px;
+left: 39px;
+top: 591px;
+
+font-family: 'Inria Sans';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #000000;
+
+
+
+/* Group */
+
+position: absolute;
+left: 86.32%;
+right: 7.96%;
+top: 8.7%;
+bottom: 88.67%;
+
+
+
+/* Vector */
+
+position: absolute;
+left: 86.32%;
+right: 7.96%;
+top: 8.7%;
+bottom: 88.67%;
+
+border: 2px solid #1E1E1E;
+
+
+/* Vector */
+
+position: absolute;
+left: 88.18%;
+right: 9.82%;
+top: 9.55%;
+bottom: 89.53%;
+
+border: 2px solid #1E1E1E;

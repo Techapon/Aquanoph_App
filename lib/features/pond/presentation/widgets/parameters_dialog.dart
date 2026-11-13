@@ -256,17 +256,26 @@ class _ParameterCard extends StatelessWidget {
               const SizedBox(height: 1),
               Text(tile.description, maxLines: 2, overflow: TextOverflow.ellipsis, style: const TextStyle(fontFamily: AppFonts.body, fontSize: 12, height: 14 / 12, color: AppColors.textMuted)),
               const Spacer(),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(tile.value, style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 24, height: 33 / 24, color: AppColors.textPrimary)),
-                  if (tile.unit.isNotEmpty) ...[
-                    const SizedBox(width: 3),
-                    Padding(padding: const EdgeInsets.only(bottom: 3), child: Text(tile.unit, style: const TextStyle(fontFamily: AppFonts.heading, fontSize: 12, height: 16 / 12, color: AppColors.textPrimary))),
+              // badge floats on its own layer (bottom-right per design) so a
+              // long value+unit can't push it out of the 146px content width
+              SizedBox(
+                height: 33,
+                child: Stack(
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.alphabetic,
+                      children: [
+                        Text(tile.value, style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 24, height: 33 / 24, color: AppColors.textPrimary)),
+                        if (tile.unit.isNotEmpty) ...[
+                          const SizedBox(width: 3),
+                          Text(tile.unit, style: const TextStyle(fontFamily: AppFonts.heading, fontSize: 12, height: 16 / 12, color: AppColors.textPrimary)),
+                        ],
+                      ],
+                    ),
+                    Positioned(right: 0, bottom: 3, child: _DetailBadge(label: tile.badge, color: tile.badgeColor)),
                   ],
-                  const Spacer(),
-                  _DetailBadge(label: tile.badge, color: tile.badgeColor),
-                ],
+                ),
               ),
             ],
           ),

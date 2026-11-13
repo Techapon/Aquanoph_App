@@ -72,8 +72,8 @@ const mockParameters = <ParameterTile>[
   ),
   ParameterTile(
     name: 'EC',
-    description: 'Electrical conductivity/Salinity',
-    value: '22.50',
+    description: 'Electrical conductivity',
+    value: '22.5',
     unit: 'mS/cm',
     badge: 'good',
     badgeColor: _badgeGood,
@@ -503,66 +503,63 @@ class _ParameterCard extends StatelessWidget {
     onTap: onTap,
     child: Padding(
       padding: const EdgeInsets.fromLTRB(12, 9, 10, 8),
-      child: Stack(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          // layout per user screenshot: name / description / badge left, value bottom
+          Text(
+            tile.name,
+            style: const TextStyle(
+              fontFamily: AppFonts.heading,
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              height: 22 / 16,
+              color: AppColors.textPrimary,
+            ),
+          ),
+          const SizedBox(height: 1),
+          Text(
+            tile.description,
+            maxLines: 1, // badge moved below the desc inside the fixed 121px card — 2 lines no longer fit
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontFamily: AppFonts.body,
+              fontSize: 12,
+              height: 14 / 12,
+              color: AppColors.textMuted,
+            ),
+          ),
+          const SizedBox(height: 12),
+          _DetailBadge(label: tile.badge, color: tile.badgeColor),
+          const Spacer(),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            textBaseline: TextBaseline.alphabetic,
             children: [
-              // badge lives on the Stack layer (top-right), so the name keeps full width
               Text(
-                tile.name,
+                tile.value,
                 style: const TextStyle(
                   fontFamily: AppFonts.heading,
                   fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  height: 22 / 16,
+                  fontSize: 24,
+                  height: 33 / 24,
                   color: AppColors.textPrimary,
                 ),
               ),
-              const SizedBox(height: 1),
-              Text(
-                tile.description,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontFamily: AppFonts.body,
-                  fontSize: 12,
-                  height: 14 / 12,
-                  color: AppColors.textMuted,
-                ),
-              ),
-              const Spacer(),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.baseline,
-                textBaseline: TextBaseline.alphabetic,
-                children: [
-                  Text(
-                    tile.value,
-                    style: const TextStyle(
-                      fontFamily: AppFonts.heading,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24,
-                      height: 33 / 24,
-                      color: AppColors.textPrimary,
-                    ),
+              if (tile.unit.isNotEmpty) ...[
+                const SizedBox(width: 3),
+                Text(
+                  tile.unit,
+                  style: const TextStyle(
+                    fontFamily: AppFonts.heading,
+                    fontSize: 12,
+                    height: 16 / 12,
+                    color: AppColors.textPrimary,
                   ),
-                  if (tile.unit.isNotEmpty) ...[
-                    const SizedBox(width: 3),
-                    Text(
-                      tile.unit,
-                      style: const TextStyle(
-                        fontFamily: AppFonts.heading,
-                        fontSize: 12,
-                        height: 16 / 12,
-                        color: AppColors.textPrimary,
-                      ),
-                    ),
-                  ],
-                ],
-              ),
+                ),
+              ],
             ],
           ),
-          Positioned(top: 0, right: 0, child: _DetailBadge(label: tile.badge, color: tile.badgeColor)),
         ],
       ),
     ),

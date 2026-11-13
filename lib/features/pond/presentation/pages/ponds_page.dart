@@ -259,33 +259,30 @@ class _DoCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(12, 7, 12, 8),
       decoration: BoxDecoration(color: style.bg, border: Border.all(color: style.border, width: 1.5), borderRadius: BorderRadius.circular(8)),
-      child: Stack(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(_paramLabel(s.parameter), style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 16, height: 22 / 16, color: AppColors.textPrimary)),
-                  const SizedBox(width: 3),
-                  Flexible(child: Text(time, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontFamily: AppFonts.heading, fontSize: 12, height: 16 / 12, color: AppColors.textMuted))),
-                ],
-              ),
-              Padding(padding: const EdgeInsets.only(top: 2), child: Text(_paramSub(s.parameter), maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontFamily: AppFonts.body, fontSize: 12, height: 14 / 12, color: AppColors.textMuted))),
-              const SizedBox(height: 4),
-              Expanded(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(s.value == null ? '—' : _valueText(s.value!), style: const TextStyle(fontFamily: AppFonts.heading, fontSize: 32, height: 44 / 32, color: AppColors.textPrimary)), // design weight 400
-                    if (_paramUnit(s.parameter).isNotEmpty) Padding(padding: const EdgeInsets.only(left: 4, bottom: 7), child: Text(_paramUnit(s.parameter), style: const TextStyle(fontFamily: AppFonts.heading, fontSize: 12, color: AppColors.textPrimary))),
-                  ],
-                ),
-              ),
+              Text(_paramLabel(s.parameter), style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 16, height: 22 / 16, color: AppColors.textPrimary)),
+              const SizedBox(width: 3),
+              Flexible(child: Text(time, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontFamily: AppFonts.heading, fontSize: 12, height: 16 / 12, color: AppColors.textMuted))),
             ],
           ),
-          Positioned(top: 0, right: 0, child: _SevBadge(label: style.badge, color: style.badgeColor)), // own layer, top-right — name keeps full width
+          Padding(padding: const EdgeInsets.only(top: 2), child: Text(_paramSub(s.parameter), maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontFamily: AppFonts.body, fontSize: 12, height: 14 / 12, color: AppColors.textMuted))),
+          const SizedBox(height: 8),
+          _SevBadge(label: style.badge, color: style.badgeColor), // badge under the subtitle (user layout: never shares a row with the name)
+          const SizedBox(height: 4),
+          Expanded(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(s.value == null ? '—' : _valueText(s.value!), style: const TextStyle(fontFamily: AppFonts.heading, fontSize: 32, height: 44 / 32, color: AppColors.textPrimary)), // design weight 400
+                if (_paramUnit(s.parameter).isNotEmpty) Padding(padding: const EdgeInsets.only(left: 4, bottom: 7), child: Text(_paramUnit(s.parameter), style: const TextStyle(fontFamily: AppFonts.heading, fontSize: 12, color: AppColors.textPrimary))),
+              ],
+            ),
+          ),
         ],
       ),
     );

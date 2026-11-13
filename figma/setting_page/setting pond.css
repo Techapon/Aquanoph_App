@@ -1,0 +1,938 @@
+/* setting pond */
+
+position: relative;
+width: 402px;
+height: 874px;
+overflow-y: scroll;
+
+background: #FFFFFF;
+
+
+/* Frame 192 */
+
+position: absolute;
+width: 402px;
+height: 972px;
+left: 0px;
+top: 121px;
+overflow-y: scroll;
+
+
+
+/* Pond name */
+
+position: absolute;
+width: 73px;
+height: 19px;
+left: calc(50% - 73px/2 - 140.5px);
+top: 181px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 19px;
+/* identical to box height */
+
+color: #707070;
+
+
+
+/* Rectangle 97 */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 355px;
+height: 51px;
+left: calc(50% - 355px/2 + 0.5px);
+top: 207px;
+
+background: #FFFFFF;
+border: 1px solid #D9D9D9;
+border-radius: 8px;
+
+
+/* Shrimp Pond */
+
+position: absolute;
+width: 105px;
+height: 25px;
+left: calc(50% - 105px/2 - 107.5px);
+top: 220px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 25px;
+/* identical to box height */
+
+color: #232323;
+
+
+
+/* Group 194 */
+
+position: absolute;
+width: 355px;
+height: 51px;
+left: 24px;
+top: 534px;
+
+
+
+/* Rectangle 99 */
+
+position: absolute;
+width: 355px;
+height: 51px;
+left: calc(50% - 355px/2 + 0.5px);
+top: 534px;
+
+background: rgba(244, 244, 244, 0.85098);
+border-radius: 8px;
+
+
+/* Species : Shrimp */
+
+position: absolute;
+width: 136px;
+height: 25px;
+left: calc(50% - 136px/2 - 92px);
+top: 546px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 18px;
+line-height: 25px;
+/* identical to box height */
+
+color: #232323;
+
+
+
+/* Rectangle 100 */
+
+position: absolute;
+width: 355px;
+height: 86px;
+left: calc(50% - 355px/2 + 0.5px);
+top: 625px;
+
+background: rgba(244, 244, 244, 0.85098);
+border-radius: 8px;
+
+
+/* Area : 49.0 m² */
+
+position: absolute;
+width: 132px;
+height: 25px;
+left: calc(50% - 132px/2 - 94px);
+top: 637px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 18px;
+line-height: 25px;
+/* identical to box height */
+
+color: #232323;
+
+
+
+/* Average depth : 3 m */
+
+position: absolute;
+width: 183px;
+height: 25px;
+left: calc(50% - 183px/2 - 68.5px);
+top: 669px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 18px;
+line-height: 25px;
+/* identical to box height */
+
+color: #232323;
+
+
+
+/* Aquatic animal */
+
+position: absolute;
+width: 98px;
+height: 19px;
+left: calc(50% - 98px/2 - 128px);
+top: 272px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 19px;
+/* identical to box height */
+
+color: #707070;
+
+
+
+/* Aquatic animal */
+
+position: absolute;
+width: 98px;
+height: 19px;
+left: calc(50% - 98px/2 - 128px);
+top: 508px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 19px;
+/* identical to box height */
+
+color: #707070;
+
+
+
+/* Group 195 */
+
+position: absolute;
+width: 355px;
+height: 51px;
+left: 24px;
+top: 751px;
+
+
+
+/* Rectangle 99 */
+
+position: absolute;
+width: 355px;
+height: 51px;
+left: calc(50% - 355px/2 + 0.5px);
+top: 751px;
+
+background: rgba(244, 244, 244, 0.85098);
+border-radius: 8px;
+
+
+/* ID : 102X4 */
+
+position: absolute;
+width: 88px;
+height: 25px;
+left: calc(50% - 88px/2 - 116px);
+top: 763px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 18px;
+line-height: 25px;
+/* identical to box height */
+
+color: #232323;
+
+
+
+/* Device */
+
+position: absolute;
+width: 44px;
+height: 19px;
+left: calc(50% - 44px/2 - 155px);
+top: 725px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 19px;
+/* identical to box height */
+
+color: #707070;
+
+
+
+/* Group 196 */
+
+position: absolute;
+width: 355px;
+height: 51px;
+left: 24px;
+top: 842px;
+
+
+
+/* Rectangle 99 */
+
+position: absolute;
+width: 355px;
+height: 51px;
+left: calc(50% - 355px/2 + 0.5px);
+top: 842px;
+
+background: rgba(244, 244, 244, 0.85098);
+border-radius: 8px;
+
+
+/* Hong Kong */
+
+position: absolute;
+width: 95px;
+height: 25px;
+left: calc(50% - 95px/2 - 112.5px);
+top: 854px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 18px;
+line-height: 25px;
+/* identical to box height */
+
+color: #232323;
+
+
+
+/* Time zone */
+
+position: absolute;
+width: 68px;
+height: 19px;
+left: calc(50% - 68px/2 - 143px);
+top: 816px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 19px;
+/* identical to box height */
+
+color: #707070;
+
+
+
+/* Pond volume */
+
+position: absolute;
+width: 85px;
+height: 19px;
+left: calc(50% - 85px/2 - 134.5px);
+top: 599px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 19px;
+/* identical to box height */
+
+color: #707070;
+
+
+
+/* Rectangle 97 */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 153px;
+height: 51px;
+left: calc(50% - 153px/2 - 100.5px);
+top: 298px;
+
+background: #FFFFFF;
+border: 1px solid #D9D9D9;
+border-radius: 8px;
+
+
+/* 0.4 */
+
+position: absolute;
+width: 26px;
+height: 25px;
+left: calc(50% - 26px/2 - 58px);
+top: 311px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 25px;
+/* identical to box height */
+
+color: #232323;
+
+
+
+/* Weight */
+
+position: absolute;
+width: 62px;
+height: 25px;
+left: calc(50% - 62px/2 - 129px);
+top: 311px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 18px;
+line-height: 25px;
+/* identical to box height */
+
+color: #232323;
+
+
+
+/* Group 193 */
+
+position: absolute;
+width: 81px;
+height: 51px;
+left: 183px;
+top: 298px;
+
+
+
+/* Rectangle 98 */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 81px;
+height: 51px;
+left: calc(50% - 81px/2 + 22.5px);
+top: 298px;
+
+background: #FFFFFF;
+border: 1px solid #D9D9D9;
+border-radius: 8px;
+
+
+/* Icon */
+
+position: absolute;
+width: 8px;
+height: 4px;
+left: 236px;
+top: 324px;
+
+border: 1.6px solid #1E1E1E;
+
+
+/* kg */
+
+position: absolute;
+width: 21px;
+height: 25px;
+left: calc(50% - 21px/2 + 9.5px);
+top: 311px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 18px;
+line-height: 25px;
+/* identical to box height */
+
+color: #232323;
+
+
+
+/* Line 21 */
+
+position: absolute;
+width: 50px;
+height: 0px;
+left: 114px;
+top: 299px;
+
+border: 1px solid #D9D9D9;
+transform: rotate(90deg);
+
+
+/* Rectangle 98 */
+
+box-sizing: border-box;
+
+position: absolute;
+width: 185px;
+height: 51px;
+left: calc(50% - 185px/2 - 84.5px);
+top: 362px;
+
+background: #FFFFFF;
+border: 1px solid #D9D9D9;
+border-radius: 8px;
+
+
+/* 70 */
+
+position: absolute;
+width: 22px;
+height: 25px;
+left: calc(50% - 22px/2 - 40px);
+top: 375px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 25px;
+/* identical to box height */
+
+color: #232323;
+
+
+
+/* Amount */
+
+position: absolute;
+width: 68px;
+height: 25px;
+left: calc(50% - 68px/2 - 126px);
+top: 375px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 18px;
+line-height: 25px;
+/* identical to box height */
+
+color: #232323;
+
+
+
+/* Line 22 */
+
+position: absolute;
+width: 50px;
+height: 0px;
+left: 116px;
+top: 363px;
+
+border: 1px solid #D9D9D9;
+transform: rotate(90deg);
+
+
+/* Group 5 */
+
+position: absolute;
+width: 210px;
+height: 44px;
+left: calc(50% - 210px/2);
+top: 68px;
+
+
+
+/* Ellipse 1 */
+
+position: absolute;
+left: 0%;
+right: 0%;
+top: 0%;
+bottom: 0%;
+
+background: #38D4FF;
+
+
+/* Ellipse 2 */
+
+position: absolute;
+left: 10.88%;
+right: 10.2%;
+top: 6.82%;
+bottom: 13.64%;
+
+background: #32BDE3;
+
+
+/* Ellipse 3 */
+
+position: absolute;
+left: 24.49%;
+right: 24.49%;
+top: 18.18%;
+bottom: 29.55%;
+
+background: #2FAFD3;
+
+
+/* Shrimp food (3) 2 */
+
+position: absolute;
+width: 61px;
+height: 61px;
+left: calc(50% - 61px/2 - 0.5px);
+top: 29px;
+
+background: url(Shrimp food (3).png);
+
+
+/* Line 4 */
+
+position: absolute;
+width: 355px;
+height: 0px;
+left: calc(50% - 355px/2 + 0.5px);
+top: 441px;
+
+border: 3px solid #F4F4F4;
+
+
+/* Editable */
+
+position: absolute;
+width: 70px;
+height: 25px;
+left: calc(50% - 70px/2 - 144px);
+top: 142px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 18px;
+line-height: 25px;
+/* identical to box height */
+
+color: #232323;
+
+
+
+/* Read-only */
+
+position: absolute;
+width: 87px;
+height: 25px;
+left: calc(50% - 87px/2 - 133.5px);
+top: 469px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 18px;
+line-height: 25px;
+/* identical to box height */
+
+color: #232323;
+
+
+
+/* Rectangle 101 */
+
+position: absolute;
+width: 402px;
+height: 121px;
+left: 0px;
+top: 0px;
+
+background: #FFFFFF;
+
+
+/* Status bar */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 2.333px 30px 0px 34px;
+
+position: absolute;
+width: 402px;
+height: 54px;
+right: 0px;
+top: 0px;
+
+
+
+/* Time */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px 6px 0px 0px;
+
+width: 169px;
+height: 13px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 1;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 10px;
+
+width: 37px;
+height: 22px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Time */
+
+width: 37px;
+height: 22px;
+
+font-family: 'SF Pro';
+font-style: normal;
+font-weight: 590;
+font-size: 17px;
+line-height: 22px;
+/* identical to box height, or 129% */
+text-align: center;
+
+color: #000000;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Dynamic Island */
+
+display: none;
+width: 125px;
+height: 37px;
+
+background: #000000;
+border-radius: 100px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Levels */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: flex-end;
+align-items: center;
+padding: 0px;
+
+width: 169px;
+height: 13px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 1;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px 8px 0px 0px;
+gap: 7px;
+
+width: 85.33px;
+height: 13px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Cellular Connection */
+
+width: 19.33px;
+height: 12.33px;
+
+background: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 18.8%;
+right: 77.35%;
+top: 2.58%;
+bottom: 2.58%;
+
+background: #000000;
+
+
+/* Vector */
+
+position: absolute;
+left: 12.54%;
+right: 83.6%;
+top: 24.04%;
+bottom: 2.65%;
+
+background: #000000;
+
+
+/* Vector */
+
+position: absolute;
+left: 6.27%;
+right: 89.87%;
+top: 43.81%;
+bottom: 2.58%;
+
+background: #000000;
+
+
+/* Vector */
+
+position: absolute;
+left: 0%;
+right: 96.14%;
+top: 60.88%;
+bottom: 2.58%;
+
+background: #000000;
+
+
+/* Wifi */
+
+width: 16.67px;
+height: 12.33px;
+
+background: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Battery */
+
+width: 27.33px;
+height: 13px;
+
+background: #000000;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Settings */
+
+position: absolute;
+width: 93px;
+height: 33px;
+left: calc(50% - 93px/2 + 0.5px);
+top: 70px;
+
+font-family: 'Nunito';
+font-style: normal;
+font-weight: 700;
+font-size: 24px;
+line-height: 33px;
+/* identical to box height */
+text-align: center;
+
+color: #232323;
+
+
+
+/* Group 10 */
+
+position: absolute;
+width: 44px;
+height: 43.2px;
+left: 22px;
+top: 65px;
+
+
+
+/* Ellipse 4 */
+
+position: absolute;
+width: 44px;
+height: 43.2px;
+left: 22px;
+top: 65px;
+
+background: rgba(253, 253, 253, 0.972549);
+box-shadow: 0px 2px 29.5px -2px rgba(0, 0, 0, 0.1);
+
+
+/* Vector */
+
+position: absolute;
+left: 8.66%;
+right: 86.77%;
+top: 8.99%;
+bottom: 89.08%;
+
+background: rgba(253, 253, 253, 0.972549);
+border: 3.3px solid #2A2A2A;
+
+
+/* Group 11 */
+
+position: absolute;
+width: 44px;
+height: 43.2px;
+left: 330px;
+top: 65px;
+
+
+
+/* Ellipse 4 */
+
+position: absolute;
+width: 44px;
+height: 43.2px;
+left: calc(50% - 44px/2 + 151px);
+top: calc(50% - 43.2px/2 - 350.4px);
+
+background: rgba(253, 253, 253, 0.972549);
+box-shadow: 0px 2px 29.5px -2px rgba(0, 0, 0, 0.1);
+
+
+/* Vector */
+
+position: absolute;
+width: 16.1px;
+height: 12px;
+left: calc(50% - 16.1px/2 + 152.05px);
+top: calc(50% - 12px/2 - 350px);
+
+border: 2px solid #0BE220;

@@ -45,5 +45,13 @@ String formatClock(DateTime local) {
 
 const _shortMonths = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'];
 
+/// "UTC+7" / "UTC+6:30" for the settings Time zone row ('' for unknown ids).
+String utcOffsetLabel(String iana) {
+  final off = ianaUtcOffset[iana];
+  if (off == null) return '';
+  final m = off.inMinutes % 60;
+  return 'UTC+${off.inHours}${m == 0 ? '' : ':$m'}';
+}
+
 /// "20 Aug. 2026" — design's date style on the parameters dialog.
 String formatDayDate(DateTime local) => '${local.day} ${_shortMonths[local.month - 1]} ${local.year}';

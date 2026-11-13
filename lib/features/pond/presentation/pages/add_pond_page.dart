@@ -32,29 +32,47 @@ class _AddPondPageState extends State<AddPondPage> {
   final _weight = TextEditingController();
   // ponytail: curated ASEAN + UTC zones; backend accepts any IANA id — add a search picker if users need more.
   String _species = 'Nile tilapia';
-  String _timezone = 'Thailand'; // picker holds the country name; timezoneFor() converts to IANA on save
-  final _stockingDate = TextEditingController(text: DateTime.now().toIso8601String().substring(0, 10));
+  String _timezone =
+      'Thailand'; // picker holds the country name; timezoneFor() converts to IANA on save
+  final _stockingDate = TextEditingController(
+    text: DateTime.now().toIso8601String().substring(0, 10),
+  );
   final _device = TextEditingController();
 
   String? _stepError;
 
   @override
   void dispose() {
-    for (final c in [_name, _area, _depth, _count, _weight, _stockingDate, _device]) {
+    for (final c in [
+      _name,
+      _area,
+      _depth,
+      _count,
+      _weight,
+      _stockingDate,
+      _device,
+    ]) {
       c.dispose();
     }
     super.dispose();
   }
 
-  double? _num(TextEditingController c) => double.tryParse(c.text.trim().replaceAll(',', '.'));
+  double? _num(TextEditingController c) =>
+      double.tryParse(c.text.trim().replaceAll(',', '.'));
 
   bool _validateStep() {
     _stepError = null;
     if (_step == 0) {
-      if (_name.text.trim().isEmpty) return _fail('Pond name is required');
-      if ((_num(_area) ?? 0) <= 0 || (_num(_depth) ?? 0) <= 0) return _fail('Area and depth must be greater than 0');
+      if (_name.text.trim().isEmpty) {
+        return _fail('Pond name is required');
+      }
+      if ((_num(_area) ?? 0) <= 0 || (_num(_depth) ?? 0) <= 0) {
+        return _fail('Area and depth must be greater than 0');
+      }
     } else if (_step == 1) {
-      if ((_num(_count) ?? 0) <= 0 || (_num(_weight) ?? 0) <= 0) return _fail('Count and average weight must be greater than 0');
+      if ((_num(_count) ?? 0) <= 0 || (_num(_weight) ?? 0) <= 0) {
+        return _fail('Count and average weight must be greater than 0');
+      }
       if (_stockingDate.text.isEmpty) return _fail('Stocking date is required');
     } else {
       if (_device.text.trim().isEmpty) return _fail('Device ID is required');
@@ -75,7 +93,9 @@ class _AddPondPageState extends State<AddPondPage> {
       firstDate: DateTime(now.year - 5),
       lastDate: now,
     );
-    if (picked != null) _stockingDate.text = picked.toIso8601String().substring(0, 10);
+    if (picked != null) {
+      _stockingDate.text = picked.toIso8601String().substring(0, 10);
+    }
   }
 
   Future<void> _create() async {
@@ -108,11 +128,18 @@ class _AddPondPageState extends State<AddPondPage> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-          onPressed: () => _step == 0 ? Navigator.of(context).pop() : setState(() => _step--),
+          onPressed: () => _step == 0
+              ? Navigator.of(context).pop()
+              : setState(() => _step--),
         ),
         title: const Text(
           'Create new ponds',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, fontFamily: AppFonts.heading, color: AppColors.textPrimary),
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            fontFamily: AppFonts.heading,
+            color: AppColors.textPrimary,
+          ),
         ),
       ),
       body: SafeArea(
@@ -121,18 +148,39 @@ class _AddPondPageState extends State<AddPondPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(_subtitle(), style: const TextStyle(fontSize: 16, fontFamily: AppFonts.heading, color: AppColors.textSecondary)),
+              Text(
+                _subtitle(),
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontFamily: AppFonts.heading,
+                  color: AppColors.textSecondary,
+                ),
+              ),
               const SizedBox(height: 32),
               ..._fields(),
               if (_stepError != null)
                 Padding(
                   padding: const EdgeInsets.only(top: 12),
-                  child: Text(_stepError!, style: const TextStyle(fontSize: 14, fontFamily: AppFonts.body, color: AppColors.danger)),
+                  child: Text(
+                    _stepError!,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontFamily: AppFonts.body,
+                      color: AppColors.danger,
+                    ),
+                  ),
                 ),
               if (ponds.error != null)
                 Padding(
                   padding: const EdgeInsets.only(top: 12),
-                  child: Text(ponds.error!, style: const TextStyle(fontSize: 14, fontFamily: AppFonts.body, color: AppColors.danger)),
+                  child: Text(
+                    ponds.error!,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontFamily: AppFonts.body,
+                      color: AppColors.danger,
+                    ),
+                  ),
                 ),
               const SizedBox(height: 24),
               isLast
@@ -142,21 +190,26 @@ class _AddPondPageState extends State<AddPondPage> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.darkButton,
                         foregroundColor: const Color(0xFFF5F5F5),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                         minimumSize: const Size.fromHeight(40),
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         alignment: Alignment.centerLeft,
                       ),
-                      child: const Text('Create new pond', style: TextStyle(fontSize: 16, fontFamily: AppFonts.heading)),
+                      child: const Text(
+                        'Create new pond',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontFamily: AppFonts.heading,
+                        ),
+                      ),
                     )
                   : Align(
                       alignment: Alignment.centerRight,
-                      child: _darkButton(
-                        'Next',
-                        () {
-                          if (_validateStep()) setState(() => _step++);
-                        },
-                      ),
+                      child: _darkButton('Next', () {
+                        if (_validateStep()) setState(() => _step++);
+                      }),
                     ),
               const SizedBox(height: 24),
             ],
@@ -167,11 +220,11 @@ class _AddPondPageState extends State<AddPondPage> {
   }
 
   String _subtitle() => switch (_step) {
-        0 => 'Enter details for your new pond.',
-        1 => 'Tell us about your stock.',
-        // literal design copy (158:199) — mock text says "well !!" [V from design, easy to change]
-        _ => 'Enter details for your new well !!',
-      };
+    0 => 'Enter details for your new pond.',
+    1 => 'Tell us about your stock.',
+    // literal design copy (158:199) — mock text says "well !!" [V from design, easy to change]
+    _ => 'Enter details for your new well !!',
+  };
 
   List<Widget> _fields() {
     switch (_step) {
@@ -179,9 +232,21 @@ class _AddPondPageState extends State<AddPondPage> {
         return [
           AppTextField(label: 'Pond name', hint: 'My Pond', controller: _name),
           const SizedBox(height: 16),
-          AppTextField(label: 'Pond size · area', hint: 'Area', unit: 'm²', keyboardType: TextInputType.number, controller: _area),
+          AppTextField(
+            label: 'Pond size · area',
+            hint: 'Area',
+            unit: 'm²',
+            keyboardType: TextInputType.number,
+            controller: _area,
+          ),
           const SizedBox(height: 16),
-          AppTextField(label: 'Pond size · average depth', hint: 'Average depth', unit: 'm', keyboardType: TextInputType.number, controller: _depth),
+          AppTextField(
+            label: 'Pond size · average depth',
+            hint: 'Average depth',
+            unit: 'm',
+            keyboardType: TextInputType.number,
+            controller: _depth,
+          ),
         ];
       case 1:
         return [
@@ -192,17 +257,36 @@ class _AddPondPageState extends State<AddPondPage> {
             onChanged: (v) => setState(() => _species = v),
           ),
           const SizedBox(height: 16),
-          AppTextField(label: 'Aquatic animals count', hint: '0', keyboardType: TextInputType.number, controller: _count),
+          AppTextField(
+            label: 'Aquatic animals count',
+            hint: '0',
+            keyboardType: TextInputType.number,
+            controller: _count,
+          ),
           const SizedBox(height: 16),
-          AppTextField(label: 'Average weight', hint: '0.0', unit: 'kg', keyboardType: TextInputType.number, controller: _weight),
+          AppTextField(
+            label: 'Average weight',
+            hint: '0.0',
+            unit: 'kg',
+            keyboardType: TextInputType.number,
+            controller: _weight,
+          ),
           const SizedBox(height: 16),
-          AppTextField(label: 'Stocking date', hint: 'YYYY-MM-DD', readOnly: true, onTap: _pickDate, controller: _stockingDate),
+          AppTextField(
+            label: 'Stocking date',
+            hint: 'YYYY-MM-DD',
+            readOnly: true,
+            onTap: _pickDate,
+            controller: _stockingDate,
+          ),
         ];
       default:
         return [
           const Padding(
             padding: EdgeInsets.only(top: 24, bottom: 34),
-            child: Center(child: BuoyDeviceArt(width: 71, height: 58)), // 158:196 art slot
+            child: Center(
+              child: BuoyDeviceArt(width: 71, height: 58),
+            ), // 158:196 art slot
           ),
           AppTextField(label: 'Device ID', hint: 'ID', controller: _device),
           const SizedBox(height: 16),
@@ -218,21 +302,24 @@ class _AddPondPageState extends State<AddPondPage> {
 
   // design 154:159: solid #2A2A2A, r8, 88x40, white Nunito 16 + arrow
   Widget _darkButton(String label, VoidCallback? onPressed) => ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.darkButton,
-          foregroundColor: Colors.white,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          minimumSize: const Size(88, 40),
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+    onPressed: onPressed,
+    style: ElevatedButton.styleFrom(
+      backgroundColor: AppColors.darkButton,
+      foregroundColor: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      minimumSize: const Size(88, 40),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+    ),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(fontSize: 16, fontFamily: AppFonts.heading),
         ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(label, style: const TextStyle(fontSize: 16, fontFamily: AppFonts.heading)),
-            const SizedBox(width: 8),
-            const Icon(Icons.arrow_forward, size: 14, color: Colors.white),
-          ],
-        ),
-      );
+        const SizedBox(width: 8),
+        const Icon(Icons.arrow_forward, size: 14, color: Colors.white),
+      ],
+    ),
+  );
 }

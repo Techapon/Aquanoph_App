@@ -32,7 +32,9 @@ class _PondsPageState extends State<PondsPage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => context.read<PondProvider>().load(widget.userId));
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => context.read<PondProvider>().load(widget.userId),
+    );
   }
 
   @override
@@ -49,10 +51,18 @@ class _PondsPageState extends State<PondsPage> {
             width: 75,
             height: 75,
             child: DecoratedBox(
-              decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle, boxShadow: [_pillShadow]),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+                boxShadow: [_pillShadow],
+              ),
               child: ShaderMask(
                 // plus glyph: linear-gradient(180deg, #0496FF, #7ED348)
-                shaderCallback: (b) => const LinearGradient(colors: [AppColors.gradientStart, AppColors.gradientEnd], begin: Alignment.topCenter, end: Alignment.bottomCenter).createShader(b),
+                shaderCallback: (b) => const LinearGradient(
+                  colors: [AppColors.gradientStart, AppColors.gradientEnd],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ).createShader(b),
                 blendMode: BlendMode.srcIn,
                 child: const Icon(Icons.add, size: 28, color: Colors.white),
               ),
@@ -71,12 +81,29 @@ class _PondsPageState extends State<PondsPage> {
                   PopupMenuButton<String>(
                     color: Colors.white,
                     onSelected: (v) {
-                      if (v == 'signout') context.read<AuthProvider>().doSignOut();
+                      if (v == 'signout') {
+                          context.read<AuthProvider>().doSignOut();
+                        }
                     },
-                    itemBuilder: (_) => const [PopupMenuItem(value: 'signout', child: Text('Sign out'))],
+                    itemBuilder: (_) => const [
+                      PopupMenuItem(value: 'signout', child: Text('Sign out')),
+                    ],
                     child: const _HeaderChrome(Icons.menu),
                   ),
-                  const Expanded(child: Center(child: Text('Ponds', style: TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 24, height: 33 / 24, color: AppColors.textPrimary)))),
+                  const Expanded(
+                    child: Center(
+                      child: Text(
+                        'Ponds',
+                        style: TextStyle(
+                          fontFamily: AppFonts.heading,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24,
+                          height: 33 / 24,
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
+                    ),
+                  ),
                   const SizedBox(width: 44),
                 ],
               ),
@@ -94,22 +121,43 @@ class _PondsPageState extends State<PondsPage> {
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text(ponds.error!, textAlign: TextAlign.center, style: const TextStyle(fontSize: 14, color: AppColors.danger, fontFamily: AppFonts.body)),
+                            Text(
+                              ponds.error!,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: AppColors.danger,
+                                fontFamily: AppFonts.body,
+                              ),
+                            ),
                             const SizedBox(height: 12),
-                            TextButton(onPressed: () => ponds.load(widget.userId), child: const Text('Retry')),
+                            TextButton(
+                              onPressed: () => ponds.load(widget.userId),
+                              child: const Text('Retry'),
+                            ),
                           ],
                         ),
                       ),
                     );
                   }
-                  if (ponds.ponds.isEmpty) return _EmptyState(onAdd: () => _add(context));
+                  if (ponds.ponds.isEmpty) {
+                    return _EmptyState(onAdd: () => _add(context));
+                  }
                   return RefreshIndicator(
                     onRefresh: () => ponds.load(widget.userId),
                     child: ListView.separated(
                       padding: const EdgeInsets.fromLTRB(0, 28, 0, 100),
                       itemCount: ponds.ponds.length,
                       // Line 4: 322 wide, 3px #F4F4F4, centered (x40..362)
-                      separatorBuilder: (_, _) => const Padding(padding: EdgeInsets.fromLTRB(40, 24, 40, 24), child: DecoratedBox(decoration: BoxDecoration(color: AppColors.dividerLight), child: SizedBox(height: 3))),
+                      separatorBuilder: (_, _) => const Padding(
+                        padding: EdgeInsets.fromLTRB(40, 24, 40, 24),
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: AppColors.dividerLight,
+                          ),
+                          child: SizedBox(height: 3),
+                        ),
+                      ),
                       itemBuilder: (_, i) {
                         final pond = ponds.ponds[i];
                         return _PondBlock(
@@ -131,11 +179,23 @@ class _PondsPageState extends State<PondsPage> {
     );
   }
 
-  void _add(BuildContext context) => Navigator.of(context).push(MaterialPageRoute(builder: (_) => AddPondPage(userId: widget.userId)));
+  void _add(BuildContext context) => Navigator.of(
+    context,
+  ).push(MaterialPageRoute(builder: (_) => AddPondPage(userId: widget.userId)));
 }
 
-const _headerShadow = BoxShadow(color: Color(0x1A000000), blurRadius: 29.5, spreadRadius: -2, offset: Offset(0, 2));
-const _pillShadow = BoxShadow(color: Color(0x1F000000), blurRadius: 7.6, spreadRadius: 1, offset: Offset(0, 1));
+const _headerShadow = BoxShadow(
+  color: Color(0x1A000000),
+  blurRadius: 29.5,
+  spreadRadius: -2,
+  offset: Offset(0, 2),
+);
+const _pillShadow = BoxShadow(
+  color: Color(0x1F000000),
+  blurRadius: 7.6,
+  spreadRadius: 1,
+  offset: Offset(0, 1),
+);
 
 /// 44x44 white rounded-8 button with shadow ("Rectangle 30" chrome).
 class _HeaderChrome extends StatelessWidget {
@@ -148,8 +208,14 @@ class _HeaderChrome extends StatelessWidget {
       width: 44,
       height: 44,
       child: DecoratedBox(
-        decoration: const BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(8)), boxShadow: [_headerShadow]),
-        child: Center(child: Icon(icon, size: 22, color: const Color(0xFF1E1E1E))),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+          boxShadow: [_headerShadow],
+        ),
+        child: Center(
+          child: Icon(icon, size: 22, color: const Color(0xFF1E1E1E)),
+        ),
       ),
     );
   }
@@ -161,7 +227,13 @@ class _PondBlock extends StatelessWidget {
   final String userId;
   final PondStatusEntity? status;
   final RecommendationEntity? warning;
-  const _PondBlock({required this.index, required this.pond, required this.userId, this.status, this.warning});
+  const _PondBlock({
+    required this.index,
+    required this.pond,
+    required this.userId,
+    this.status,
+    this.warning,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -173,7 +245,13 @@ class _PondBlock extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 22),
           child: Text(
             'Ponds ${index + 1} : ${pond.name}',
-            style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.w400, fontSize: 18, height: 25 / 18, color: AppColors.textPrimary),
+            style: const TextStyle(
+              fontFamily: AppFonts.heading,
+              fontWeight: FontWeight.w400,
+              fontSize: 18,
+              height: 25 / 18,
+              color: AppColors.textPrimary,
+            ),
           ),
         ),
         const SizedBox(height: 12),
@@ -181,17 +259,35 @@ class _PondBlock extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 22),
           child: Row(
             children: [
-              const Padding(padding: EdgeInsets.only(left: 11), child: BuoyWithWater()), // buoy group at x33 vs gutter 22
+              const Padding(
+                padding: EdgeInsets.only(left: 11),
+                child: BuoyWithWater(),
+              ), // buoy group at x33 vs gutter 22
               const SizedBox(width: 19),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _metaRow(Icons.location_on_outlined, 15, countryFor(pond.timezone), AppColors.textPrimary),
+                    _metaRow(
+                      Icons.location_on_outlined,
+                      15,
+                      countryFor(pond.timezone),
+                      AppColors.textPrimary,
+                    ),
                     const SizedBox(height: 10),
-                    _metaRow(Icons.surfing, 17, speciesLabel(pond.species), AppColors.gradientStart), // carbon:fish placeholder [A]
+                    _metaRow(
+                      Icons.surfing,
+                      17,
+                      speciesLabel(pond.species),
+                      AppColors.gradientStart,
+                    ), // carbon:fish placeholder [A]
                     const SizedBox(height: 7),
-                    _metaRow(Icons.view_in_ar_outlined, 15, '${_volumeText()} cubic meter', AppColors.gradientEnd),
+                    _metaRow(
+                      Icons.view_in_ar_outlined,
+                      15,
+                      '${_volumeText()} cubic meter',
+                      AppColors.gradientEnd,
+                    ),
                   ],
                 ),
               ),
@@ -207,7 +303,9 @@ class _PondBlock extends StatelessWidget {
             height: 121,
             child: Row(
               children: [
-                Expanded(child: _DoCard(status: status, timezone: pond.timezone)),
+                Expanded(
+                  child: _DoCard(status: status, timezone: pond.timezone),
+                ),
                 const SizedBox(width: 12),
                 Expanded(child: _WarningCard(rec: warning)),
               ],
@@ -216,7 +314,15 @@ class _PondBlock extends StatelessWidget {
         ),
         const SizedBox(height: 23),
         // pill sizes to its content (min width = text + 16*2 ≈ design's 142.61), centered
-        Center(child: _ViewDetailsPill(onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => PondHomePage(userId: userId, pond: pond))))),
+        Center(
+          child: _ViewDetailsPill(
+            onTap: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => PondHomePage(userId: userId, pond: pond),
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -226,13 +332,31 @@ class _PondBlock extends StatelessWidget {
     return v % 1 == 0 ? v.toStringAsFixed(0) : v.toStringAsFixed(1);
   }
 
-  static Widget _metaRow(IconData icon, double iconSize, String text, Color textColor) => Row(
-        children: [
-          Icon(icon, size: iconSize, color: const Color(0xFF232323)),
-          const SizedBox(width: 6),
-          Flexible(child: Text(text, maxLines: 1, overflow: TextOverflow.ellipsis, style: TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 16, height: 22 / 16, color: textColor))),
-        ],
-      );
+  static Widget _metaRow(
+    IconData icon,
+    double iconSize,
+    String text,
+    Color textColor,
+  ) => Row(
+    children: [
+      Icon(icon, size: iconSize, color: const Color(0xFF232323)),
+      const SizedBox(width: 6),
+      Flexible(
+        child: Text(
+          text,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontFamily: AppFonts.heading,
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+            height: 22 / 16,
+            color: textColor,
+          ),
+        ),
+      ),
+    ],
+  );
 }
 
 /// Representative-parameter card — design's green "DO / Oxygen in pond / 4.2 mg/L [good]"
@@ -249,38 +373,112 @@ class _DoCard extends StatelessWidget {
     if (s == null || s.severity == PondSeverity.unknown) {
       return Container(
         padding: const EdgeInsets.fromLTRB(12, 7, 12, 8),
-        decoration: BoxDecoration(color: Colors.white, border: Border.all(color: AppColors.neutralBorder, width: 1.5), borderRadius: BorderRadius.circular(8)),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: AppColors.neutralBorder, width: 1.5),
+          borderRadius: BorderRadius.circular(8),
+        ),
         child: const Center(
-          child: Text('No data yet', style: TextStyle(fontFamily: AppFonts.body, fontSize: 12, color: AppColors.textMuted)),
+          child: Text(
+            'No data yet',
+            style: TextStyle(
+              fontFamily: AppFonts.body,
+              fontSize: 12,
+              color: AppColors.textMuted,
+            ),
+          ),
         ),
       );
     }
     final style = _sevStyle(s.severity);
-    final time = s.severity == PondSeverity.unknown ? '' : '${formatClock(pondLocal(s.updatedAt, timezone))}.';
+    final time = s.severity == PondSeverity.unknown
+        ? ''
+        : '${formatClock(pondLocal(s.updatedAt, timezone))}.';
     return Container(
       padding: const EdgeInsets.fromLTRB(12, 7, 12, 8),
-      decoration: BoxDecoration(color: style.bg, border: Border.all(color: style.border, width: 1.5), borderRadius: BorderRadius.circular(8)),
+      decoration: BoxDecoration(
+        color: style.bg,
+        border: Border.all(color: style.border, width: 1.5),
+        borderRadius: BorderRadius.circular(8),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text(paramLabel(s.parameter), style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 16, height: 22 / 16, color: AppColors.textPrimary)),
+              Text(
+                paramLabel(s.parameter),
+                style: const TextStyle(
+                  fontFamily: AppFonts.heading,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  height: 22 / 16,
+                  color: AppColors.textPrimary,
+                ),
+              ),
               const SizedBox(width: 3),
-              Flexible(child: Text(time, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontFamily: AppFonts.heading, fontSize: 12, height: 16 / 12, color: AppColors.textMuted))),
+              Flexible(
+                child: Text(
+                  time,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    fontFamily: AppFonts.heading,
+                    fontSize: 12,
+                    height: 16 / 12,
+                    color: AppColors.textMuted,
+                  ),
+                ),
+              ),
             ],
           ),
-          Padding(padding: const EdgeInsets.only(top: 2), child: Text(paramSub(s.parameter), maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontFamily: AppFonts.body, fontSize: 12, height: 14 / 12, color: AppColors.textMuted))),
+          Padding(
+            padding: const EdgeInsets.only(top: 2),
+            child: Text(
+              paramSub(s.parameter),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontFamily: AppFonts.body,
+                fontSize: 12,
+                height: 14 / 12,
+                color: AppColors.textMuted,
+              ),
+            ),
+          ),
           const SizedBox(height: 8),
-          _SevBadge(label: style.badge, color: style.badgeColor), // badge under the subtitle (user layout: never shares a row with the name)
+          _SevBadge(
+            label: style.badge,
+            color: style.badgeColor,
+          ), // badge under the subtitle (user layout: never shares a row with the name)
           const SizedBox(height: 4),
           Expanded(
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(s.value == null ? '—' : paramValueText(s.value!), style: const TextStyle(fontFamily: AppFonts.heading, fontSize: 32, height: 44 / 32, color: AppColors.textPrimary)), // design weight 400
-                if (paramUnit(s.parameter).isNotEmpty) Padding(padding: const EdgeInsets.only(left: 4, bottom: 2), child: Text(paramUnit(s.parameter), style: const TextStyle(fontFamily: AppFonts.heading, fontSize: 12, height: 16 / 12, color: AppColors.textPrimary))), // sits on the card floor (was bottom:7 — floated)
+                Text(
+                  s.value == null ? '—' : paramValueText(s.value!),
+                  style: const TextStyle(
+                    fontFamily: AppFonts.heading,
+                    fontSize: 32,
+                    height: 44 / 32,
+                    color: AppColors.textPrimary,
+                  ),
+                ), // design weight 400
+                if (paramUnit(s.parameter).isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(left: 4, bottom: 2),
+                    child: Text(
+                      paramUnit(s.parameter),
+                      style: const TextStyle(
+                        fontFamily: AppFonts.heading,
+                        fontSize: 12,
+                        height: 16 / 12,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                  ), // sits on the card floor (was bottom:7 — floated)
               ],
             ),
           ),
@@ -301,8 +499,19 @@ class _SevBadge extends StatelessWidget {
     return Container(
       height: 20,
       padding: const EdgeInsets.symmetric(horizontal: 9),
-      decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(4)),
-      child: Text(label, style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 14, color: Colors.white)),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Text(
+        label,
+        style: const TextStyle(
+          fontFamily: AppFonts.heading,
+          fontWeight: FontWeight.bold,
+          fontSize: 14,
+          color: Colors.white,
+        ),
+      ),
     );
   }
 }
@@ -310,12 +519,37 @@ class _SevBadge extends StatelessWidget {
 typedef _CardStyle = ({Color bg, Color border, String badge, Color badgeColor});
 
 _CardStyle _sevStyle(PondSeverity s) => switch (s) {
-      PondSeverity.optimal => (bg: AppColors.listOptimalBg, border: AppColors.listOptimalBorder, badge: 'good', badgeColor: AppColors.optimal),
-      PondSeverity.stress => (bg: AppColors.listStressBg, border: AppColors.stress, badge: 'stress', badgeColor: AppColors.stress),
-      PondSeverity.elevatedRisk => (bg: AppColors.urgentBg, border: AppColors.urgentBorder, badge: 'risk', badgeColor: AppColors.watch), // badge FF9232
-      PondSeverity.critical => (bg: AppColors.urgentBg, border: AppColors.critical, badge: 'critical', badgeColor: AppColors.critical),
-      PondSeverity.unknown => (bg: Colors.white, border: AppColors.neutralBorder, badge: '', badgeColor: Colors.transparent),
-    };
+  PondSeverity.optimal => (
+    bg: AppColors.listOptimalBg,
+    border: AppColors.listOptimalBorder,
+    badge: 'good',
+    badgeColor: AppColors.optimal,
+  ),
+  PondSeverity.stress => (
+    bg: AppColors.listStressBg,
+    border: AppColors.stress,
+    badge: 'stress',
+    badgeColor: AppColors.stress,
+  ),
+  PondSeverity.elevatedRisk => (
+    bg: AppColors.urgentBg,
+    border: AppColors.urgentBorder,
+    badge: 'risk',
+    badgeColor: AppColors.watch,
+  ), // badge FF9232
+  PondSeverity.critical => (
+    bg: AppColors.urgentBg,
+    border: AppColors.critical,
+    badge: 'critical',
+    badgeColor: AppColors.critical,
+  ),
+  PondSeverity.unknown => (
+    bg: Colors.white,
+    border: AppColors.neutralBorder,
+    badge: '',
+    badgeColor: Colors.transparent,
+  ),
+};
 
 /// ⚠ Warning card (Rectangle 5) = top open recommendation for the pond.
 /// urgent -> design's red "Warning"; non-urgent -> softer "Notice" [A]
@@ -331,9 +565,20 @@ class _WarningCard extends StatelessWidget {
     if (r == null) {
       return Container(
         padding: const EdgeInsets.fromLTRB(13, 9, 13, 0),
-        decoration: BoxDecoration(color: Colors.white, border: Border.all(color: AppColors.neutralBorder, width: 1.5), borderRadius: BorderRadius.circular(8)),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: AppColors.neutralBorder, width: 1.5),
+          borderRadius: BorderRadius.circular(8),
+        ),
         child: const Center(
-          child: Text('No open warnings', style: TextStyle(fontFamily: AppFonts.body, fontSize: 12, color: AppColors.textMuted)),
+          child: Text(
+            'No open warnings',
+            style: TextStyle(
+              fontFamily: AppFonts.body,
+              fontSize: 12,
+              color: AppColors.textMuted,
+            ),
+          ),
         ),
       );
     }
@@ -342,7 +587,10 @@ class _WarningCard extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(13, 9, 13, 0),
       decoration: BoxDecoration(
         color: urgent ? AppColors.urgentBg : AppColors.warningBg,
-        border: Border.all(color: urgent ? AppColors.urgentBorder : AppColors.warningBorder, width: 1.5),
+        border: Border.all(
+          color: urgent ? AppColors.urgentBorder : AppColors.warningBorder,
+          width: 1.5,
+        ),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
@@ -350,9 +598,22 @@ class _WarningCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(urgent ? Icons.warning_amber_rounded : Icons.info_outline, size: 20, color: urgent ? AppColors.warnIcon : AppColors.warningBorder),
+              Icon(
+                urgent ? Icons.warning_amber_rounded : Icons.info_outline,
+                size: 20,
+                color: urgent ? AppColors.warnIcon : AppColors.warningBorder,
+              ),
               const SizedBox(width: 6),
-              Text(urgent ? 'Warning' : 'Notice', style: TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 16, height: 22 / 16, color: urgent ? AppColors.warnTitle : AppColors.textSecondary)),
+              Text(
+                urgent ? 'Warning' : 'Notice',
+                style: TextStyle(
+                  fontFamily: AppFonts.heading,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  height: 22 / 16,
+                  color: urgent ? AppColors.warnTitle : AppColors.textSecondary,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 4),
@@ -361,7 +622,12 @@ class _WarningCard extends StatelessWidget {
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.start,
-            style: const TextStyle(fontFamily: AppFonts.body, fontSize: 12, height: 14 / 12, color: AppColors.textPrimary),
+            style: const TextStyle(
+              fontFamily: AppFonts.body,
+              fontSize: 12,
+              height: 14 / 12,
+              color: AppColors.textPrimary,
+            ),
           ),
         ],
       ),
@@ -383,8 +649,15 @@ class _ViewDetailsPill extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         // NOTE: no Container `alignment` here — it would stretch to fill loose
         // constraints; Row(min) hugs content (≈ design 142.61 wide).
-        decoration: const BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(8)), boxShadow: [_pillShadow]),
-        child: Row(mainAxisSize: MainAxisSize.min, children: [_gradientText('View full details', 14)]),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+          boxShadow: [_pillShadow],
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [_gradientText('View full details', 14)],
+        ),
       ),
     );
   }
@@ -403,7 +676,12 @@ class _EmptyState extends StatelessWidget {
           // design 107:690: 'Let’s add a new pond' Nunito Bold 24 #707070
           const Text(
             'Let’s add a new pond',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, fontFamily: AppFonts.heading, color: AppColors.textSecondary),
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              fontFamily: AppFonts.heading,
+              color: AppColors.textSecondary,
+            ),
           ),
           const SizedBox(height: 24),
           // design 107:692: white pill, shadow, gradient-clipped text 14 bold
@@ -414,7 +692,13 @@ class _EmptyState extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(8),
-                boxShadow: const [BoxShadow(color: Color(0x1F000000), blurRadius: 7.6, offset: Offset(0, 1))],
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color(0x1F000000),
+                    blurRadius: 7.6,
+                    offset: Offset(0, 1),
+                  ),
+                ],
               ),
               child: _gradientText('Add new Pond', 14),
             ),
@@ -426,10 +710,20 @@ class _EmptyState extends StatelessWidget {
 }
 
 Widget _gradientText(String text, double size) => ShaderMask(
-      shaderCallback: (bounds) => const LinearGradient(colors: [AppColors.gradientStart, AppColors.gradientEnd]).createShader(bounds),
-      blendMode: BlendMode.srcIn,
-      child: Text(text, style: TextStyle(fontSize: size, fontWeight: FontWeight.bold, fontFamily: AppFonts.heading, color: Colors.white)),
-    );
+  shaderCallback: (bounds) => const LinearGradient(
+    colors: [AppColors.gradientStart, AppColors.gradientEnd],
+  ).createShader(bounds),
+  blendMode: BlendMode.srcIn,
+  child: Text(
+    text,
+    style: TextStyle(
+      fontSize: size,
+      fontWeight: FontWeight.bold,
+      fontFamily: AppFonts.heading,
+      color: Colors.white,
+    ),
+  ),
+);
 
 String speciesLabel(String species) {
   const labels = {'nile_tilapia': 'Nile tilapia'};

@@ -18,8 +18,12 @@ import 'package:aquanoph/features/severity/domain/usecases/get_pond_status_useca
 
 class PondProvider extends ChangeNotifier {
   final _repo = PondRepositoryImpl(PondRemoteDatasource());
-  final _getStatus = GetPondStatusUsecase(SeverityRepositoryImpl(SeverityRemoteDatasource()));
-  final _getRecs = GetRecommendationsUsecase(RecommendationRepositoryImpl(RecommendationRemoteDatasource()));
+  final _getStatus = GetPondStatusUsecase(
+    SeverityRepositoryImpl(SeverityRemoteDatasource()),
+  );
+  final _getRecs = GetRecommendationsUsecase(
+    RecommendationRepositoryImpl(RecommendationRemoteDatasource()),
+  );
   late final _getPonds = GetPondsUsecase(_repo);
   late final _createPond = CreatePondUsecase(_repo);
   late final _updatePond = UpdatePondUsecase(_repo);
@@ -35,9 +39,9 @@ class PondProvider extends ChangeNotifier {
   Map<String, RecommendationEntity?> warnings = {};
 
   Future<void> load(String userId) => _run(() async {
-        ponds = await _getPonds(userId);
-        await Future.wait(ponds.map(_loadCards));
-      });
+    ponds = await _getPonds(userId);
+    await Future.wait(ponds.map(_loadCards));
+  });
 
   Future<void> _loadCards(PondEntity pond) async {
     final s = _getStatus(pond.id);
@@ -58,10 +62,21 @@ class PondProvider extends ChangeNotifier {
     return ok;
   }
 
-  Future<bool> update(String userId, String pondId, {String? name, int? stockingCount, double? avgWeightG}) async {
+  Future<bool> update(
+    String userId,
+    String pondId, {
+    String? name,
+    int? stockingCount,
+    double? avgWeightG,
+  }) async {
     var ok = false;
     await _run(() async {
-      await _updatePond(pondId, name: name, stockingCount: stockingCount, avgWeightG: avgWeightG);
+      await _updatePond(
+        pondId,
+        name: name,
+        stockingCount: stockingCount,
+        avgWeightG: avgWeightG,
+      );
       await load(userId);
       ok = true;
     });

@@ -154,13 +154,18 @@ class _MoreDetailPill extends StatelessWidget {
       onTap: onTap,
       child: Container(
         height: 28,
-        alignment: Alignment.center,
         padding: const EdgeInsets.symmetric(horizontal: 15),
+        // no `alignment` (stretches under loose constraints); Row(min) hugs content (≈ design 102 wide)
         decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8), boxShadow: const [_cardShadow]),
-        child: ShaderMask(
-          shaderCallback: (b) => const LinearGradient(colors: [AppColors.gradientStart, AppColors.gradientEnd]).createShader(b),
-          blendMode: BlendMode.srcIn,
-          child: const Text('More detail', style: TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 14, color: Colors.white)),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ShaderMask(
+              shaderCallback: (b) => const LinearGradient(colors: [AppColors.gradientStart, AppColors.gradientEnd]).createShader(b),
+              blendMode: BlendMode.srcIn,
+              child: const Text('More detail', style: TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 14, color: Colors.white)),
+            ),
+          ],
         ),
       ),
     );

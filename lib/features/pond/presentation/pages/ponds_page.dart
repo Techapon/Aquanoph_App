@@ -193,6 +193,7 @@ class _PondBlock extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 23),
+        // pill sizes to its content (min width = text + 16*2 ≈ design's 142.61), centered
         Center(child: _ViewDetailsPill(onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => PondHomePage(userId: userId, pond: pond))))),
       ],
     );
@@ -313,14 +314,11 @@ class _ViewDetailsPill extends StatelessWidget {
       onTap: onTap,
       child: Container(
         height: 31,
-        alignment: Alignment.center,
         padding: const EdgeInsets.symmetric(horizontal: 16),
+        // NOTE: no Container `alignment` here — it would stretch to fill loose
+        // constraints; Row(min) hugs content (≈ design 142.61 wide).
         decoration: const BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(8)), boxShadow: [_pillShadow]),
-        child: ShaderMask(
-          shaderCallback: (b) => const LinearGradient(colors: [AppColors.gradientStart, AppColors.gradientEnd]).createShader(b),
-          blendMode: BlendMode.srcIn,
-          child: const Text('View full details', style: TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 14, color: Colors.white)),
-        ),
+        child: Row(mainAxisSize: MainAxisSize.min, children: [_gradientText('View full details', 14)]),
       ),
     );
   }

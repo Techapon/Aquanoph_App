@@ -19,6 +19,7 @@ Future<void> showSuccessDialog(
   String subtitle = 'Analysis and Schedule complete.',
   String statusLabel = 'Analysis Pond',
   String statusSuffix = ' completed.',
+  bool failed = false,
 }) {
   return showDialog<void>(
     context: context,
@@ -38,15 +39,16 @@ Future<void> showSuccessDialog(
             clipBehavior: Clip.none,
           children: [
             // Group 98 / Ellipse 5: 75px circle, left 142 (50%-37.5+0.5), top 52
+            // failed variant [A] tint: urgentBg circle + critical-red X (no design export yet)
             Positioned(
               left: 142,
               top: 52,
-              child: const SizedBox(
+              child: SizedBox(
                 width: 75,
                 height: 75,
                 child: DecoratedBox(
-                  decoration: BoxDecoration(color: AppColors.successBg, shape: BoxShape.circle),
-                  child: CustomPaint(painter: _TickPainter()),
+                  decoration: BoxDecoration(color: failed ? AppColors.urgentBg : AppColors.successBg, shape: BoxShape.circle),
+                  child: CustomPaint(painter: _TickPainter(failed: failed)),
                 ),
               ),
             ),
@@ -90,11 +92,11 @@ Future<void> showSuccessDialog(
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            // small green check at (312,249) 16x12
-            const Positioned(
+            // small green check at (312,249) 16x12 — red X when failed
+            Positioned(
               left: 312,
               top: 249,
-              child: CustomPaint(size: Size(16, 12), painter: _MiniCheckPainter()),
+              child: CustomPaint(size: const Size(16, 12), painter: _MiniCheckPainter(failed: failed)),
             ),
             // Button 100x40 #2C2C2C r8, (238,324); label Inter16 #F5F5F5 -> app uses Nunito [A]
             Positioned(
@@ -125,52 +127,70 @@ Future<void> showSuccessDialog(
 
 /// Tick path (card coords 163,90.23 -> 175.38,100.46 -> 196,80) local to the
 /// 75px circle at (142,52): (21,38.23) (33.38,48.46) (54,28). Stroke 6, round.
+/// failed: red X centered in the same box (symmetric, 23..52 → mirrors tick weight).
 class _TickPainter extends CustomPainter {
-  const _TickPainter();
+  final bool failed;
+  const _TickPainter({this.failed = false});
 
   @override
   void paint(Canvas canvas, Size size) {
     final s = size.width / 75;
+    final paint = Paint()
+      ..color = failed ? AppColors.critical : AppColors.success
+      ..strokeWidth = 6 * s
+      ..strokeCap = StrokeCap.round
+      ..strokeJoin = StrokeJoin.round
+      ..style = PaintingStyle.stroke;
+    if (failed) {
+      final x = Path()
+        ..moveTo(25 * s, 25 * s)
+        ..lineTo(50 * s, 50 * s)
+        ..moveTo(50 * s, 25 * s)
+        ..lineTo(25 * s, 50 * s);
+      canvas.drawPath(x, paint);
+      return;
+    }
     final p = Path()
       ..moveTo(21 * s, 38.23 * s)
       ..lineTo(33.38 * s, 48.46 * s)
       ..lineTo(54 * s, 28 * s);
-    canvas.drawPath(
-      p,
-      Paint()
-        ..color = AppColors.success
-        ..strokeWidth = 6 * s
-        ..strokeCap = StrokeCap.round
-        ..strokeJoin = StrokeJoin.round
-        ..style = PaintingStyle.stroke,
-    );
+    canvas.drawPath(p, paint);
   }
 
   @override
-  bool shouldRepaint(covariant _TickPainter oldDelegate) => false;
+  bool shouldRepaint(covariant _TickPainter oldDelegate) => oldDelegate.failed != failed;
 }
 
 /// "M312 255L318 261L328 249" in a 16x12 box: (0,6)-(6,12)-(16,0), stroke 2 #0BE220.
+/// failed: small red X ("not saved"), stroke critical.
 class _MiniCheckPainter extends CustomPainter {
-  const _MiniCheckPainter();
+  final bool failed;
+  const _MiniCheckPainter({this.failed = false});
 
   @override
   void paint(Canvas canvas, Size size) {
-    final p = Path()
-      ..moveTo(0, size.height / 2)
-      ..lineTo(size.width * 0.375, size.height)
-      ..lineTo(size.width, 0);
-    canvas.drawPath(
-      p,
-      Paint()
-        ..color = const Color(0xFF0BE220)
-        ..strokeWidth = 2
-        ..strokeCap = StrokeCap.round
-        ..strokeJoin = StrokeJoin.round
-        ..style = PaintingStyle.stroke,
-    );
+    final paint = Paint()
+      ..color = failed ? AppColors.critical : const Color(0xFF0BE220)
+      ..strokeWidth = 2
+      ..strokeCap = StrokeCap.round
+      ..strokeJoin = StrokeJoin.round
+      ..style = PaintingStyle.stroke;
+    final p = Path();
+    if (failed) {
+      p
+        ..moveTo(2, 1)
+        ..lineTo(size.width - 2, size.height - 1)
+        ..moveTo(size.width - 2, 1)
+        ..lineTo(2, size.height - 1);
+    } else {
+      p
+        ..moveTo(0, size.height / 2)
+        ..lineTo(size.width * 0.375, size.height)
+        ..lineTo(size.width, 0);
+    }
+    canvas.drawPath(p, paint);
   }
 
   @override
-  bool shouldRepaint(covariant _MiniCheckPainter oldDelegate) => false;
+  bool shouldRepaint(covariant _MiniCheckPainter oldDelegate) => oldDelegate.failed != failed;
 }

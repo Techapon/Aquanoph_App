@@ -57,7 +57,7 @@ class _PondSettingPageState extends State<PondSettingPage> {
     final kg = double.tryParse(_weight.text.replaceAll(',', '.'));
     final count = int.tryParse(_amount.text.trim());
     if (name.isEmpty || kg == null || kg <= 0 || count == null || count <= 0) {
-      await showSuccessDialog(context, title: 'Save failed', subtitle: 'Name, weight and amount must be filled in.', statusLabel: 'Pond settings', statusSuffix: ' not saved.');
+      await showSuccessDialog(context, title: 'Save failed', subtitle: 'Name, weight and amount must be filled in.', statusLabel: 'Pond settings', statusSuffix: ' not saved.', failed: true);
       return;
     }
     setState(() => _saving = true);
@@ -74,6 +74,7 @@ class _PondSettingPageState extends State<PondSettingPage> {
       subtitle: ok ? 'Pond settings updated.' : 'Could not update the pond — check your connection.',
       statusLabel: name, // §7 audit: real pond name, not the wizard's "Analysis Pond"
       statusSuffix: ok ? ' saved.' : ' not saved.',
+      failed: !ok,
     );
   }
 

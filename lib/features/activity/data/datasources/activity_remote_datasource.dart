@@ -24,4 +24,41 @@ class ActivityRemoteDatasource {
       throw CoreFailure.databaseError(e.message);
     }
   }
+
+  /// save_checklist: 1 transaction all-or-nothing (§7 ข้อ 2).
+  /// changes: [{"op":"create","activity":{...}}, {"op":"update","activity":{...}}, {"op":"delete","id":"..."}]
+  Future<void> saveChecklist(String pondId, List<Map<String, dynamic>> changes) async {
+    try {
+      await _client.rpc('save_checklist', params: {
+        'p_pond_id': pondId,
+        'p_changes': changes,
+      });
+    } on PostgrestException catch (e) {
+      throw CoreFailure.databaseError(e.message);
+    }
+  }
+
+  /// upsert_activity: returns id (new or existing).
+  Future<String> upsertActivity(String pondId, Map<String, dynamic> activity) async {
+    try {
+      final res = await _client.rpc('upsert_activity', params: {
+        'p_pond_id': pondId,
+        'p_activity': activity,
+      });
+      return res as String? ?? '';
+    } on PostgrestException catch (e) {
+      throw CoreFailure.databaseError(e.message);
+    }
+  }
+
+  /// delete_activity by id.
+  Future<void> deleteActivity(String activityId) async {
+    try {
+      await _client.rpc('delete_activity', params: {
+        'p_activity_id': activityId,
+      });
+    } on PostgrestException catch (e) {
+      throw CoreFailure.databaseError(e.message);
+    }
+  }
 }

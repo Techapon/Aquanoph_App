@@ -5,6 +5,8 @@ import 'package:aquanoph/core/theme/app_colors.dart';
 import 'package:aquanoph/core/theme/app_fonts.dart';
 import 'package:aquanoph/core/utils/pond_time.dart';
 import 'package:aquanoph/features/activity/domain/entities/activity_entity.dart';
+import 'package:aquanoph/features/activity/presentation/controller/activity_provider.dart';
+import 'package:aquanoph/features/activity/presentation/widgets/checklist_sheet.dart';
 import 'package:aquanoph/features/pond/domain/entities/pond_entity.dart';
 import 'package:aquanoph/features/pond/presentation/controller/pond_home_provider.dart';
 import 'package:aquanoph/features/pond/presentation/pages/pond_setting_page.dart';
@@ -192,9 +194,17 @@ class _PondHomeView extends StatelessWidget {
                 const _SectionTitle('All daily tasks'),
                 const SizedBox(height: 11),
                 // ── Feeding (y714, h92): point-in-time logs, check = done
-                _TaskCard(
-                  label: 'Feeding',
-                  children: feeding.isEmpty
+                GestureDetector(
+                  onTap: () => showChecklistSheet(
+                    context,
+                    pond: pond,
+                    type: ActivityType.feeding,
+                    timezone: pond.timezone,
+                    onSaved: () => p.load(pond),
+                  ),
+                  child: _TaskCard(
+                    label: 'Feeding',
+                    children: feeding.isEmpty
                       ? const [_NoTaskChip()]
                       : [
                           for (final a in feeding)
@@ -205,12 +215,21 @@ class _PondHomeView extends StatelessWidget {
                               checked: a.status == ActivityStatus.done,
                             ),
                         ],
+                      ),
                 ),
                 const SizedBox(height: 11),
                 // ── Aeration (y817, h135): start–end ranges, trailing dot per design
-                _TaskCard(
-                  label: 'Aeration',
-                  children: aeration.isEmpty
+                GestureDetector(
+                  onTap: () => showChecklistSheet(
+                    context,
+                    pond: pond,
+                    type: ActivityType.aeration,
+                    timezone: pond.timezone,
+                    onSaved: () => p.load(pond),
+                  ),
+                  child: _TaskCard(
+                    label: 'Aeration',
+                    children: aeration.isEmpty
                       ? const [_NoTaskChip()]
                       : [
                           for (final a in aeration)
@@ -221,6 +240,7 @@ class _PondHomeView extends StatelessWidget {
                               checked: a.status == ActivityStatus.done,
                             ),
                         ],
+                      ),
                 ),
               ],
             ),

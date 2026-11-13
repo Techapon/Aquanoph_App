@@ -102,10 +102,10 @@ class _PondsPageState extends State<PondsPage> {
                   return RefreshIndicator(
                     onRefresh: () => ponds.load(widget.userId),
                     child: ListView.separated(
-                      padding: const EdgeInsets.fromLTRB(22, 28, 22, 100),
+                      padding: const EdgeInsets.fromLTRB(0, 28, 0, 100),
                       itemCount: ponds.ponds.length,
-                      // Line 4: 322 wide, 3px #F4F4F4, centered
-                      separatorBuilder: (_, _) => const Padding(padding: EdgeInsets.fromLTRB(18, 24, 18, 24), child: DecoratedBox(decoration: BoxDecoration(color: AppColors.dividerLight), child: SizedBox(height: 3))),
+                      // Line 4: 322 wide, 3px #F4F4F4, centered (x40..362)
+                      separatorBuilder: (_, _) => const Padding(padding: EdgeInsets.fromLTRB(40, 24, 40, 24), child: DecoratedBox(decoration: BoxDecoration(color: AppColors.dividerLight), child: SizedBox(height: 3))),
                       itemBuilder: (_, i) => _PondBlock(index: i, pond: ponds.ponds[i], userId: widget.userId),
                     ),
                   );
@@ -154,33 +154,39 @@ class _PondBlock extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Ponds ${index + 1} : ${pond.name}',
-          style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.w400, fontSize: 18, height: 25 / 18, color: AppColors.textPrimary),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 22),
+          child: Text(
+            'Ponds ${index + 1} : ${pond.name}',
+            style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.w400, fontSize: 18, height: 25 / 18, color: AppColors.textPrimary),
+          ),
         ),
         const SizedBox(height: 12),
-        Row(
-          children: [
-            const Padding(padding: EdgeInsets.only(left: 11), child: BuoyWithWater()), // buoy group at x33 vs gutter 22
-            const SizedBox(width: 19),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _metaRow(Icons.location_on_outlined, 15, countryFor(pond.timezone), AppColors.textPrimary),
-                  const SizedBox(height: 10),
-                  _metaRow(Icons.surfing, 17, speciesLabel(pond.species), AppColors.gradientStart), // carbon:fish placeholder [A]
-                  const SizedBox(height: 7),
-                  _metaRow(Icons.view_in_ar_outlined, 15, '${_volumeText()} cubic meter', AppColors.gradientEnd),
-                ],
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 22),
+          child: Row(
+            children: [
+              const Padding(padding: EdgeInsets.only(left: 11), child: BuoyWithWater()), // buoy group at x33 vs gutter 22
+              const SizedBox(width: 19),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _metaRow(Icons.location_on_outlined, 15, countryFor(pond.timezone), AppColors.textPrimary),
+                    const SizedBox(height: 10),
+                    _metaRow(Icons.surfing, 17, speciesLabel(pond.species), AppColors.gradientStart), // carbon:fish placeholder [A]
+                    const SizedBox(height: 7),
+                    _metaRow(Icons.view_in_ar_outlined, 15, '${_volumeText()} cubic meter', AppColors.gradientEnd),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         const SizedBox(height: 23),
-        // cards 177/178 x 99 with 12 gap (18+177+12+178=385 within 22..380 content -> 4px bleed each side)
+        // cards 177/178 x 99, 12 gap, 18 gutter (18+177+12+178=385)
         const Padding(
-          padding: EdgeInsets.symmetric(horizontal: -4),
+          padding: EdgeInsets.symmetric(horizontal: 18),
           child: SizedBox(
             height: 99,
             child: Row(children: [Expanded(child: _DoCard()), SizedBox(width: 12), Expanded(child: _WarningCard())]),

@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:aquanoph/core/theme/app_colors.dart';
 import 'package:aquanoph/core/theme/app_fonts.dart';
+import 'package:aquanoph/core/utils/pond_time.dart';
+import 'package:aquanoph/features/activity/domain/entities/activity_entity.dart';
 import 'package:aquanoph/features/pond/domain/entities/pond_entity.dart';
+import 'package:aquanoph/features/pond/presentation/controller/pond_home_provider.dart';
 import 'package:aquanoph/features/pond/presentation/pages/pond_setting_page.dart';
+import 'package:aquanoph/features/recommendation/domain/entities/recommendation_entity.dart';
+import 'package:aquanoph/features/severity/domain/entities/pond_status_entity.dart';
 import 'package:aquanoph/shared/widgets/buoy_art.dart';
 
-/// Pond home per figma/pond_page/Ponds.css ("Ponds 1", 402×874 absolute design ->
-/// native flex with the exact measured offsets; content column 358 wide, gutter 21-22).
-/// Step 2: static sample text from the design. Data wiring = step 3, realtime = step 4.
+/// Pond home per the detail frame (CSS ground truth: figma/pond_page/css_detail.txt;
+/// 402×874 absolute design -> native flex, content column 358 wide, gutter 21-22).
+/// Step 3: severity status + open recs + today's activities come from Supabase
+/// (PondHomeProvider); realtime refresh = step 4.
 /// Menu/bell/plus have no defined destinations yet [U] -> inert for now.
 class PondHomePage extends StatelessWidget {
   final PondEntity pond;
@@ -17,102 +24,136 @@ class PondHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => PondHomeProvider()..load(pond),
+      child: _PondHomeView(pond: pond, userId: userId),
+    );
+  }
+}
+
+class _PondHomeView extends StatelessWidget {
+  final PondEntity pond;
+  final String userId;
+  const _PondHomeView({required this.pond, required this.userId});
+
+  @override
+  Widget build(BuildContext context) {
+    final p = context.watch<PondHomeProvider>();
+    final feeding = p.of(ActivityType.feeding);
+    final aeration = p.of(ActivityType.aeration);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(22, 16, 22, 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // ── Header: menu | "<pond name>" | bell(red dot) + plus  (design y65–109)
-              Row(
-                children: [
-                  const _HeaderButton(Icons.menu),
-                  Expanded(
-                    child: Center(
-                      child: Text(
-                        pond.name,
-                        style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 24, height: 33 / 24, color: AppColors.textPrimary),
+        child: RefreshIndicator(
+          onRefresh: () => p.load(pond),
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.fromLTRB(22, 16, 22, 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // ── Header: menu | "<pond name>" | bell(red dot) + plus  (design y65–109)
+                Row(
+                  children: [
+                    const _HeaderButton(Icons.menu),
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          pond.name,
+                          style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 24, height: 33 / 24, color: AppColors.textPrimary),
+                        ),
                       ),
                     ),
-                  ),
-                  const _HeaderButton(Icons.notifications_none, dot: true),
-                  const SizedBox(width: 8),
-                  const _HeaderButton(Icons.add),
-                ],
-              ),
-              const SizedBox(height: 22),
-              // ── "Name : …" + "More detail" pill  (y131)
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Text(
-                      'Name : ${pond.name}',
-                      style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 18, height: 25 / 18, color: AppColors.textPrimary),
-                    ),
-                  ),
-                  _MoreDetailPill(onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => PondSettingPage(userId: userId, pond: pond)))),
-                ],
-              ),
-              const SizedBox(height: 28),
-              // ── "Today's Task" + buoy illustration (centered, y184–249)
-              const SizedBox(
-                height: 65,
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    Align(child: BuoyWithWater()), // design centers the 117-wide group at x142/402
-                    Positioned(left: 0, top: 14, child: Text("Today’s Task", style: TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 18, height: 25 / 18, color: AppColors.textPrimary))),
+                    const _HeaderButton(Icons.notifications_none, dot: true),
+                    const SizedBox(width: 8),
+                    const _HeaderButton(Icons.add),
                   ],
                 ),
-              ),
-              const SizedBox(height: 28),
-              // ── Water Quality Now (y277, h91)
-              const _WaterQualityCard(),
-              const SizedBox(height: 65),
-              const _SectionTitle('All Recommendations'),
-              const SizedBox(height: 11),
-              const _RecommendationCard(
-                urgent: true,
-                title: 'Operate the aerator for 5 hours, starting at 11 PM.',
-                body: 'Dissolved oxygen (DO) is expected to drop to 2.6 mg/L at 04:00 AM.',
-              ),
-              const SizedBox(height: 11),
-              const _RecommendationCard(
-                urgent: false,
-                title: 'Apply dolomite to boost alkalinity this afternoon.',
-                body: 'At 3:40 AM, pH measured at 6.9, which is below the optimal range (7.5–8.5). '
-                    'The alkalinity may not be sufficient to buffer daily pH fluctuations.',
-              ),
-              const SizedBox(height: 11),
-              const _SectionTitle('All daily tasks'),
-              const SizedBox(height: 11),
-              // ── Feeding (y714, h92)
-              const _TaskCard(
-                label: 'Feeding',
-                children: [
-                  _TimeChip('8:12 AM', fontSize: 12, checked: true),
-                  _TimeChip('12:30 AM'),
-                  _TimeChip('17:40 AM'),
-                ],
-              ),
-              const SizedBox(height: 11),
-              // ── Aeration (y817, h135; chips 156+153 then 153 -> wrap gives 2 runs)
-              const _TaskCard(
-                label: 'Aeration',
-                children: [
-                  _TimeChip('10:00 AM - 4:00 PM.'),
-                  _TimeChip('4:00 PM - 10:00 PM.'),
-                  _TimeChip('10:00 PM - 6:00 AM'),
-                ],
-              ),
-            ],
+                if (p.error != null)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 12, 0, 0),
+                    child: Text(p.error!, style: const TextStyle(fontFamily: AppFonts.body, fontSize: 12, color: AppColors.danger)),
+                  ),
+                if (p.isLoading && p.status == null && p.recommendations.isEmpty)
+                  const Padding(padding: EdgeInsets.fromLTRB(0, 12, 0, 0), child: LinearProgressIndicator(minHeight: 2)),
+                const SizedBox(height: 22),
+                // ── "Name : …" + "More detail" pill  (y131)
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Name : ${pond.name}',
+                        style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 18, height: 25 / 18, color: AppColors.textPrimary),
+                      ),
+                    ),
+                    _MoreDetailPill(onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => PondSettingPage(userId: userId, pond: pond)))),
+                  ],
+                ),
+                const SizedBox(height: 28),
+                // ── "Today's Task" + buoy illustration (centered, y184–249)
+                const SizedBox(
+                  height: 65,
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Align(child: BuoyWithWater()), // design centers the 117-wide group at x142/402
+                      Positioned(left: 0, top: 14, child: Text("Today’s Task", style: TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 18, height: 25 / 18, color: AppColors.textPrimary))),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 28),
+                // ── Water Quality Now (y277, h91)
+                _WaterQualityCard(status: p.status, timezone: pond.timezone),
+                const SizedBox(height: 65),
+                const _SectionTitle('All Recommendations'),
+                const SizedBox(height: 11),
+                if (p.recommendations.isEmpty)
+                  const Text('No open recommendations.', style: TextStyle(fontFamily: AppFonts.body, fontSize: 12, color: AppColors.textMuted))
+                else
+                  ..._recCards(p.recommendations),
+                const SizedBox(height: 11),
+                const _SectionTitle('All daily tasks'),
+                const SizedBox(height: 11),
+                // ── Feeding (y714, h92): point-in-time logs, check = done
+                _TaskCard(
+                  label: 'Feeding',
+                  children: feeding.isEmpty
+                      ? const [_NoTaskChip()]
+                      : [for (final a in feeding) _TimeChip(formatClock(pondLocal(a.startTime, pond.timezone)), checked: a.status == ActivityStatus.done)],
+                ),
+                const SizedBox(height: 11),
+                // ── Aeration (y817, h135): start–end ranges, trailing dot per design
+                _TaskCard(
+                  label: 'Aeration',
+                  children: aeration.isEmpty
+                      ? const [_NoTaskChip()]
+                      : [
+                          for (final a in aeration)
+                            _TimeChip(
+                              a.endTime == null
+                                  ? '${formatClock(pondLocal(a.startTime, pond.timezone))}.'
+                                  : '${formatClock(pondLocal(a.startTime, pond.timezone))} - ${formatClock(pondLocal(a.endTime!, pond.timezone))}.',
+                              checked: a.status == ActivityStatus.done,
+                            ),
+                        ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+  /// 11px gap between cards, urgent flag from DB `urgency` (cards never lie about it).
+  List<Widget> _recCards(List<RecommendationEntity> recs) {
+    final out = <Widget>[];
+    for (final r in recs) {
+      out.add(_RecommendationCard(urgent: r.urgency == RecUrgency.urgent, title: r.title, body: r.body));
+      out.add(const SizedBox(height: 11));
+    }
+    return out;
   }
 }
 
@@ -181,10 +222,13 @@ class _SectionTitle extends StatelessWidget {
 }
 
 class _WaterQualityCard extends StatelessWidget {
-  const _WaterQualityCard();
+  final PondStatusEntity? status;
+  final String timezone;
+  const _WaterQualityCard({required this.status, required this.timezone});
 
   @override
   Widget build(BuildContext context) {
+    final s = status;
     return Container(
       height: 91,
       decoration: BoxDecoration(
@@ -201,20 +245,28 @@ class _WaterQualityCard extends StatelessWidget {
             child: Row(
               children: [
                 const Text('Water Quality Now', style: TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 14, color: AppColors.textPrimary)),
-                const SizedBox(width: 10),
-                const _Badge(label: 'Stress', color: AppColors.stress, width: 51),
-                const SizedBox(width: 4),
-                const _Badge(label: 'Recovery', gradient: true, width: 68),
+                if (s != null && s.severity != PondSeverity.unknown) ...[
+                  const SizedBox(width: 10),
+                  _Badge(label: _sevBadgeLabel(s.severity), color: _sevBadgeColor(s.severity)),
+                ],
+                if (s != null && s.showRecoveryBadge) ...[
+                  const SizedBox(width: 4),
+                  const _Badge(label: 'Recovery', gradient: true),
+                ],
                 const Spacer(),
-                const Text('9:30 AM.', style: TextStyle(fontFamily: AppFonts.heading, fontSize: 12, height: 16 / 12, color: AppColors.textMuted)),
+                if (s != null) Text('${formatClock(pondLocal(s.updatedAt, timezone))}.', style: const TextStyle(fontFamily: AppFonts.heading, fontSize: 12, height: 16 / 12, color: AppColors.textMuted)),
               ],
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(31, 12, 11, 0),
-            child: Text(
-              'Water quality at 11:00 AM is within the optimal range. DO, pH, and temperature levels are suitable for aquaculture.',
-              style: TextStyle(fontFamily: AppFonts.body, fontSize: 12, height: 14 / 12, color: AppColors.textSecondary),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(31, 12, 15, 8),
+              child: Text(
+                s?.description ?? 'No analysis yet.',
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(fontFamily: AppFonts.body, fontSize: 12, height: 14 / 12, color: AppColors.textSecondary),
+              ),
             ),
           ),
         ],
@@ -223,20 +275,36 @@ class _WaterQualityCard extends StatelessWidget {
   }
 }
 
+/// Severity badge words/colors: Optimal/Stress are design-verified (css_detail.txt);
+/// Elevated risk/Critical have no Figma variant yet [A] — same tokens as the list page.
+String _sevBadgeLabel(PondSeverity s) => switch (s) {
+      PondSeverity.optimal => 'Optimal',
+      PondSeverity.stress => 'Stress',
+      PondSeverity.elevatedRisk => 'Elevated risk',
+      PondSeverity.critical => 'Critical',
+      PondSeverity.unknown => '',
+    };
+
+Color _sevBadgeColor(PondSeverity s) => switch (s) {
+      PondSeverity.optimal => AppColors.optimal,
+      PondSeverity.stress => AppColors.stress,
+      PondSeverity.elevatedRisk => AppColors.urgentBorder,
+      _ => AppColors.critical,
+    };
+
 class _Badge extends StatelessWidget {
   final String label;
   final Color? color;
   final bool gradient;
-  final double width;
-  const _Badge({required this.label, this.color, this.gradient = false, required this.width});
+  const _Badge({required this.label, this.color, this.gradient = false});
 
   @override
   Widget build(BuildContext context) {
     const style = TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 14, color: Colors.white);
+    // hugs content (design's fixed 51/68 widths come out of the text + padding)
     return Container(
       height: 17,
-      width: width,
-      alignment: Alignment.center,
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       decoration: gradient
           ? const BoxDecoration(gradient: LinearGradient(colors: [AppColors.gradientStart, AppColors.gradientEnd]), borderRadius: BorderRadius.all(Radius.circular(4)))
           : BoxDecoration(color: color, borderRadius: BorderRadius.circular(4)),
@@ -315,11 +383,18 @@ class _TaskCard extends StatelessWidget {
   }
 }
 
+/// Empty-day placeholder inside a task card (no design variant [A]).
+class _NoTaskChip extends StatelessWidget {
+  const _NoTaskChip();
+
+  @override
+  Widget build(BuildContext context) => const Text('Nothing logged today', style: TextStyle(fontFamily: AppFonts.body, fontSize: 12, color: AppColors.textMuted));
+}
+
 class _TimeChip extends StatelessWidget {
   final String text;
-  final double fontSize;
   final bool checked;
-  const _TimeChip(this.text, {this.fontSize = 14, this.checked = false});
+  const _TimeChip(this.text, {this.checked = false});
 
   @override
   Widget build(BuildContext context) {
@@ -330,7 +405,7 @@ class _TimeChip extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(text, style: TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: fontSize, color: AppColors.textPrimary)),
+          Text(text, style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 14, color: AppColors.textPrimary)),
           if (checked) ...[const SizedBox(width: 6), CustomPaint(size: const Size(11, 9), painter: _ChipCheck())],
         ],
       ),

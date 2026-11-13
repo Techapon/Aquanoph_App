@@ -1,3 +1,4 @@
+import 'package:aquanoph/core/utils/db_num.dart';
 import 'package:aquanoph/features/severity/domain/entities/pond_status_entity.dart';
 
 const _severityLabels = {
@@ -14,6 +15,7 @@ class PondStatusModel {
   final DateTime updatedAt;
   final String? description;
   final bool recovering;
+  final double? value;
 
   const PondStatusModel({
     required this.pondId,
@@ -22,6 +24,7 @@ class PondStatusModel {
     required this.updatedAt,
     this.description,
     this.recovering = false,
+    this.value,
   });
 
   /// statusRow = v_pond_status; reportRow = latest severity_reports of that parameter
@@ -33,6 +36,7 @@ class PondStatusModel {
         updatedAt: DateTime.tryParse(statusRow['updated_at'] as String? ?? '') ?? DateTime.fromMillisecondsSinceEpoch(0),
         description: reportRow?['description'] as String?,
         recovering: reportRow?['recovering'] as bool? ?? false,
+        value: asDouble(reportRow?['value']),
       );
 
   PondSeverity get severity => _severityLabels[severityLabel] ?? PondSeverity.unknown;
@@ -44,5 +48,6 @@ class PondStatusModel {
         recovering: recovering,
         updatedAt: updatedAt,
         description: description,
+        value: value,
       );
 }

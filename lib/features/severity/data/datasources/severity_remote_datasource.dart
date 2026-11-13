@@ -18,7 +18,7 @@ class SeverityRemoteDatasource {
       if (status == null) return null;
       final report = await _client
           .from('severity_reports')
-          .select('description, recovering')
+          .select('description, value, recovering')
           .eq('pond_id', pondId)
           .eq('parameter', status['parameter'])
           .order('measured_at', ascending: false)

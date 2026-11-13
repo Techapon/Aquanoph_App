@@ -33,4 +33,8 @@ abstract final class AppColors {
   static const warnTitle = Color(0xFFFF7373); // "Warning" text
   static const warnIcon = Color(0xFFFF8D8D); // triangle-alert stroke
   static const dividerLight = Color(0xFFF4F4F4); // Line 4 block divider
+
+  // [A] no Figma variants exported yet (figma/README ⏳ row) — derived until confirmed:
+  static const critical = Color(0xFFFF3232); // solid version of zoneCritical
+  static const listStressBg = Color(0xFFFFF7DE); // tint of stress yellow
 }

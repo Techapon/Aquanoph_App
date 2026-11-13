@@ -4,16 +4,19 @@ import 'package:provider/provider.dart';
 import 'package:aquanoph/core/theme/app_colors.dart';
 import 'package:aquanoph/core/theme/app_fonts.dart';
 import 'package:aquanoph/core/utils/country_timezones.dart';
+import 'package:aquanoph/core/utils/pond_time.dart';
 import 'package:aquanoph/features/auth/presentation/controller/auth_provider.dart';
 import 'package:aquanoph/features/pond/domain/entities/pond_entity.dart';
 import 'package:aquanoph/features/pond/presentation/controller/pond_provider.dart';
 import 'package:aquanoph/features/pond/presentation/pages/add_pond_page.dart';
 import 'package:aquanoph/features/pond/presentation/pages/pond_home_page.dart';
+import 'package:aquanoph/features/recommendation/domain/entities/recommendation_entity.dart';
+import 'package:aquanoph/features/severity/domain/entities/pond_status_entity.dart';
 import 'package:aquanoph/shared/widgets/buoy_art.dart';
 
 /// Ponds LIST screen per figma/pond_page/Ponds.css (frame "Ponds" — Dev Mode CSS,
 /// pixel-exact offsets; detail frame CSS moved to css_detail.txt).
-/// DO value/time + Warning text are the design's static strings [A] — data wiring = step 3.
+/// DO card = representative severity row, Warning card = top open recommendation (step 3).
 /// Province (mock "Sakon Nakhon") has no DB field -> country from timezone only.
 /// Menu = sign out. carbon:fish glyph has no Material match [A] -> placeholder icon.
 class PondsPage extends StatefulWidget {
@@ -106,7 +109,16 @@ class _PondsPageState extends State<PondsPage> {
                       itemCount: ponds.ponds.length,
                       // Line 4: 322 wide, 3px #F4F4F4, centered (x40..362)
                       separatorBuilder: (_, _) => const Padding(padding: EdgeInsets.fromLTRB(40, 24, 40, 24), child: DecoratedBox(decoration: BoxDecoration(color: AppColors.dividerLight), child: SizedBox(height: 3))),
-                      itemBuilder: (_, i) => _PondBlock(index: i, pond: ponds.ponds[i], userId: widget.userId),
+                      itemBuilder: (_, i) {
+                        final pond = ponds.ponds[i];
+                        return _PondBlock(
+                          index: i,
+                          pond: pond,
+                          userId: widget.userId,
+                          status: ponds.statuses[pond.id],
+                          warning: ponds.warnings[pond.id],
+                        );
+                      },
                     ),
                   );
                 },
@@ -146,7 +158,9 @@ class _PondBlock extends StatelessWidget {
   final int index;
   final PondEntity pond;
   final String userId;
-  const _PondBlock({required this.index, required this.pond, required this.userId});
+  final PondStatusEntity? status;
+  final RecommendationEntity? warning;
+  const _PondBlock({required this.index, required this.pond, required this.userId, this.status, this.warning});
 
   @override
   Widget build(BuildContext context) {
@@ -185,11 +199,17 @@ class _PondBlock extends StatelessWidget {
         ),
         const SizedBox(height: 23),
         // cards 177/178 x 99, 12 gap, 18 gutter (18+177+12+178=385)
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 18),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 18),
           child: SizedBox(
             height: 99,
-            child: Row(children: [Expanded(child: _DoCard()), SizedBox(width: 12), Expanded(child: _WarningCard())]),
+            child: Row(
+              children: [
+                Expanded(child: _DoCard(status: status, timezone: pond.timezone)),
+                const SizedBox(width: 12),
+                Expanded(child: _WarningCard(rec: warning)),
+              ],
+            ),
           ),
         ),
         const SizedBox(height: 23),
@@ -213,36 +233,51 @@ class _PondBlock extends StatelessWidget {
       );
 }
 
-/// "DO 9:30 AM. / Oxygen in pond / 4.2 mg/L [good]" — Optimal-zone card (Rectangle 3).
-/// All values static for now [A]; step 3 pulls severity_reports + latest reading.
+/// Representative-parameter card — design's green "DO / Oxygen in pond / 4.2 mg/L [good]"
+/// (Rectangle 3). Non-optimal variants have no Figma frame [A]: same layout,
+/// severity-tinted colors + badge word from the severity enum.
 class _DoCard extends StatelessWidget {
-  const _DoCard();
+  final PondStatusEntity? status;
+  final String timezone;
+  const _DoCard({required this.status, required this.timezone});
 
   @override
   Widget build(BuildContext context) {
+    final s = status;
+    if (s == null || s.severity == PondSeverity.unknown) {
+      return Container(
+        padding: const EdgeInsets.fromLTRB(12, 7, 12, 8),
+        decoration: BoxDecoration(color: Colors.white, border: Border.all(color: AppColors.neutralBorder, width: 1.5), borderRadius: BorderRadius.circular(8)),
+        child: const Center(
+          child: Text('No data yet', style: TextStyle(fontFamily: AppFonts.body, fontSize: 12, color: AppColors.textMuted)),
+        ),
+      );
+    }
+    final style = _sevStyle(s.severity);
+    final time = s.severity == PondSeverity.unknown ? '' : '${formatClock(pondLocal(s.updatedAt, timezone))}.';
     return Container(
       padding: const EdgeInsets.fromLTRB(12, 7, 12, 8),
-      decoration: BoxDecoration(color: AppColors.listOptimalBg, border: Border.all(color: AppColors.listOptimalBorder, width: 1.5), borderRadius: BorderRadius.circular(8)),
-      child: const Column(
+      decoration: BoxDecoration(color: style.bg, border: Border.all(color: style.border, width: 1.5), borderRadius: BorderRadius.circular(8)),
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text('DO', style: TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 16, height: 22 / 16, color: AppColors.textPrimary)),
-              SizedBox(width: 3),
-              Text('9:30 AM.', style: TextStyle(fontFamily: AppFonts.heading, fontSize: 12, height: 16 / 12, color: AppColors.textMuted)),
+              Text(_paramLabel(s.parameter), style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 16, height: 22 / 16, color: AppColors.textPrimary)),
+              const SizedBox(width: 3),
+              Flexible(child: Text(time, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontFamily: AppFonts.heading, fontSize: 12, height: 16 / 12, color: AppColors.textMuted))),
             ],
           ),
-          Padding(padding: EdgeInsets.only(top: 2), child: Text('Oxygen in pond', style: TextStyle(fontFamily: AppFonts.body, fontSize: 12, height: 14 / 12, color: AppColors.textMuted))),
+          Padding(padding: const EdgeInsets.only(top: 2), child: Text(_paramSub(s.parameter), maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontFamily: AppFonts.body, fontSize: 12, height: 14 / 12, color: AppColors.textMuted))),
           Expanded(
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text('4.2', style: TextStyle(fontFamily: AppFonts.heading, fontSize: 32, height: 44 / 32, color: AppColors.textPrimary)), // design weight 400
-                Padding(padding: EdgeInsets.only(left: 4, bottom: 7), child: Text('mg/L', style: TextStyle(fontFamily: AppFonts.heading, fontSize: 12, color: AppColors.textPrimary))),
-                Spacer(),
-                _GoodBadge(),
+                Text(s.value == null ? '—' : _valueText(s.value!), style: const TextStyle(fontFamily: AppFonts.heading, fontSize: 32, height: 44 / 32, color: AppColors.textPrimary)), // design weight 400
+                if (_paramUnit(s.parameter).isNotEmpty) Padding(padding: const EdgeInsets.only(left: 4, bottom: 7), child: Text(_paramUnit(s.parameter), style: const TextStyle(fontFamily: AppFonts.heading, fontSize: 12, color: AppColors.textPrimary))),
+                const Spacer(),
+                _SevBadge(label: style.badge, color: style.badgeColor),
               ],
             ),
           ),
@@ -252,48 +287,86 @@ class _DoCard extends StatelessWidget {
   }
 }
 
-/// "good" badge: 51x20 #0BE220 r4, Nunito 14 bold white.
-class _GoodBadge extends StatelessWidget {
-  const _GoodBadge();
+/// Badge hugs content; 'good' lands on the design's exact 51px (33 text + 9*2).
+class _SevBadge extends StatelessWidget {
+  final String label;
+  final Color color;
+  const _SevBadge({required this.label, required this.color});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 51,
       height: 20,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(color: AppColors.optimal, borderRadius: BorderRadius.circular(4)),
-      child: const Text('good', style: TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 14, color: Colors.white)),
+      padding: const EdgeInsets.symmetric(horizontal: 9),
+      decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(4)),
+      child: Text(label, style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 14, color: Colors.white)),
     );
   }
 }
 
-/// ⚠ Warning card (Rectangle 5) — static prediction string; step 3: top pending rec.
+typedef _CardStyle = ({Color bg, Color border, String badge, Color badgeColor});
+
+_CardStyle _sevStyle(PondSeverity s) => switch (s) {
+      PondSeverity.optimal => (bg: AppColors.listOptimalBg, border: AppColors.listOptimalBorder, badge: 'good', badgeColor: AppColors.optimal),
+      PondSeverity.stress => (bg: AppColors.listStressBg, border: AppColors.stress, badge: 'stress', badgeColor: AppColors.stress),
+      PondSeverity.elevatedRisk => (bg: AppColors.urgentBg, border: AppColors.urgentBorder, badge: 'risk', badgeColor: AppColors.urgentBorder),
+      PondSeverity.critical => (bg: AppColors.urgentBg, border: AppColors.critical, badge: 'critical', badgeColor: AppColors.critical),
+      PondSeverity.unknown => (bg: Colors.white, border: AppColors.neutralBorder, badge: '', badgeColor: Colors.transparent),
+    };
+
+/// Parameter display sugar [A] — only the DO strings come from the design.
+String _paramLabel(String p) => const {'DO': 'DO', 'Temperature': 'Temp', 'pH': 'pH', 'NH3': 'NH3', 'NO2_N': 'NO2', 'Salinity': 'Salinity'}[p] ?? p;
+String _paramSub(String p) => const {'DO': 'Oxygen in pond', 'Temperature': 'Water temperature', 'pH': 'pH balance', 'NH3': 'Ammonia level', 'NO2_N': 'Nitrite level', 'Salinity': 'Salt level'}[p] ?? 'In pond';
+String _paramUnit(String p) => const {'DO': 'mg/L', 'Temperature': '°C', 'NH3': 'mg/L', 'NO2_N': 'mg/L', 'Salinity': 'ppt', 'pH': ''}[p] ?? '';
+String _valueText(double v) => v == v.roundToDouble() ? v.toStringAsFixed(0) : v.toStringAsFixed(1);
+
+/// ⚠ Warning card (Rectangle 5) = top open recommendation for the pond.
+/// urgent -> design's red "Warning"; non-urgent -> softer "Notice" [A]
+/// (reuses warningBg tokens; no Figma variant for either state).
+/// None -> neutral card so the two-card row never collapses.
 class _WarningCard extends StatelessWidget {
-  const _WarningCard();
+  final RecommendationEntity? rec;
+  const _WarningCard({required this.rec});
 
   @override
   Widget build(BuildContext context) {
+    final r = rec;
+    if (r == null) {
+      return Container(
+        padding: const EdgeInsets.fromLTRB(13, 9, 13, 0),
+        decoration: BoxDecoration(color: Colors.white, border: Border.all(color: AppColors.neutralBorder, width: 1.5), borderRadius: BorderRadius.circular(8)),
+        child: const Center(
+          child: Text('No open warnings', style: TextStyle(fontFamily: AppFonts.body, fontSize: 12, color: AppColors.textMuted)),
+        ),
+      );
+    }
+    final urgent = r.urgency == RecUrgency.urgent;
     return Container(
       padding: const EdgeInsets.fromLTRB(13, 9, 13, 0),
-      decoration: BoxDecoration(color: AppColors.urgentBg, border: Border.all(color: AppColors.urgentBorder, width: 1.5), borderRadius: BorderRadius.circular(8)),
+      decoration: BoxDecoration(
+        color: urgent ? AppColors.urgentBg : AppColors.warningBg,
+        border: Border.all(color: urgent ? AppColors.urgentBorder : AppColors.warningBorder, width: 1.5),
+        borderRadius: BorderRadius.circular(8),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
-              Icon(Icons.warning_amber_rounded, size: 20, color: AppColors.warnIcon),
-              SizedBox(width: 6),
-              Text('Warning', style: TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 16, height: 22 / 16, color: AppColors.warnTitle)),
+              Icon(urgent ? Icons.warning_amber_rounded : Icons.info_outline, size: 20, color: urgent ? AppColors.warnIcon : AppColors.warningBorder),
+              const SizedBox(width: 6),
+              Text(urgent ? 'Warning' : 'Notice', style: TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 16, height: 22 / 16, color: urgent ? AppColors.warnTitle : AppColors.textSecondary)),
             ],
           ),
-          const Padding(
-            padding: EdgeInsets.only(top: 12),
+          const SizedBox(height: 12),
+          Expanded(
             child: Center(
               child: Text(
-                'DO is expected to drop to 2.6 mg/L at 04:00 AM.',
+                r.body,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
-                style: TextStyle(fontFamily: AppFonts.body, fontSize: 12, height: 14 / 12, color: AppColors.textPrimary),
+                style: const TextStyle(fontFamily: AppFonts.body, fontSize: 12, height: 14 / 12, color: AppColors.textPrimary),
               ),
             ),
           ),

@@ -12,6 +12,7 @@ class PondStatusEntity {
   final bool recovering; // Recovery Hold: zone optimal + severity stress [V: generated column]
   final DateTime updatedAt;
   final String? description; // severity 4-field text: description (home summary line)
+  final double? value; // latest reading of the representative parameter
 
   const PondStatusEntity({
     required this.pondId,
@@ -20,6 +21,7 @@ class PondStatusEntity {
     required this.recovering,
     required this.updatedAt,
     this.description,
+    this.value,
   });
 
   /// Home badge rule (DESIGN_TOKENS obs #3): Recovery Hold collapses to one gradient badge.

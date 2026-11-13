@@ -183,32 +183,37 @@ class _PondSettingPageState extends State<PondSettingPage> {
       );
 }
 
-/// Nested blue ellipses + fish photo + "Settings", flanked by back & save circles.
+/// Header as SEPARATE parts (user pick 2026-11-13): nav row (back | "Settings" | check-save),
+/// then fish-on-pond decoration below — nothing overlaps the title.
 class _LogoHeader extends StatelessWidget {
   final VoidCallback save;
   const _LogoHeader({required this.save});
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity, // without this the Stack hugs the 61px fish and everything piles left
-      height: 83, // design band 150..233: fish 0..61, badge 39..83, circles 36..79
-      child: Stack(
-        clipBehavior: Clip.none,
-        alignment: Alignment.topCenter,
-        children: [
-          // badge: exact ellipses from figma/decorate/pond.svg (210×44, cx105)
-          const Positioned(top: 39, child: CustomPaint(size: Size(210, 44), painter: _BadgePainter())),
-          // fish photo sits above/on the badge (design 150..211 vs badge 189..233)
-          Image.asset('assets/images/fish.png', width: 61, height: 61),
-          const Positioned(
-            top: 41,
-            child: Text('Settings', style: TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.w700, fontSize: 24, height: 33 / 24, color: AppColors.textPrimary)),
+    return Column(
+      children: [
+        Row(
+          children: [
+            const Padding(padding: EdgeInsets.only(left: 2), child: _CircleButton(icon: Icons.chevron_left)),
+            const Expanded(child: Center(child: Text('Settings', style: TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.w700, fontSize: 24, height: 33 / 24, color: AppColors.textPrimary)))),
+            Padding(padding: const EdgeInsets.only(right: 4), child: _CircleButton(icon: Icons.check, iconColor: const Color(0xFF0BE220), onTap: save)),
+          ],
+        ),
+        const SizedBox(height: 14),
+        // pond ellipse (210×44 from figma/decorate/pond.svg) with the fish sitting on it
+        const SizedBox(
+          width: double.infinity,
+          height: 78,
+          child: Stack(
+            alignment: Alignment.topCenter,
+            children: [
+              Positioned(top: 34, child: CustomPaint(size: Size(210, 44), painter: _BadgePainter())),
+              Image(image: AssetImage('assets/images/fish.png'), width: 61, height: 61),
+            ],
           ),
-          const Positioned(top: 36, left: -2, child: _CircleButton(icon: Icons.chevron_left)),
-          Positioned(top: 36, right: -4, child: _CircleButton(icon: Icons.check, iconColor: const Color(0xFF0BE220), onTap: save)),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

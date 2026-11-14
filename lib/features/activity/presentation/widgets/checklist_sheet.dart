@@ -1113,14 +1113,29 @@ class _ApplyToOtherDaySheet extends StatelessWidget {
   Widget _opt(BuildContext context, String label, int days) {
     return Expanded(
       child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
         onTap: () async {
           Navigator.pop(context);
-          // duplicate current day's activities for the next [days] days
-          final items = provider.activities.where((a) => a.type == type).toList();
+          // duplicate current day's activities for the next [days] days (pond-local day)
+          final items = provider.activities.where((a) {
+            if (type == ActivityType.other) {
+              return a.type != ActivityType.feeding && a.type != ActivityType.aeration;
+            }
+            return a.type == type;
+          }).toList();
+          int created = 0;
           for (var d = 1; d <= days; d++) {
             for (final a in items) {
-              final newStart = a.startTime.add(Duration(days: d));
-              final newEnd = a.endTime?.add(Duration(days: d));
+              // shift by pond-local day: convert to local wall, add d days, convert back
+              final localStart = pondLocal(a.startTime, timezone);
+              final wallStart = DateTime(localStart.year, localStart.month, localStart.day + d, localStart.hour, localStart.minute);
+              final newStart = _localToUtc(wallStart, timezone);
+              DateTime? newEnd;
+              if (a.endTime != null) {
+                final localEnd = pondLocal(a.endTime!, timezone);
+                final wallEnd = DateTime(localEnd.year, localEnd.month, localEnd.day + d, localEnd.hour, localEnd.minute);
+                newEnd = _localToUtc(wallEnd, timezone);
+              }
               await provider.upsert({
                 'type': _dbType(a.type),
                 'status': 'pending',
@@ -1130,9 +1145,14 @@ class _ApplyToOtherDaySheet extends StatelessWidget {
                 if (a.fraction != null) 'fraction': a.fraction,
                 'source': 'user',
               });
+              created++;
             }
           }
           onDone();
+          if (context.mounted) {
+
+            await showSuccessDialog(context, title: 'Applied', subtitle: 'Created $created activities for $days day(s).', statusLabel: pond.name, statusSuffix: ' saved.');
+          }
         },
         child: Center(
           child: Text(label, style: const TextStyle(fontFamily: AppFonts.heading, fontSize: 18, color: AppColors.textPrimary)),

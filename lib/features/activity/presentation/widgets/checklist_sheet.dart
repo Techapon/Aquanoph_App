@@ -1118,41 +1118,54 @@ class _ApplyToOtherDaySheet extends StatelessWidget {
         behavior: HitTestBehavior.opaque,
         onTap: () async {
           Navigator.pop(context); // close apply dialog
-          // duplicate current day's activities for the next [days] days (pond-local day)
-          final items = provider.activities.where((a) {
-            if (type == ActivityType.other) {
-              return a.type != ActivityType.feeding && a.type != ActivityType.aeration;
-            }
-            return a.type == type;
-          }).toList();
-          int created = 0;
-          for (var d = 1; d <= days; d++) {
-            for (final a in items) {
-              // shift by pond-local day: convert to local wall, add d days, convert back
-              final localStart = pondLocal(a.startTime, timezone);
-              final wallStart = DateTime(localStart.year, localStart.month, localStart.day + d, localStart.hour, localStart.minute);
-              final newStart = _localToUtc(wallStart, timezone);
-              DateTime? newEnd;
-              if (a.endTime != null) {
-                final localEnd = pondLocal(a.endTime!, timezone);
-                final wallEnd = DateTime(localEnd.year, localEnd.month, localEnd.day + d, localEnd.hour, localEnd.minute);
-                newEnd = _localToUtc(wallEnd, timezone);
+          try {
+            // duplicate current day's activities for the next [days] days (pond-local day)
+            final items = provider.activities.where((a) {
+              if (type == ActivityType.other) {
+                return a.type != ActivityType.feeding && a.type != ActivityType.aeration;
               }
-              await provider.upsert({
-                'type': _dbType(a.type),
-                'status': 'pending',
-                'startTime': newStart.toIso8601String(),
-                if (newEnd != null) 'endTime': newEnd.toIso8601String(),
-                if (a.quantityKg != null) 'quantityKg': a.quantityKg,
-                if (a.fraction != null) 'fraction': a.fraction,
-                'source': 'user',
-              });
-              created++;
+              return a.type == type;
+            }).toList();
+            int created = 0;
+            for (var d = 1; d <= days; d++) {
+              for (final a in items) {
+                // shift by pond-local day: convert to local wall, add d days, convert back
+                final localStart = pondLocal(a.startTime, timezone);
+                final wallStart = DateTime(localStart.year, localStart.month, localStart.day + d, localStart.hour, localStart.minute);
+                final newStart = _localToUtc(wallStart, timezone);
+                DateTime? newEnd;
+                if (a.endTime != null) {
+                  final localEnd = pondLocal(a.endTime!, timezone);
+                  final wallEnd = DateTime(localEnd.year, localEnd.month, localEnd.day + d, localEnd.hour, localEnd.minute);
+                  newEnd = _localToUtc(wallEnd, timezone);
+                }
+                final id = await provider.upsert({
+                  'type': _dbType(a.type),
+                  'status': 'pending',
+                  'startTime': newStart.toIso8601String(),
+                  if (newEnd != null) 'endTime': newEnd.toIso8601String(),
+                  if (a.quantityKg != null) 'quantityKg': a.quantityKg,
+                  if (a.fraction != null) 'fraction': a.fraction,
+                  'source': 'user',
+                });
+                if (id == null) {
+                  // upsert failed (busy or DB error) — surface it
+                  if (parentContext.mounted) {
+                    await showSuccessDialog(parentContext, title: 'Apply failed', subtitle: provider.error ?? 'Could not create activities.', statusLabel: pond.name, statusSuffix: ' not saved.', failed: true);
+                  }
+                  return;
+                }
+                created++;
+              }
             }
-          }
-          onDone();
-          if (parentContext.mounted) {
-            await showSuccessDialog(parentContext, title: 'Applied', subtitle: 'Created $created activities for $days day(s).', statusLabel: pond.name, statusSuffix: ' saved.');
+            onDone();
+            if (parentContext.mounted) {
+              await showSuccessDialog(parentContext, title: 'Applied', subtitle: 'Created $created activities for $days day(s).', statusLabel: pond.name, statusSuffix: ' saved.');
+            }
+          } catch (e) {
+            if (parentContext.mounted) {
+              await showSuccessDialog(parentContext, title: 'Apply failed', subtitle: e.toString(), statusLabel: pond.name, statusSuffix: ' not saved.', failed: true);
+            }
           }
         },
         child: Center(

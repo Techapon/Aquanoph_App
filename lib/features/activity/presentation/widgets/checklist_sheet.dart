@@ -232,20 +232,22 @@ class _ChecklistSheetState extends State<_ChecklistSheet> {
       child: Row(
         children: [
           // time
-          SizedBox(
-            width: 110,
-            child: Text(
-              timeText,
-              style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 14, color: AppColors.textPrimary),
-              overflow: TextOverflow.ellipsis,
-            ),
+          Text(
+            timeText,
+            style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 14, color: AppColors.textPrimary),
+            overflow: TextOverflow.ellipsis,
           ),
-          Container(width: 1.5, height: 31, color: const Color(0xFFD3D3D3)),
-          const SizedBox(width: 10),
+
+          !_isAeration ? 
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 18  ),
+            child: Container(width: 1.5, height: 31, color: const Color(0xFFD3D3D3)),
+          ) : SizedBox(),
+
           Expanded(
             child: Text(
               _isFeeding
-                  ? 'Feed the shrimp ${_fmtNum(a.quantityKg)} kg.'
+                  ? 'Feed  ${_fmtNum(a.quantityKg)} kg.'
                   : _isAeration
                       ? ''
                       : a.type.name,

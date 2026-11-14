@@ -6,6 +6,7 @@ import 'package:aquanoph/core/utils/pond_time.dart';
 import 'package:aquanoph/features/activity/domain/entities/activity_entity.dart';
 import 'package:aquanoph/features/activity/presentation/controller/activity_provider.dart';
 import 'package:aquanoph/features/pond/domain/entities/pond_entity.dart';
+import 'package:aquanoph/shared/widgets/apply_conflict_dialog.dart';
 import 'package:aquanoph/shared/widgets/success_dialog.dart';
 
 /// Entry point: opens the feeding/aeration checklist as a bottom sheet.
@@ -1126,8 +1127,48 @@ class _ApplyToOtherDaySheet extends StatelessWidget {
               }
               return a.type == type;
             }).toList();
-            int created = 0;
+            if (items.isEmpty) {
+              if (parentContext.mounted) {
+                await showSuccessDialog(parentContext, title: 'Nothing to apply', subtitle: 'No schedule today to copy.', statusLabel: pond.name, statusSuffix: ' not saved.', failed: true);
+              }
+              return;
+            }
+            // pre-flight: fetch each target day, warn about ones that already
+            // have a schedule (blind upsert would hit the DB exclusion
+            // constraint, e.g. activities_aeration_no_overlap, and fail all).
+            final localNow = pondLocal(DateTime.now().toUtc(), timezone);
+            final localMidnight = DateTime(localNow.year, localNow.month, localNow.day);
+            bool clashes(List<ActivityEntity> rows) {
+              if (type == ActivityType.other) {
+                return rows.any((a) => a.type != ActivityType.feeding && a.type != ActivityType.aeration);
+              }
+              return rows.any((a) => a.type == type);
+            }
+            final conflictDays = <String>[];
+            final freeOffsets = <int>[];
             for (var d = 1; d <= days; d++) {
+              final wallDay = localMidnight.add(Duration(days: d));
+              final from = _localToUtc(wallDay, timezone);
+              final to = _localToUtc(wallDay.add(const Duration(days: 1)), timezone);
+              final rows = await provider.fetchDay(pond.id, from, to);
+              if (clashes(rows)) {
+                conflictDays.add(formatDayDate(wallDay));
+              } else {
+                freeOffsets.add(d);
+              }
+            }
+            if (conflictDays.isNotEmpty) {
+              if (!parentContext.mounted) return;
+              final go = await showApplyConflictDialog(
+                parentContext,
+                pondName: pond.name,
+                conflictDays: conflictDays,
+                freeDays: freeOffsets.length,
+              );
+              if (go != true) return; // cancel (or all days conflicted)
+            }
+            int created = 0;
+            for (final d in freeOffsets) {
               for (final a in items) {
                 // shift by pond-local day: convert to local wall, add d days, convert back
                 final localStart = pondLocal(a.startTime, timezone);
@@ -1160,7 +1201,16 @@ class _ApplyToOtherDaySheet extends StatelessWidget {
             }
             onDone();
             if (parentContext.mounted) {
-              await showSuccessDialog(parentContext, title: 'Applied', subtitle: 'Created $created activities for $days day(s).', statusLabel: pond.name, statusSuffix: ' saved.');
+              final skipped = conflictDays.length;
+              await showSuccessDialog(
+                parentContext,
+                title: 'Applied',
+                subtitle: skipped > 0
+                    ? 'Created $created activities. Skipped $skipped day(s) with existing schedule.'
+                    : 'Created $created activities for $days day(s).',
+                statusLabel: pond.name,
+                statusSuffix: ' saved.',
+              );
             }
           } catch (e) {
             if (parentContext.mounted) {

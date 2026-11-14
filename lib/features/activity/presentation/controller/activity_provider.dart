@@ -53,6 +53,21 @@ class ActivityProvider extends ChangeNotifier {
     }
   }
 
+  /// Read-only fetch of one pond-local day (no state change) — for
+  /// pre-flight conflict checks before apply-to-other-day upserts.
+  Future<List<ActivityEntity>> fetchDay(
+    String pondId,
+    DateTime from,
+    DateTime to,
+  ) async {
+    try {
+      return await _repo.getDay(pondId, from, to);
+    } catch (e) {
+      error = e.toString();
+      return [];
+    }
+  }
+
   Future<String?> upsert(Map<String, dynamic> activity) async {
     if (busy || pondId == null) return null;
     busy = true;

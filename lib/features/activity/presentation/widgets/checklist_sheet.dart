@@ -313,10 +313,13 @@ class _ChecklistSheetState extends State<_ChecklistSheet> {
   }
 
   Future<void> _openMore() async {
-    final action = await showModalBottomSheet<String>(
+    final action = await showDialog<String>(
       context: context,
-      backgroundColor: Colors.transparent,
-      builder: (_) => _MoreMenuSheet(),
+      builder: (ctx) => Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: EdgeInsets.symmetric(horizontal: 20),
+        child: _MoreMenuSheet(onPick: (v) => Navigator.pop(ctx, v)),
+      ),
     );
     if (action == null || !mounted) return;
     switch (action) {
@@ -336,79 +339,88 @@ class _ChecklistSheetState extends State<_ChecklistSheet> {
   }
 
   Future<void> _openEdit() async {
-    await showModalBottomSheet<void>(
+    await showDialog<void>(
       context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (_) => _EditScheduleSheet(
-        pond: widget.pond,
-        type: widget.type,
-        timezone: widget.timezone,
-        provider: _provider,
-        onSaved: () {
-          _provider.load(widget.pond.id, widget.timezone).then((_) {
-            if (!mounted) return;
-            setState(() {
-              for (final a in _ofType(_provider.activities)) {
-                _work[a.id] = a.status;
-              }
-              _changed.clear();
+      builder: (ctx) => Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: EdgeInsets.zero,
+        child: _EditScheduleSheet(
+          pond: widget.pond,
+          type: widget.type,
+          timezone: widget.timezone,
+          provider: _provider,
+          onSaved: () {
+            _provider.load(widget.pond.id, widget.timezone).then((_) {
+              if (!mounted) return;
+              setState(() {
+                for (final a in _ofType(_provider.activities)) {
+                  _work[a.id] = a.status;
+                }
+                _changed.clear();
+              });
             });
-          });
-          widget.onSaved();
-        },
+            widget.onSaved();
+            Navigator.pop(ctx);
+          },
+        ),
       ),
     );
   }
 
   Future<void> _openAdd() async {
-    await showModalBottomSheet<void>(
+    await showDialog<void>(
       context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (_) => _AddActivitySheet(
-        pond: widget.pond,
-        type: widget.type,
-        timezone: widget.timezone,
-        provider: _provider,
-        onCreated: () {
-          _provider.load(widget.pond.id, widget.timezone).then((_) {
-            if (!mounted) return;
-            setState(() {
-              for (final a in _ofType(_provider.activities)) {
-                _work[a.id] = a.status;
-              }
-              _changed.clear();
+      builder: (ctx) => Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: EdgeInsets.zero,
+        child: _AddActivitySheet(
+          pond: widget.pond,
+          type: widget.type,
+          timezone: widget.timezone,
+          provider: _provider,
+          onCreated: () {
+            _provider.load(widget.pond.id, widget.timezone).then((_) {
+              if (!mounted) return;
+              setState(() {
+                for (final a in _ofType(_provider.activities)) {
+                  _work[a.id] = a.status;
+                }
+                _changed.clear();
+              });
             });
-          });
-          widget.onSaved();
-        },
+            widget.onSaved();
+            Navigator.pop(ctx);
+          },
+        ),
       ),
     );
   }
 
   Future<void> _openApply() async {
-    await showModalBottomSheet<void>(
+    await showDialog<void>(
       context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (_) => _ApplyToOtherDaySheet(
-        pond: widget.pond,
-        type: widget.type,
-        timezone: widget.timezone,
-        provider: _provider,
-        onDone: () {
-          _provider.load(widget.pond.id, widget.timezone).then((_) {
-            if (!mounted) return;
-            setState(() {
-              for (final a in _ofType(_provider.activities)) {
-                _work[a.id] = a.status;
-              }
-              _changed.clear();
+      builder: (ctx) => Dialog(
+        backgroundColor: Colors.transparent,
+        insetPadding: EdgeInsets.zero,
+        child: _ApplyToOtherDaySheet(
+          pond: widget.pond,
+          type: widget.type,
+          timezone: widget.timezone,
+          provider: _provider,
+          onDone: () {
+            _provider.load(widget.pond.id, widget.timezone).then((_) {
+              if (!mounted) return;
+              setState(() {
+                for (final a in _ofType(_provider.activities)) {
+                  _work[a.id] = a.status;
+                }
+                _changed.clear();
+              });
             });
-          });
-          widget.onSaved();
-        },
+            widget.onSaved();
+            Navigator.pop(ctx);
+          },
+        ),
       ),
     );
   }
@@ -447,10 +459,12 @@ class _ChecklistSheetState extends State<_ChecklistSheet> {
 }
 
 class _MoreMenuSheet extends StatelessWidget {
+  final ValueChanged<String> onPick;
+  const _MoreMenuSheet({required this.onPick});
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 349,
+      width: 400,
       height: 295,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -458,13 +472,13 @@ class _MoreMenuSheet extends StatelessWidget {
       ),
       child: Column(
         children: [
-          _item(context, Icons.edit_outlined, 'Edit Schedule', 'edit'),
+          _item(Icons.edit_outlined, 'Edit Schedule', 'edit', onPick),
           _divider(),
-          _item(context, Icons.add, 'Add Activities', 'add'),
+          _item(Icons.add, 'Add Activities', 'add', onPick),
           _divider(),
-          _item(context, Icons.calendar_month_outlined, 'Apply schedule to other day', 'apply'),
+          _item(Icons.calendar_month_outlined, 'Apply schedule to other day', 'apply', onPick),
           _divider(),
-          _item(context, Icons.delete_outline, 'Delete Activities', 'delete', red: true),
+          _item(Icons.delete_outline, 'Delete Activities', 'delete', onPick, red: true),
         ],
       ),
     );
@@ -472,23 +486,26 @@ class _MoreMenuSheet extends StatelessWidget {
 
   Widget _divider() => Container(height: 2, color: const Color(0xFFD9D9D9));
 
-  Widget _item(BuildContext context, IconData icon, String label, String value, {bool red = false}) {
+  Widget _item(IconData icon, String label, String value, ValueChanged<String> onPick, {bool red = false}) {
     return Expanded(
       child: GestureDetector(
-        onTap: () => Navigator.pop(context, value),
+        onTap: () => onPick(value),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 27),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
             children: [
               Icon(icon, size: 24, color: red ? AppColors.danger : Colors.black),
               const SizedBox(width: 12),
-              Text(
-                label,
-                style: TextStyle(
-                  fontFamily: AppFonts.heading,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                  color: red ? AppColors.danger : AppColors.textPrimary,
+              Expanded(
+                child: Text(
+                  label,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontFamily: AppFonts.heading,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: red ? AppColors.danger : AppColors.textPrimary,
+                  ),
                 ),
               ),
             ],

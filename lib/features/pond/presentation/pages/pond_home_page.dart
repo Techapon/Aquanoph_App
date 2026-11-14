@@ -44,6 +44,7 @@ class _PondHomeView extends StatelessWidget {
     final p = context.watch<PondHomeProvider>();
     final feeding = p.of(ActivityType.feeding);
     final aeration = p.of(ActivityType.aeration);
+    final other = p.activities.where((a) => a.type != ActivityType.feeding && a.type != ActivityType.aeration).toList();
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -240,6 +241,29 @@ class _PondHomeView extends StatelessWidget {
                             ),
                         ],
                       ),
+                ),
+                const SizedBox(height: 11),
+                // ── Other (water change, alkalinity, lime, probiotic, other)
+                GestureDetector(
+                  onTap: () => showChecklistSheet(
+                    context,
+                    pond: pond,
+                    type: ActivityType.other,
+                    timezone: pond.timezone,
+                    onSaved: () => p.load(pond),
+                  ),
+                  child: _TaskCard(
+                    label: 'Other',
+                    children: other.isEmpty
+                        ? const [_NoTaskChip()]
+                        : [
+                            for (final a in other)
+                              _TimeChip(
+                                formatClock(pondLocal(a.startTime, pond.timezone)),
+                                checked: a.status == ActivityStatus.done,
+                              ),
+                          ],
+                  ),
                 ),
               ],
             ),

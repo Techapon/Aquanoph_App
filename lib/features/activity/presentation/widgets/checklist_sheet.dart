@@ -67,11 +67,15 @@ class _ChecklistSheetState extends State<_ChecklistSheet> {
     });
   }
 
+  bool _matches(ActivityEntity a) => widget.type == ActivityType.other
+      ? (a.type != ActivityType.feeding && a.type != ActivityType.aeration)
+      : a.type == widget.type;
+
   List<ActivityEntity> _ofType(List<ActivityEntity> list) =>
-      list.where((a) => a.type == widget.type).toList();
+      list.where(_matches).toList();
 
   bool get _isFeeding => widget.type == ActivityType.feeding;
-
+  bool get _isAeration => widget.type == ActivityType.aeration;
   String get _title => _isFeeding
       ? "Today's Feeding Schedule"
       : "Today's Aeration Schedule";
@@ -214,7 +218,9 @@ class _ChecklistSheetState extends State<_ChecklistSheet> {
     final checked = _work[a.id] == ActivityStatus.done;
     final timeText = _isFeeding
         ? formatClock(pondLocal(a.startTime, widget.timezone))
-        : '${formatClock(pondLocal(a.startTime, widget.timezone))} - ${a.endTime == null ? '' : formatClock(pondLocal(a.endTime!, widget.timezone))}.';
+        : (_isAeration
+            ? '${formatClock(pondLocal(a.startTime, widget.timezone))} - ${a.endTime == null ? '' : formatClock(pondLocal(a.endTime!, widget.timezone))}.'
+            : formatClock(pondLocal(a.startTime, widget.timezone)));
     return Container(
       height: 51,
       padding: const EdgeInsets.symmetric(horizontal: 14),
@@ -240,7 +246,9 @@ class _ChecklistSheetState extends State<_ChecklistSheet> {
             child: Text(
               _isFeeding
                   ? 'Feed the shrimp ${_fmtNum(a.quantityKg)} kg.'
-                  : 'Intensity: ${_intensity(a)}%',
+                  : _isAeration
+                      ? ''
+                      : a.type.name,
               style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 14, color: AppColors.textPrimary),
               overflow: TextOverflow.ellipsis,
             ),
@@ -281,8 +289,6 @@ class _ChecklistSheetState extends State<_ChecklistSheet> {
     if (v == v.roundToDouble()) return v.toStringAsFixed(0);
     return v.toString();
   }
-
-  String _intensity(ActivityEntity a) => '30'; // [A] no intensity field in schema; placeholder
 
   Future<void> _save() async {
     final changes = _changed.map((id) => {
@@ -339,30 +345,28 @@ class _ChecklistSheetState extends State<_ChecklistSheet> {
   }
 
   Future<void> _openEdit() async {
-    await showDialog<void>(
+    await showModalBottomSheet<void>(
       context: context,
-      builder: (ctx) => Dialog(
-        backgroundColor: Colors.transparent,
-        insetPadding: EdgeInsets.zero,
-        child: _EditScheduleSheet(
-          pond: widget.pond,
-          type: widget.type,
-          timezone: widget.timezone,
-          provider: _provider,
-          onSaved: () {
-            _provider.load(widget.pond.id, widget.timezone).then((_) {
-              if (!mounted) return;
-              setState(() {
-                for (final a in _ofType(_provider.activities)) {
-                  _work[a.id] = a.status;
-                }
-                _changed.clear();
-              });
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => _EditScheduleSheet(
+        pond: widget.pond,
+        type: widget.type,
+        timezone: widget.timezone,
+        provider: _provider,
+        onSaved: () {
+          _provider.load(widget.pond.id, widget.timezone).then((_) {
+            if (!mounted) return;
+            setState(() {
+              for (final a in _ofType(_provider.activities)) {
+                _work[a.id] = a.status;
+              }
+              _changed.clear();
             });
-            widget.onSaved();
-            Navigator.pop(ctx);
-          },
-        ),
+          });
+          widget.onSaved();
+          Navigator.pop(context);
+        },
       ),
     );
   }
@@ -595,7 +599,9 @@ class _AddActivitySheetState extends State<_AddActivitySheet> {
   @override
   void initState() {
     super.initState();
-    _type = widget.type;
+    _type = widget.type == ActivityType.other
+        ? ActivityType.waterChange
+        : widget.type;
     final now = DateTime.now();
     final local = pondLocal(now.toUtc(), widget.timezone);
     _time = TimeOfDay(hour: local.hour, minute: local.minute);
@@ -631,11 +637,13 @@ class _AddActivitySheetState extends State<_AddActivitySheet> {
               children: [
                 const Text('Add activity', style: TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 18, color: AppColors.textPrimary)),
                 const SizedBox(height: 12),
-                // type selector
-                _label('Activity'),
-                const SizedBox(height: 8),
-                _selectType(),
-                const SizedBox(height: 12),
+                // type selector only for "other" schedule (feeding/aeration are fixed)
+                if (widget.type == ActivityType.other) ...[
+                  _label('Activity'),
+                  const SizedBox(height: 8),
+                  _selectType(),
+                  const SizedBox(height: 12),
+                ],
                 if (_isFeeding || _type == ActivityType.alkalinity || _type == ActivityType.lime || _type == ActivityType.probiotic || _type == ActivityType.other) ...[
                   _label('Active time'),
                   const SizedBox(height: 8),
@@ -700,7 +708,7 @@ class _AddActivitySheetState extends State<_AddActivitySheet> {
   Widget _label(String t) => Text(t, style: const TextStyle(fontFamily: AppFonts.heading, fontWeight: FontWeight.bold, fontSize: 14, color: AppColors.textSecondary));
 
   Widget _selectType() {
-    final opts = ['feeding', 'aeration', 'water_change', 'alkalinity', 'lime', 'probiotic', 'other'];
+    final opts = ['water_change', 'alkalinity', 'lime', 'probiotic'];
     return Container(
       height: 40,
       padding: const EdgeInsets.symmetric(horizontal: 16),

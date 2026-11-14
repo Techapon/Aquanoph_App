@@ -413,6 +413,7 @@ class _ChecklistSheetState extends State<_ChecklistSheet> {
           type: widget.type,
           timezone: widget.timezone,
           provider: _provider,
+          parentContext: context,
           onDone: () {
             _provider.load(widget.pond.id, widget.timezone).then((_) {
               if (!mounted) return;
@@ -424,7 +425,6 @@ class _ChecklistSheetState extends State<_ChecklistSheet> {
               });
             });
             widget.onSaved();
-            Navigator.pop(ctx);
           },
         ),
       ),
@@ -1080,12 +1080,14 @@ class _ApplyToOtherDaySheet extends StatelessWidget {
   final String timezone;
   final ActivityProvider provider;
   final VoidCallback onDone;
+  final BuildContext parentContext;
   const _ApplyToOtherDaySheet({
     required this.pond,
     required this.type,
     required this.timezone,
     required this.provider,
     required this.onDone,
+    required this.parentContext,
   });
 
   @override
@@ -1115,7 +1117,7 @@ class _ApplyToOtherDaySheet extends StatelessWidget {
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () async {
-          Navigator.pop(context);
+          Navigator.pop(context); // close apply dialog
           // duplicate current day's activities for the next [days] days (pond-local day)
           final items = provider.activities.where((a) {
             if (type == ActivityType.other) {
@@ -1149,9 +1151,8 @@ class _ApplyToOtherDaySheet extends StatelessWidget {
             }
           }
           onDone();
-          if (context.mounted) {
-
-            await showSuccessDialog(context, title: 'Applied', subtitle: 'Created $created activities for $days day(s).', statusLabel: pond.name, statusSuffix: ' saved.');
+          if (parentContext.mounted) {
+            await showSuccessDialog(parentContext, title: 'Applied', subtitle: 'Created $created activities for $days day(s).', statusLabel: pond.name, statusSuffix: ' saved.');
           }
         },
         child: Center(
